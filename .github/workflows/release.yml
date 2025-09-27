@@ -1,0 +1,123 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Install Rust
+      uses: dtolnay/rust-toolchain@stable
+      with:
+        targets: wasm32-unknown-unknown
+        
+    - name: Install wasm-pack
+      run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+      
+    - name: Build for web
+      run: wasm-pack build --target web --out-dir pkg
+      
+    - name: Build for bundler
+      run: wasm-pack build --target bundler --out-dir pkg-bundler
+      
+    - name: Build for nodejs  
+      run: wasm-pack build --target nodejs --out-dir pkg-nodejs
+      
+    - name: Run tests
+      run: cargo test --lib
+      
+    - name: Test WASM
+      run: wasm-pack test --headless --chrome
+      
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: false
+        prerelease: false
+        body: |
+          ## Features
+          - Zero-copy Arrow/Feather data processing in WebAssembly
+          - BigInt64Array support for 64-bit integers
+          - UTF-8 string column handling
+          - LZ4 compression for Feather files
+          - Memory-safe operations with comprehensive error handling
+          
+          ## Installation
+          ```bash
+          npm install arrow-wasm
+          ```
+          
+          ## Rust Crate
+          ```bash
+          cargo add arrow-wasm
+          ```
+          
+          See README.md for complete usage examples and API documentation.
+    
+    - name: Upload web package
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./pkg
+        asset_name: arrow-wasm-web.tar.gz
+        asset_content_type: application/gzip
+        
+  publish-npm:
+    name: Publish to NPM
+    runs-on: ubuntu-latest
+    needs: release
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        registry-url: 'https://registry.npmjs.org'
+        
+    - name: Install Rust
+      uses: dtolnay/rust-toolchain@stable
+      with:
+        targets: wasm32-unknown-unknown
+        
+    - name: Install wasm-pack
+      run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+      
+    - name: Build package
+      run: wasm-pack build --target bundler --out-dir pkg
+      
+    - name: Publish to NPM
+      run: wasm-pack publish
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        
+  publish-crates:
+    name: Publish to Crates.io
+    runs-on: ubuntu-latest
+    needs: release
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Install Rust
+      uses: dtolnay/rust-toolchain@stable
+      
+    - name: Publish to Crates.io
+      run: cargo publish --token ${{ secrets.CRATES_TOKEN }}

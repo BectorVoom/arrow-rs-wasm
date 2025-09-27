@@ -1,6 +1,6 @@
 # Arrow2-WASM: Zero-Copy Arrow/Feather for WebAssembly
 
-[![CI](https://github.com/example/arrow2-wasm/workflows/CI/badge.svg)](https://github.com/example/arrow2-wasm/actions)
+[![CI](https://github.com/BectorVoom/arrow2-wasm/workflows/CI/badge.svg)](https://github.com/BectorVoom/arrow2-wasm/actions)
 [![License](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-blue.svg)](LICENSE)
 [![WASM](https://img.shields.io/badge/WebAssembly-ready-brightgreen.svg)](https://webassembly.org/)
 
@@ -199,7 +199,7 @@ This library implements **Ownership Pattern A** for maximum efficiency:
 
 ```bash
 # Clone the repository
-git clone https://github.com/example/arrow2-wasm.git
+git clone https://github.com/BectorVoom/arrow2-wasm.git
 cd arrow2-wasm
 
 # Add WASM target
@@ -310,8 +310,8 @@ Choose the license that best fits your use case.
 
 - 📖 [API Documentation](API_SPECIFICATION.md)
 - 🎮 [Browser Examples](examples/browser/)
-- 🐛 [Issue Tracker](https://github.com/example/arrow2-wasm/issues)
-- 💬 [Discussions](https://github.com/example/arrow2-wasm/discussions)
+- 🐛 [Issue Tracker](https://github.com/BectorVoom/arrow2-wasm/issues)
+- 💬 [Discussions](https://github.com/BectorVoom/arrow2-wasm/discussions)
 
 ---
 
