@@ -1,6 +1,6 @@
-# Arrow2-WASM: Zero-Copy Arrow/Feather for WebAssembly
+# Arrow-WASM: Zero-Copy Arrow/Feather for WebAssembly
 
-[![CI](https://github.com/BectorVoom/arrow2-wasm/workflows/CI/badge.svg)](https://github.com/BectorVoom/arrow2-wasm/actions)
+[![CI](https://github.com/BectorVoom/arrow-wasm/workflows/CI/badge.svg)](https://github.com/BectorVoom/arrow-wasm/actions)
 [![License](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-blue.svg)](LICENSE)
 [![WASM](https://img.shields.io/badge/WebAssembly-ready-brightgreen.svg)](https://webassembly.org/)
 
@@ -42,11 +42,11 @@ wasm-pack build --target bundler --out-dir pkg
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Arrow2-WASM Demo</title>
+    <title>arrow-WASM Demo</title>
 </head>
 <body>
     <script type="module">
-        import init, * as wasm from './pkg/arrow2_wasm.js';
+        import init, * as wasm from './pkg/arrow_wasm.js';
         
         async function demo() {
             // Initialize WASM module
@@ -87,7 +87,7 @@ wasm-pack build --target bundler --out-dir pkg
 
 ```javascript
 // Create UTF-8 string column
-const strings = ["hello", "world", "Arrow2", "WASM"];
+const strings = ["hello", "world", "arrow", "WASM"];
 
 // Calculate offsets and encode data
 let dataBytes = [];
@@ -199,8 +199,8 @@ This library implements **Ownership Pattern A** for maximum efficiency:
 
 ```bash
 # Clone the repository
-git clone https://github.com/BectorVoom/arrow2-wasm.git
-cd arrow2-wasm
+git clone https://github.com/BectorVoom/arrow-wasm.git
+cd arrow-wasm
 
 # Add WASM target
 rustup target add wasm32-unknown-unknown
@@ -302,7 +302,7 @@ Choose the license that best fits your use case.
 
 ## 🙏 Acknowledgments
 
-- [Arrow2](https://github.com/jorgecarleitao/arrow2) - The excellent Arrow implementation in Rust
+- [arrow](https://github.com/jorgecarleitao/arrow) - The excellent Arrow implementation in Rust
 - [wasm-bindgen](https://github.com/rustwasm/wasm-bindgen) - Rust and WebAssembly integration
 - [lz4_flex](https://github.com/PSeitz/lz4_flex) - Pure Rust LZ4 implementation
 
@@ -310,8 +310,8 @@ Choose the license that best fits your use case.
 
 - 📖 [API Documentation](API_SPECIFICATION.md)
 - 🎮 [Browser Examples](examples/browser/)
-- 🐛 [Issue Tracker](https://github.com/BectorVoom/arrow2-wasm/issues)
-- 💬 [Discussions](https://github.com/BectorVoom/arrow2-wasm/discussions)
+- 🐛 [Issue Tracker](https://github.com/BectorVoom/arrow-wasm/issues)
+- 💬 [Discussions](https://github.com/BectorVoom/arrow-wasm/discussions)
 
 ---
 
