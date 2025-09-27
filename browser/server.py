@@ -10,8 +10,11 @@ import mimetypes
 import os
 import sys
 
-# Add WASM MIME type support
+# Add WASM and Arrow file MIME type support
 mimetypes.add_type('application/wasm', '.wasm')
+mimetypes.add_type('application/vnd.apache.arrow.file', '.arrow')
+mimetypes.add_type('application/vnd.apache.arrow.stream', '.feather')
+mimetypes.add_type('application/octet-stream', '.ipc')
 
 class WasmHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
     def end_headers(self):

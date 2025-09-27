@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Feather Compression Verification</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #1e1e1e;
+            color: #00ff00;
+        }
+        
+        .container {
+            background: #2d2d2d;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #444;
+        }
+        
+        #output {
+            background: #000;
+            color: #00ff00;
+            padding: 15px;
+            border-radius: 4px;
+            height: 500px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            white-space: pre-line;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+        
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .status.loading {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .status.success {
+            background-color: #27ae60;
+            color: white;
+        }
+        
+        .status.error {
+            background-color: #e74c3c;
+            color: white;
+        }
+        
+        button {
+            background: #007cba;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: monospace;
+        }
+        
+        button:hover {
+            background: #005a87;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Quick Feather Compression Verification</h1>
+        <p>This page runs automated tests to verify Feather compression functionality.</p>
+        
+        <div id="status" class="status loading">Loading WASM module...</div>
+        
+        <div style="margin: 20px 0;">
+            <button id="run-tests">🧪 Run Verification Tests</button>
+            <button id="clear-output">🗑️ Clear Output</button>
+        </div>
+        
+        <div id="output"></div>
+    </div>
+
+    <script type="module">
+        const statusDiv = document.getElementById('status');
+        const outputDiv = document.getElementById('output');
+        
+        function updateStatus(message, type = 'loading') {
+            statusDiv.textContent = message;
+            statusDiv.className = `status ${type}`;
+        }
+        
+        function log(message) {
+            const timestamp = new Date().toISOString().substr(11, 12);
+            outputDiv.textContent += `[${timestamp}] ${message}\n`;
+            outputDiv.scrollTop = outputDiv.scrollHeight;
+            console.log(message);
+        }
+        
+        function clearOutput() {
+            outputDiv.textContent = '';
+        }
+        
+        // Redirect console.log to our output
+        const originalLog = console.log;
+        console.log = function(...args) {
+            log(args.join(' '));
+            originalLog.apply(console, args);
+        };
+        
+        const originalError = console.error;
+        console.error = function(...args) {
+            log(`ERROR: ${args.join(' ')}`);
+            originalError.apply(console, args);
+        };
+        
+        async function runTests() {
+            updateStatus('Running verification tests...', 'loading');
+            clearOutput();
+            
+            try {
+                // Import and run verification tests
+                const { runVerificationTests } = await import('./test-verification.js');
+                const result = await runVerificationTests();
+                
+                if (result.success) {
+                    updateStatus('✅ All tests passed!', 'success');
+                    log('\n🎯 VERIFICATION COMPLETE: All Feather compression tests passed!');
+                } else {
+                    updateStatus('❌ Tests failed', 'error');
+                    log(`\n💥 VERIFICATION FAILED: ${result.error}`);
+                }
+                
+            } catch (error) {
+                updateStatus('❌ Error running tests', 'error');
+                log(`💥 CRITICAL ERROR: ${error}`);
+                console.error(error);
+            }
+        }
+        
+        // Event listeners
+        document.getElementById('run-tests').addEventListener('click', runTests);
+        document.getElementById('clear-output').addEventListener('click', clearOutput);
+        
+        // Auto-run tests on page load
+        log('Page loaded, ready to run tests...');
+        updateStatus('Ready to run tests', 'loading');
+        
+        // Auto-run if URL parameter is present
+        if (window.location.search.includes('autorun')) {
+            setTimeout(runTests, 1000);
+        }
+    </script>
+</body>
+</html>

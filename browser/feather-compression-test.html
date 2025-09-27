@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arrow WASM Feather Compression Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .test-section {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            background-color: #fafafa;
+        }
+        
+        .success { color: #27ae60; font-weight: bold; }
+        .error { color: #e74c3c; font-weight: bold; }
+        .info { color: #3498db; }
+        .warning { color: #f39c12; }
+        
+        pre { 
+            background: #2c3e50; 
+            color: #ecf0f1; 
+            padding: 15px; 
+            overflow-x: auto; 
+            border-radius: 4px;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+        
+        button { 
+            background: #3498db; 
+            color: white; 
+            border: none; 
+            padding: 10px 20px; 
+            margin: 5px; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-size: 14px;
+        }
+        
+        button:hover { background: #2980b9; }
+        button:disabled { background: #bdc3c7; cursor: not-allowed; }
+        
+        .compression-btn { background: #27ae60; }
+        .compression-btn:hover { background: #229954; }
+        
+        .danger-btn { background: #e74c3c; }
+        .danger-btn:hover { background: #c0392b; }
+        
+        #output { 
+            background: #2c3e50; 
+            color: #ecf0f1; 
+            padding: 15px; 
+            border-radius: 5px; 
+            font-family: 'Courier New', monospace; 
+            height: 400px; 
+            overflow-y: auto; 
+            font-size: 12px;
+            line-height: 1.4;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+        
+        .stat-card {
+            background: #ecf0f1;
+            padding: 15px;
+            border-radius: 4px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .stat-label {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            background-color: #ecf0f1;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        
+        .progress-fill {
+            height: 20px;
+            background-color: #3498db;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+        }
+        
+        select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            margin: 5px;
+        }
+        
+        .file-input {
+            margin: 10px 0;
+            padding: 10px;
+            border: 2px dashed #ddd;
+            border-radius: 4px;
+            text-align: center;
+        }
+        
+        .test-results {
+            background: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        
+        .test-results table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .test-results th,
+        .test-results td {
+            padding: 8px 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .test-results th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Arrow WASM Feather Compression Test Suite</h1>
+        <p class="info">Test compressed Feather file creation, compression ratios, and round-trip data integrity.</p>
+        
+        <!-- Module Loading Status -->
+        <div class="test-section">
+            <h2>📦 Module Loading</h2>
+            <p id="loading-status" class="info">Initializing WASM module...</p>
+            <div id="version-info"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>🎯 Test Data Selection</h2>
+        <div class="test-section">
+            <label for="dataset-selector">Choose Test Dataset:</label>
+            <select id="dataset-selector">
+                <option value="">Select a dataset...</option>
+            </select>
+            <button id="preview-data">Preview Data</button>
+            
+            <div id="dataset-stats" class="stats-grid" style="display: none;">
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-rows">-</div>
+                    <div class="stat-label">Rows</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-columns">-</div>
+                    <div class="stat-label">Columns</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-size">-</div>
+                    <div class="stat-label">Est. Size (KB)</div>
+                </div>
+            </div>
+            
+            <div id="data-preview" style="display: none;">
+                <h4>Data Preview (first 5 rows):</h4>
+                <pre id="preview-content"></pre>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>🗜️ Compression Tests</h2>
+        <div class="test-section">
+            <div style="margin-bottom: 15px;">
+                <button id="test-uncompressed" class="compression-btn">Test Uncompressed</button>
+                <button id="test-lz4" class="compression-btn">Test LZ4 Compression</button>
+                <button id="test-zstd" class="compression-btn">Test ZSTD Compression</button>
+                <button id="test-all-compression">🚀 Test All Compression Types</button>
+            </div>
+            
+            <div id="compression-progress" style="display: none;">
+                <div class="progress-bar">
+                    <div id="progress-fill" class="progress-fill" style="width: 0%;">0%</div>
+                </div>
+            </div>
+            
+            <div id="compression-results" class="test-results" style="display: none;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Compression</th>
+                            <th>File Size (bytes)</th>
+                            <th>Compression Ratio</th>
+                            <th>Write Time (ms)</th>
+                            <th>Read Time (ms)</th>
+                            <th>Data Integrity</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="results-tbody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>📁 File Operations</h2>
+        <div class="test-section">
+            <h3>Upload Feather File</h3>
+            <div class="file-input">
+                <input type="file" id="file-upload" accept=".feather,.arrow" />
+                <p>Upload a Feather/Arrow file to test reading capabilities</p>
+            </div>
+            <button id="test-uploaded-file" disabled>Test Uploaded File</button>
+            
+            <h3>Generated Files</h3>
+            <div id="download-links" style="margin-top: 10px;">
+                <p class="info">Generated files will appear here for download</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>🧪 Advanced Tests</h2>
+        <div class="test-section">
+            <button id="test-edge-cases">Test Edge Cases</button>
+            <button id="test-large-data">Test Large Dataset (10K rows)</button>
+            <button id="test-performance">Performance Benchmark</button>
+            <button id="test-round-trip">Complete Round-trip Test</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>📊 Test Output Console</h2>
+        <div class="test-section">
+            <button id="clear-output" class="danger-btn">Clear Output</button>
+            <button id="export-results">Export Results</button>
+            <div id="output"></div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Import modules
+        import init, * as wasm from '../pkg/arrow_wasm.js';
+        import { FeatherTestDataGenerator } from './feather-test-data.js';
+        import { FeatherCompressionTester } from './test-feather-compression.js';
+        
+        let module = null;
+        let tester = null;
+        let currentDataset = null;
+        let output = document.getElementById('output');
+        
+        // Logging utility
+        function log(message, type = 'info') {
+            const timestamp = new Date().toISOString().substr(11, 12);
+            const colors = {
+                info: '#ecf0f1',
+                success: '#2ecc71',
+                error: '#e74c3c',
+                warning: '#f39c12'
+            };
+            const color = colors[type] || colors.info;
+            output.innerHTML += `<span style="color: ${color}">[${timestamp}] ${message}</span>\n`;
+            output.scrollTop = output.scrollHeight;
+            console.log(`[${type.toUpperCase()}] ${message}`);
+        }
+        
+        function clearOutput() {
+            output.innerHTML = '';
+        }
+        
+        function updateProgress(percent, text = '') {
+            const progressFill = document.getElementById('progress-fill');
+            const progressContainer = document.getElementById('compression-progress');
+            
+            if (percent > 0) {
+                progressContainer.style.display = 'block';
+                progressFill.style.width = `${percent}%`;
+                progressFill.textContent = text || `${percent}%`;
+            } else {
+                progressContainer.style.display = 'none';
+            }
+        }
+        
+        // Initialize the application
+        async function initializeApp() {
+            try {
+                log('🚀 Loading WASM module...');
+                await init();
+                module = wasm;
+                
+                log('✅ Initializing Arrow library...');
+                await module.initialize();
+                
+                // Get version info
+                const version = module.getVersion();
+                const versionInfo = {
+                    major: version.major(),
+                    minor: version.minor(),
+                    patch: version.patch(),
+                    arrow_version: version.arrow_version()
+                };
+                
+                document.getElementById('loading-status').textContent = 'Module loaded successfully!';
+                document.getElementById('loading-status').className = 'success';
+                
+                document.getElementById('version-info').innerHTML = `
+                    <strong>WASM Library:</strong> ${versionInfo.major}.${versionInfo.minor}.${versionInfo.patch}<br>
+                    <strong>Arrow Version:</strong> ${versionInfo.arrow_version}
+                `;
+                
+                log(`✅ Module loaded successfully! Version: ${versionInfo.major}.${versionInfo.minor}.${versionInfo.patch}`, 'success');
+                
+                // Initialize tester
+                tester = new FeatherCompressionTester(module, log, updateProgress);
+                
+                // Populate dataset selector
+                populateDatasetSelector();
+                
+                // Enable all buttons
+                enableButtons();
+                
+            } catch (error) {
+                const errorMsg = `❌ Failed to initialize: ${error}`;
+                document.getElementById('loading-status').textContent = errorMsg;
+                document.getElementById('loading-status').className = 'error';
+                log(errorMsg, 'error');
+            }
+        }
+        
+        function populateDatasetSelector() {
+            const selector = document.getElementById('dataset-selector');
+            const datasets = FeatherTestDataGenerator.getAllTestDatasets();
+            
+            for (const [name, data] of Object.entries(datasets)) {
+                const option = document.createElement('option');
+                option.value = name;
+                option.textContent = name;
+                selector.appendChild(option);
+            }
+        }
+        
+        function enableButtons() {
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach(btn => {
+                if (btn.id !== 'test-uploaded-file') {
+                    btn.disabled = false;
+                }
+            });
+        }
+        
+        // Event handlers
+        document.getElementById('dataset-selector').addEventListener('change', function(e) {
+            const datasetName = e.target.value;
+            if (datasetName) {
+                const datasets = FeatherTestDataGenerator.getAllTestDatasets();
+                currentDataset = {
+                    name: datasetName,
+                    data: datasets[datasetName]
+                };
+                updateDatasetStats();
+            }
+        });
+        
+        function updateDatasetStats() {
+            if (!currentDataset) return;
+            
+            const stats = FeatherTestDataGenerator.getDatasetStats(currentDataset.data);
+            document.getElementById('stat-rows').textContent = stats.rows.toLocaleString();
+            document.getElementById('stat-columns').textContent = stats.columns;
+            document.getElementById('stat-size').textContent = stats.estimatedSizeKB;
+            document.getElementById('dataset-stats').style.display = 'grid';
+        }
+        
+        document.getElementById('preview-data').addEventListener('click', function() {
+            if (!currentDataset) {
+                log('⚠️ Please select a dataset first', 'warning');
+                return;
+            }
+            
+            const preview = currentDataset.data.slice(0, 5);
+            document.getElementById('preview-content').textContent = JSON.stringify(preview, null, 2);
+            document.getElementById('data-preview').style.display = 'block';
+        });
+        
+        // Compression test handlers
+        document.getElementById('test-uncompressed').addEventListener('click', async function() {
+            if (!currentDataset) {
+                log('⚠️ Please select a dataset first', 'warning');
+                return;
+            }
+            await tester.testCompression(currentDataset, 'none');
+        });
+        
+        document.getElementById('test-lz4').addEventListener('click', async function() {
+            if (!currentDataset) {
+                log('⚠️ Please select a dataset first', 'warning');
+                return;
+            }
+            await tester.testCompression(currentDataset, 'lz4');
+        });
+        
+        document.getElementById('test-zstd').addEventListener('click', async function() {
+            if (!currentDataset) {
+                log('⚠️ Please select a dataset first', 'warning');
+                return;
+            }
+            await tester.testCompression(currentDataset, 'zstd');
+        });
+        
+        document.getElementById('test-all-compression').addEventListener('click', async function() {
+            if (!currentDataset) {
+                log('⚠️ Please select a dataset first', 'warning');
+                return;
+            }
+            await tester.testAllCompressions(currentDataset);
+        });
+        
+        // Advanced test handlers
+        document.getElementById('test-edge-cases').addEventListener('click', async function() {
+            await tester.testEdgeCases();
+        });
+        
+        document.getElementById('test-large-data').addEventListener('click', async function() {
+            const largeDataset = {
+                name: 'Large Dataset (10K rows)',
+                data: FeatherTestDataGenerator.generateRepetitiveData(10000)
+            };
+            await tester.testAllCompressions(largeDataset);
+        });
+        
+        document.getElementById('test-performance').addEventListener('click', async function() {
+            await tester.performanceBenchmark();
+        });
+        
+        document.getElementById('test-round-trip').addEventListener('click', async function() {
+            if (!currentDataset) {
+                log('⚠️ Please select a dataset first', 'warning');
+                return;
+            }
+            await tester.completeRoundTripTest(currentDataset);
+        });
+        
+        // File operations
+        document.getElementById('file-upload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                document.getElementById('test-uploaded-file').disabled = false;
+                log(`📁 File selected: ${file.name} (${Math.round(file.size/1024)}KB)`);
+            }
+        });
+        
+        document.getElementById('test-uploaded-file').addEventListener('click', async function() {
+            const fileInput = document.getElementById('file-upload');
+            const file = fileInput.files[0];
+            if (file) {
+                await tester.testUploadedFile(file);
+            }
+        });
+        
+        // Utility handlers
+        document.getElementById('clear-output').addEventListener('click', clearOutput);
+        
+        document.getElementById('export-results').addEventListener('click', function() {
+            const results = tester.getTestResults();
+            const blob = new Blob([JSON.stringify(results, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `feather-test-results-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            log('📊 Test results exported', 'success');
+        });
+        
+        // Initialize app when page loads
+        initializeApp();
+    </script>
+</body>
+</html>
