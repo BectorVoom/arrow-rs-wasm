@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arrow WASM Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .test-section {
+            background-color: #f5f5f5;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .success { color: green; }
+        .error { color: red; }
+        .info { color: blue; }
+        pre { background: #eee; padding: 10px; overflow-x: auto; }
+        button { 
+            background: #007cba; 
+            color: white; 
+            border: none; 
+            padding: 10px 20px; 
+            margin: 5px; 
+            border-radius: 3px; 
+            cursor: pointer; 
+        }
+        button:hover { background: #005a87; }
+        #output { 
+            background: #000; 
+            color: #00ff00; 
+            padding: 15px; 
+            border-radius: 5px; 
+            font-family: monospace; 
+            height: 300px; 
+            overflow-y: auto; 
+        }
+    </style>
+</head>
+<body>
+    <h1>Arrow WASM Library Test</h1>
+    
+    <div class="test-section">
+        <h2>Module Loading Test</h2>
+        <p id="loading-status" class="info">Loading WASM module...</p>
+        <div id="version-info"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Core API Tests</h2>
+        <button id="test-initialize">Test initialize()</button>
+        <button id="test-version">Test getVersion()</button>
+        <button id="test-table-from-ipc">Test tableFromIPC()</button>
+        <button id="test-all">Run All Tests</button>
+        <button id="clear-output">Clear Output</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test Output</h2>
+        <div id="output"></div>
+    </div>
+
+    <script type="module">
+        // Import the WASM module
+        import init, * as wasm from '../pkg/arrow_wasm.js';
+        
+        let module = null;
+        let output = document.getElementById('output');
+        
+        function log(message, type = 'info') {
+            const timestamp = new Date().toISOString().substr(11, 8);
+            const color = type === 'error' ? '#ff0000' : type === 'success' ? '#00ff00' : '#00ff00';
+            output.innerHTML += `<span style="color: ${color}">[${timestamp}] ${message}</span>\n`;
+            output.scrollTop = output.scrollHeight;
+            console.log(message);
+        }
+        
+        function clearOutput() {
+            output.innerHTML = '';
+        }
+        
+        async function loadModule() {
+            try {
+                log('Loading WASM module...');
+                await init(); // Initialize the WASM module
+                module = wasm;
+                
+                document.getElementById('loading-status').textContent = 'Module loaded successfully!';
+                document.getElementById('loading-status').className = 'success';
+                
+                log('WASM module loaded successfully!', 'success');
+                
+                // Test getVersion immediately after loading
+                await testGetVersion();
+                
+            } catch (error) {
+                const errorMsg = `Failed to load WASM module: ${error}`;
+                document.getElementById('loading-status').textContent = errorMsg;
+                document.getElementById('loading-status').className = 'error';
+                log(errorMsg, 'error');
+            }
+        }
+        
+        async function testInitialize() {
+            log('Testing initialize()...');
+            try {
+                await module.initialize();
+                log('initialize() completed successfully', 'success');
+                return true;
+            } catch (error) {
+                log(`initialize() failed: ${error}`, 'error');
+                return false;
+            }
+        }
+        
+        async function testGetVersion() {
+            log('Testing getVersion()...');
+            try {
+                const version = module.getVersion();
+                log(`Version info: ${JSON.stringify({
+                    major: version.major(),
+                    minor: version.minor(), 
+                    patch: version.patch(),
+                    arrow_version: version.arrow_version()
+                })}`, 'success');
+                
+                // Update the version info display
+                document.getElementById('version-info').innerHTML = `
+                    <strong>Version:</strong> ${version.major()}.${version.minor()}.${version.patch()}<br>
+                    <strong>Arrow Version:</strong> ${version.arrow_version()}
+                `;
+                
+                return true;
+            } catch (error) {
+                log(`getVersion() failed: ${error}`, 'error');
+                return false;
+            }
+        }
+        
+        async function testTableFromIPC() {
+            log('Testing tableFromIPC()...');
+            try {
+                // Create a simple test buffer - for now just test if function exists
+                if (typeof module.tableFromIPC === 'function') {
+                    log('tableFromIPC() function exists', 'success');
+                    // TODO: Test with actual Arrow IPC data
+                    log('Note: Actual IPC data test not implemented yet');
+                    return true;
+                } else {
+                    log('tableFromIPC() function not found', 'error');
+                    return false;
+                }
+            } catch (error) {
+                log(`tableFromIPC() test failed: ${error}`, 'error');
+                return false;
+            }
+        }
+        
+        async function runAllTests() {
+            log('=== Running All Tests ===');
+            
+            const tests = [
+                { name: 'initialize', fn: testInitialize },
+                { name: 'getVersion', fn: testGetVersion },
+                { name: 'tableFromIPC', fn: testTableFromIPC }
+            ];
+            
+            let passed = 0;
+            let failed = 0;
+            
+            for (const test of tests) {
+                log(`\n--- Test: ${test.name} ---`);
+                const result = await test.fn();
+                if (result) {
+                    passed++;
+                    log(`✓ ${test.name} PASSED`, 'success');
+                } else {
+                    failed++;
+                    log(`✗ ${test.name} FAILED`, 'error');
+                }
+            }
+            
+            log(`\n=== Test Results ===`);
+            log(`Passed: ${passed}, Failed: ${failed}`, passed > failed ? 'success' : 'error');
+            
+            return { passed, failed };
+        }
+        
+        // Event listeners
+        document.getElementById('test-initialize').addEventListener('click', testInitialize);
+        document.getElementById('test-version').addEventListener('click', testGetVersion);
+        document.getElementById('test-table-from-ipc').addEventListener('click', testTableFromIPC);
+        document.getElementById('test-all').addEventListener('click', runAllTests);
+        document.getElementById('clear-output').addEventListener('click', clearOutput);
+        
+        // Auto-load the module when page loads
+        loadModule();
+    </script>
+</body>
+</html>

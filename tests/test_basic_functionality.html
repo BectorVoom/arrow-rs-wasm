@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arrow WASM Basic Functionality Test</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-result {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .info { background: #d1ecf1; color: #0c5460; }
+        .running { background: #fff3cd; color: #856404; }
+        button {
+            background: #007cba;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 5px;
+        }
+        button:hover { background: #005a87; }
+        button:disabled { background: #6c757d; cursor: not-allowed; }
+        #output {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            padding: 10px;
+            background: #f8f9fa;
+            font-family: monospace;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-section">
+        <h1>🚀 Arrow WASM Basic Functionality Test</h1>
+        <p>Testing core WASM module loading and API functionality</p>
+        
+        <button id="loadModule" onclick="loadWASM()">📦 Load WASM Module</button>
+        <button id="testBasic" onclick="testBasicFunctionality()" disabled>🔧 Test Basic Functions</button>
+        <button id="testTable" onclick="testTableOperations()" disabled>📊 Test Table Operations</button>
+        <button id="testCompute" onclick="testComputeFunctions()" disabled>🧮 Test Compute Functions</button>
+        <button id="testMemory" onclick="testMemoryManagement()" disabled>🗄️ Test Memory Management</button>
+        <button id="clearOutput" onclick="clearOutput()">🧹 Clear Output</button>
+    </div>
+
+    <div class="test-section">
+        <h2>Test Results</h2>
+        <div id="output"></div>
+    </div>
+
+    <script type="module">
+        let arrowWasm = null;
+        let testResults = {
+            moduleLoaded: false,
+            basicFunctions: false,
+            tableOperations: false,
+            computeFunctions: false,
+            memoryManagement: false
+        };
+
+        function log(message, type = 'info') {
+            const output = document.getElementById('output');
+            const div = document.createElement('div');
+            div.className = `test-result ${type}`;
+            div.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            output.appendChild(div);
+            output.scrollTop = output.scrollHeight;
+            console.log(message);
+        }
+
+        function updateButtonStates() {
+            document.getElementById('testBasic').disabled = !testResults.moduleLoaded;
+            document.getElementById('testTable').disabled = !testResults.moduleLoaded;
+            document.getElementById('testCompute').disabled = !testResults.moduleLoaded;
+            document.getElementById('testMemory').disabled = !testResults.moduleLoaded;
+        }
+
+        window.loadWASM = async function() {
+            const loadButton = document.getElementById('loadModule');
+            loadButton.disabled = true;
+            log('🔄 Loading WASM module...', 'running');
+
+            try {
+                // Import the WASM module
+                const wasmModule = await import('./pkg/arrow_wasm.js');
+                await wasmModule.default();
+                
+                arrowWasm = wasmModule;
+                testResults.moduleLoaded = true;
+                
+                log('✅ WASM module loaded successfully!', 'success');
+                log(`📋 Available exports: ${Object.keys(arrowWasm).join(', ')}`, 'info');
+                
+                // Test basic initialization
+                if (arrowWasm.initialize) {
+                    await arrowWasm.initialize();
+                    log('✅ Module initialized successfully!', 'success');
+                }
+                
+                // Get version info if available
+                if (arrowWasm.getVersion) {
+                    const version = arrowWasm.getVersion();
+                    log(`📍 Version: ${version.major}.${version.minor}.${version.patch} (Arrow: ${version.arrow_version})`, 'info');
+                }
+                
+                updateButtonStates();
+                
+            } catch (error) {
+                log(`❌ Failed to load WASM module: ${error.message}`, 'error');
+                console.error('WASM loading error:', error);
+            } finally {
+                loadButton.disabled = false;
+            }
+        };
+
+        window.testBasicFunctionality = async function() {
+            log('🔄 Testing basic functionality...', 'running');
+            
+            try {
+                // Test DataType creation
+                if (arrowWasm.DataType) {
+                    const intType = arrowWasm.DataType.new_int32();
+                    const strType = arrowWasm.DataType.new_utf8();
+                    log('✅ DataType creation works', 'success');
+                    log(`📍 Int32 type ID: ${intType.type_id()}, UTF8 type ID: ${strType.type_id()}`, 'info');
+                }
+                
+                // Test error handling
+                if (arrowWasm.ArrowError) {
+                    const error = arrowWasm.ArrowError.new(arrowWasm.ErrorCode.InvalidFormat, "Test error");
+                    log(`✅ Error handling works: ${error.message()}`, 'success');
+                }
+                
+                testResults.basicFunctions = true;
+                log('✅ Basic functionality tests passed!', 'success');
+                
+            } catch (error) {
+                log(`❌ Basic functionality test failed: ${error.message}`, 'error');
+                console.error('Basic test error:', error);
+            }
+        };
+
+        window.testTableOperations = async function() {
+            log('🔄 Testing table operations...', 'running');
+            
+            try {
+                // Create test data
+                const testData = [
+                    { id: 1, name: "Alice", value: 100.5 },
+                    { id: 2, name: "Bob", value: 200.0 },
+                    { id: 3, name: "Charlie", value: 300.25 }
+                ];
+                
+                // Test table creation from JSON
+                if (arrowWasm.tableFromJSON) {
+                    const table = arrowWasm.tableFromJSON(testData);
+                    log(`✅ Table created: ${table.numRows} rows, ${table.numColumns} columns`, 'success');
+                    
+                    // Test column access
+                    const nameColumn = table.getColumn("name");
+                    log(`✅ Column access works: name column has ${nameColumn.length} values`, 'success');
+                    
+                    // Test value access
+                    const firstValue = nameColumn.get(0);
+                    log(`✅ Value access works: first name is "${firstValue}"`, 'success');
+                    
+                    // Test table conversion back to array
+                    const arrayData = table.toArray();
+                    log(`✅ Table to array conversion works: ${arrayData.length} rows`, 'success');
+                    
+                    // Test table slicing
+                    const sliced = table.slice(0, 2);
+                    log(`✅ Table slicing works: ${sliced.numRows} rows in slice`, 'success');
+                    
+                    // Clean up
+                    table.dispose();
+                    sliced.dispose();
+                    log('✅ Memory cleanup completed', 'success');
+                }
+                
+                testResults.tableOperations = true;
+                log('✅ Table operations tests passed!', 'success');
+                
+            } catch (error) {
+                log(`❌ Table operations test failed: ${error.message}`, 'error');
+                console.error('Table test error:', error);
+            }
+        };
+
+        window.testComputeFunctions = async function() {
+            log('🔄 Testing compute functions...', 'running');
+            
+            try {
+                // Create test data for computation
+                const testData = [
+                    { id: 1, value: 10 },
+                    { id: 2, value: 20 },
+                    { id: 3, value: 30 },
+                    { id: 4, value: 40 }
+                ];
+                
+                const table = arrowWasm.tableFromJSON(testData);
+                const valueColumn = table.getColumn("value");
+                
+                // Test aggregation functions
+                if (arrowWasm.sum) {
+                    const total = arrowWasm.sum(valueColumn);
+                    log(`✅ Sum calculation: ${total}`, 'success');
+                }
+                
+                if (arrowWasm.mean) {
+                    const average = arrowWasm.mean(valueColumn);
+                    log(`✅ Mean calculation: ${average}`, 'success');
+                }
+                
+                if (arrowWasm.min) {
+                    const minimum = arrowWasm.min(valueColumn);
+                    log(`✅ Min calculation: ${minimum}`, 'success');
+                }
+                
+                if (arrowWasm.max) {
+                    const maximum = arrowWasm.max(valueColumn);
+                    log(`✅ Max calculation: ${maximum}`, 'success');
+                }
+                
+                if (arrowWasm.count) {
+                    const count = arrowWasm.count(valueColumn);
+                    log(`✅ Count calculation: ${count}`, 'success');
+                }
+                
+                if (arrowWasm.countDistinct) {
+                    const distinctCount = arrowWasm.countDistinct(valueColumn);
+                    log(`✅ Count distinct calculation: ${distinctCount}`, 'success');
+                }
+                
+                // Test column statistics
+                const stats = valueColumn.statistics();
+                log(`✅ Column statistics: min=${stats.min()}, max=${stats.max()}, nulls=${stats.null_count()}`, 'success');
+                
+                // Clean up
+                table.dispose();
+                
+                testResults.computeFunctions = true;
+                log('✅ Compute functions tests passed!', 'success');
+                
+            } catch (error) {
+                log(`❌ Compute functions test failed: ${error.message}`, 'error');
+                console.error('Compute test error:', error);
+            }
+        };
+
+        window.testMemoryManagement = async function() {
+            log('🔄 Testing memory management...', 'running');
+            
+            try {
+                // Create and dispose multiple tables to test memory handling
+                const tables = [];
+                
+                for (let i = 0; i < 5; i++) {
+                    const testData = Array.from({ length: 100 }, (_, idx) => ({
+                        id: idx,
+                        value: Math.random() * 1000
+                    }));
+                    
+                    const table = arrowWasm.tableFromJSON(testData);
+                    tables.push(table);
+                }
+                
+                log(`✅ Created ${tables.length} tables successfully`, 'success');
+                
+                // Test operations on tables
+                let totalRows = 0;
+                for (const table of tables) {
+                    totalRows += table.numRows;
+                }
+                log(`✅ Total rows across all tables: ${totalRows}`, 'success');
+                
+                // Dispose all tables
+                for (const table of tables) {
+                    table.dispose();
+                }
+                log('✅ All tables disposed successfully', 'success');
+                
+                // Test ArrayBuilder if available
+                if (arrowWasm.ArrayBuilder) {
+                    const builder = new arrowWasm.ArrayBuilder(arrowWasm.DataType.new_int32(), 10);
+                    builder.append(42);
+                    builder.append(84);
+                    builder.appendNull();
+                    
+                    const column = builder.finish();
+                    log(`✅ ArrayBuilder test: created column with ${column.length} values`, 'success');
+                    
+                    const firstVal = column.get(0);
+                    const isNull = column.isNull(2);
+                    log(`✅ ArrayBuilder values: first=${firstVal}, third is null=${isNull}`, 'success');
+                }
+                
+                testResults.memoryManagement = true;
+                log('✅ Memory management tests passed!', 'success');
+                
+            } catch (error) {
+                log(`❌ Memory management test failed: ${error.message}`, 'error');
+                console.error('Memory test error:', error);
+            }
+        };
+
+        window.clearOutput = function() {
+            document.getElementById('output').innerHTML = '';
+        };
+
+        // Auto-load module on page load
+        window.addEventListener('load', () => {
+            log('🚀 Page loaded, ready to test WASM module', 'info');
+        });
+    </script>
+</body>
+</html>

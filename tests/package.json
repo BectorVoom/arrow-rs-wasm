@@ -1,0 +1,65 @@
+{
+  "name": "arrow-wasm-mbd-tests",
+  "version": "1.0.0",
+  "description": "Model-Based Development test suite for WASM Arrow library",
+  "type": "module",
+  "scripts": {
+    "models:validate": "node harness/model_validator.js",
+    "models:generate": "node harness/model_test_generator.js",
+    "models:trace": "node harness/generate_traceability.js",
+    "models:coverage": "node harness/model_coverage_analyzer.js",
+    "test:generated": "node generated/run_all_tests.js",
+    "test:models": "npm run models:generate && npm run test:generated",
+    "test:browsers": "npm run test:chrome && npm run test:firefox && npm run test:safari",
+    "test:chrome": "cross-env BROWSER=chrome npm run test:generated",
+    "test:firefox": "cross-env BROWSER=firefox npm run test:generated",
+    "test:safari": "cross-env BROWSER=safari npm run test:generated",
+    "test:mobile": "cross-env BROWSER=mobile npm run test:generated",
+    "test:headed": "cross-env HEADLESS=false npm run test:generated",
+    "test:watch": "nodemon --watch models --watch harness --ext js,json --exec \"npm run test:models\"",
+    "test:performance": "node performance/run_benchmarks.js",
+    "test:memory": "node performance/memory_leak_detector.js",
+    "test:server": "node harness/test_server.js",
+    "coverage:report": "node harness/coverage_reporter.js",
+    "benchmark": "npm run test:performance",
+    "validate:all": "npm run models:validate && npm run test:models",
+    "clean": "rimraf generated/* reports/*",
+    "build:wasm": "cd .. && wasm-pack build --target web --out-dir tests/pkg",
+    "prepare": "npm run build:wasm"
+  },
+  "dependencies": {
+    "chai": "^4.3.10",
+    "mocha": "^10.2.0",
+    "puppeteer": "^21.5.0",
+    "playwright": "^1.40.0",
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "serve-static": "^1.15.0"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "nodemon": "^3.0.2",
+    "rimraf": "^5.0.5",
+    "c8": "^8.0.1",
+    "eslint": "^8.55.0"
+  },
+  "mocha": {
+    "timeout": 30000,
+    "recursive": true,
+    "spec": "generated/**/*.spec.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "arrow",
+    "wasm",
+    "model-based-testing",
+    "mbd",
+    "testing",
+    "browser",
+    "webassembly"
+  ],
+  "author": "Claude Code MBD System",
+  "license": "MIT"
+}

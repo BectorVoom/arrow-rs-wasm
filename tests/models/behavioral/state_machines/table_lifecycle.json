@@ -1,0 +1,447 @@
+{
+  "model_id": "table_lifecycle",
+  "model_type": "state_machine",
+  "version": "1.0.0",
+  "description": "Table lifecycle state machine covering creation, operations, and disposal of Arrow tables",
+  "requirements": ["REQ-TABLE-001", "REQ-TABLE-002", "REQ-TABLE-003", "REQ-MEM-002"],
+  "states": [
+    {
+      "id": "nonexistent",
+      "name": "Nonexistent",
+      "type": "initial",
+      "properties": {
+        "table_handle": null,
+        "schema_defined": false,
+        "data_loaded": false,
+        "memory_allocated": false
+      },
+      "invariants": [
+        "table_handle === null",
+        "schema_defined === false",
+        "data_loaded === false"
+      ]
+    },
+    {
+      "id": "creating_from_json",
+      "name": "Creating from JSON",
+      "type": "normal",
+      "properties": {
+        "table_handle": null,
+        "schema_defined": false,
+        "data_loaded": false,
+        "memory_allocated": false,
+        "creation_in_progress": true,
+        "source_type": "json"
+      },
+      "invariants": [
+        "creation_in_progress === true",
+        "source_type === 'json'",
+        "table_handle === null"
+      ]
+    },
+    {
+      "id": "creating_from_ipc",
+      "name": "Creating from IPC",
+      "type": "normal",
+      "properties": {
+        "table_handle": null,
+        "schema_defined": false,
+        "data_loaded": false,
+        "memory_allocated": false,
+        "creation_in_progress": true,
+        "source_type": "ipc"
+      },
+      "invariants": [
+        "creation_in_progress === true",
+        "source_type === 'ipc'",
+        "table_handle === null"
+      ]
+    },
+    {
+      "id": "active",
+      "name": "Active Table",
+      "type": "normal",
+      "properties": {
+        "table_handle": "number",
+        "schema_defined": true,
+        "data_loaded": true,
+        "memory_allocated": true,
+        "num_rows": ">=0",
+        "num_columns": ">0",
+        "can_access_data": true
+      },
+      "invariants": [
+        "table_handle !== null",
+        "schema_defined === true",
+        "data_loaded === true",
+        "num_rows >= 0",
+        "num_columns > 0"
+      ]
+    },
+    {
+      "id": "sliced",
+      "name": "Sliced View",
+      "type": "normal",
+      "properties": {
+        "table_handle": "number",
+        "schema_defined": true,
+        "data_loaded": true,
+        "memory_allocated": true,
+        "is_slice": true,
+        "parent_table": "number",
+        "slice_offset": ">=0",
+        "slice_length": ">0",
+        "can_access_data": true
+      },
+      "invariants": [
+        "is_slice === true",
+        "parent_table !== null",
+        "slice_offset >= 0",
+        "slice_length > 0",
+        "slice_offset + slice_length <= parent_num_rows"
+      ]
+    },
+    {
+      "id": "filtered",
+      "name": "Filtered Table",
+      "type": "normal",
+      "properties": {
+        "table_handle": "number",
+        "schema_defined": true,
+        "data_loaded": true,
+        "memory_allocated": true,
+        "is_filtered": true,
+        "source_table": "number",
+        "filter_applied": true,
+        "can_access_data": true
+      },
+      "invariants": [
+        "is_filtered === true",
+        "source_table !== null",
+        "filter_applied === true"
+      ]
+    },
+    {
+      "id": "selected",
+      "name": "Column Selected",
+      "type": "normal",
+      "properties": {
+        "table_handle": "number",
+        "schema_defined": true,
+        "data_loaded": true,
+        "memory_allocated": true,
+        "is_selected": true,
+        "source_table": "number",
+        "selected_columns": "array",
+        "can_access_data": true
+      },
+      "invariants": [
+        "is_selected === true",
+        "source_table !== null",
+        "selected_columns.length > 0"
+      ]
+    },
+    {
+      "id": "error",
+      "name": "Error State",
+      "type": "error",
+      "properties": {
+        "error_occurred": true,
+        "error_code": "string",
+        "error_message": "string",
+        "table_handle": "number or null",
+        "recovery_possible": "boolean"
+      },
+      "invariants": [
+        "error_occurred === true",
+        "error_code !== null",
+        "error_message !== null"
+      ]
+    },
+    {
+      "id": "disposed",
+      "name": "Disposed",
+      "type": "final",
+      "properties": {
+        "table_handle": null,
+        "schema_defined": false,
+        "data_loaded": false,
+        "memory_allocated": false,
+        "disposed": true
+      },
+      "invariants": [
+        "disposed === true",
+        "table_handle === null",
+        "memory_allocated === false"
+      ]
+    }
+  ],
+  "transitions": [
+    {
+      "id": "create_from_json",
+      "from": "nonexistent",
+      "to": "creating_from_json",
+      "trigger": "tableFromJSON",
+      "guard": "json_data_valid",
+      "action": "begin_json_conversion",
+      "requirements": ["REQ-TABLE-001"],
+      "test_data": {
+        "valid_inputs": [
+          "simple_json_array",
+          "json_with_nulls",
+          "json_with_mixed_types"
+        ],
+        "invalid_inputs": [
+          "null_data",
+          "empty_array",
+          "non_array_data"
+        ]
+      }
+    },
+    {
+      "id": "create_from_ipc",
+      "from": "nonexistent",
+      "to": "creating_from_ipc",
+      "trigger": "tableFromIPC",
+      "guard": "ipc_buffer_valid",
+      "action": "begin_ipc_parsing",
+      "requirements": ["REQ-TABLE-001"],
+      "test_data": {
+        "valid_inputs": [
+          "valid_arrow_ipc_buffer",
+          "compressed_ipc_buffer",
+          "multi_batch_ipc_buffer",
+          "single_batch_ipc_buffer"
+        ],
+        "invalid_inputs": [
+          "invalid_magic_bytes",
+          "corrupted_buffer",
+          "empty_buffer"
+        ]
+      }
+    },
+    {
+      "id": "json_creation_success",
+      "from": "creating_from_json",
+      "to": "active",
+      "trigger": "json_conversion_complete",
+      "guard": "schema_inferred && data_converted",
+      "action": "create_table_handle",
+      "requirements": ["REQ-TABLE-001"],
+      "test_data": {
+        "schema_inference": "automatic_type_detection",
+        "expected_timing": "< 50ms for 1k rows"
+      }
+    },
+    {
+      "id": "ipc_creation_success",
+      "from": "creating_from_ipc",
+      "to": "active",
+      "trigger": "ipc_parsing_complete",
+      "guard": "schema_parsed && data_loaded",
+      "action": "create_table_handle",
+      "requirements": ["REQ-TABLE-001"],
+      "test_data": {
+        "zero_copy": "data_not_duplicated",
+        "expected_timing": "< 20ms for 1k rows",
+        "multi_batch_handling": "automatic_concatenation",
+        "single_batch_optimization": "direct_usage_without_concat",
+        "batch_validation": "schema_consistency_across_batches"
+      }
+    },
+    {
+      "id": "json_creation_failed",
+      "from": "creating_from_json",
+      "to": "error",
+      "trigger": "json_conversion_failed",
+      "guard": "true",
+      "action": "set_error_state",
+      "requirements": ["REQ-ERROR-003"],
+      "test_data": {
+        "error_conditions": [
+          "schema_inference_failed",
+          "type_conversion_error",
+          "memory_allocation_failed"
+        ]
+      }
+    },
+    {
+      "id": "ipc_creation_failed",
+      "from": "creating_from_ipc",
+      "to": "error",
+      "trigger": "ipc_parsing_failed",
+      "guard": "true",
+      "action": "set_error_state",
+      "requirements": ["REQ-ERROR-003"],
+      "test_data": {
+        "error_conditions": [
+          "invalid_arrow_format",
+          "unsupported_schema",
+          "memory_allocation_failed"
+        ]
+      }
+    },
+    {
+      "id": "slice_table",
+      "from": "active",
+      "to": "sliced",
+      "trigger": "slice",
+      "guard": "offset_valid && length_valid",
+      "action": "create_slice_view",
+      "requirements": ["REQ-TABLE-002"],
+      "test_data": {
+        "valid_slices": [
+          "offset=0, length=10",
+          "offset=100, length=50",
+          "offset=0, length=numRows"
+        ],
+        "invalid_slices": [
+          "offset=-1",
+          "offset=numRows+1",
+          "length=0",
+          "offset+length > numRows"
+        ],
+        "zero_copy": "no_data_duplication"
+      }
+    },
+    {
+      "id": "filter_table",
+      "from": "active", 
+      "to": "filtered",
+      "trigger": "filter",
+      "guard": "predicate_function_valid",
+      "action": "apply_filter",
+      "requirements": ["REQ-TABLE-002"],
+      "test_data": {
+        "predicates": [
+          "row => row.get('value') > 100",
+          "row => row.get('active') === true",
+          "row => row.get('name') !== null"
+        ],
+        "expected_behavior": "new_table_with_matching_rows"
+      }
+    },
+    {
+      "id": "select_columns",
+      "from": "active",
+      "to": "selected", 
+      "trigger": "select",
+      "guard": "columns_exist",
+      "action": "create_column_projection",
+      "requirements": ["REQ-TABLE-002"],
+      "test_data": {
+        "valid_selections": [
+          "['id', 'name']",
+          "['value']",
+          "all_column_names"
+        ],
+        "invalid_selections": [
+          "['nonexistent_column']",
+          "[]",
+          "null"
+        ]
+      }
+    },
+    {
+      "id": "slice_from_slice",
+      "from": "sliced",
+      "to": "sliced",
+      "trigger": "slice",
+      "guard": "offset_valid && length_valid && within_slice_bounds",
+      "action": "create_nested_slice",
+      "requirements": ["REQ-TABLE-002"],
+      "test_data": {
+        "nested_slicing": "slice_of_slice_allowed"
+      }
+    },
+    {
+      "id": "operation_error",
+      "from": "active",
+      "to": "error",
+      "trigger": "operation_failed",
+      "guard": "error_is_critical",
+      "action": "set_error_state",
+      "requirements": ["REQ-ERROR-003"],
+      "test_data": {
+        "error_conditions": [
+          "invalid_column_access",
+          "memory_corruption",
+          "handle_invalidated"
+        ]
+      }
+    },
+    {
+      "id": "dispose_active",
+      "from": "active",
+      "to": "disposed",
+      "trigger": "dispose",
+      "guard": "true",
+      "action": "cleanup_table_resources",
+      "requirements": ["REQ-MEM-002"],
+      "test_data": {
+        "cleanup_verification": [
+          "handle_removed_from_registry",
+          "memory_freed",
+          "subsequent_access_fails"
+        ]
+      }
+    },
+    {
+      "id": "dispose_sliced",
+      "from": "sliced",
+      "to": "disposed",
+      "trigger": "dispose",
+      "guard": "true",
+      "action": "cleanup_slice_resources",
+      "requirements": ["REQ-MEM-002"],
+      "test_data": {
+        "parent_table_unaffected": "parent_remains_valid"
+      }
+    },
+    {
+      "id": "dispose_filtered",
+      "from": "filtered",
+      "to": "disposed",
+      "trigger": "dispose",
+      "guard": "true",
+      "action": "cleanup_filter_resources",
+      "requirements": ["REQ-MEM-002"]
+    },
+    {
+      "id": "dispose_selected",
+      "from": "selected",
+      "to": "disposed",
+      "trigger": "dispose",
+      "guard": "true",
+      "action": "cleanup_selection_resources",
+      "requirements": ["REQ-MEM-002"]
+    },
+    {
+      "id": "dispose_error",
+      "from": "error",
+      "to": "disposed",
+      "trigger": "dispose",
+      "guard": "true",
+      "action": "cleanup_error_resources",
+      "requirements": ["REQ-MEM-002"]
+    }
+  ],
+  "metadata": {
+    "created": "2025-01-27",
+    "author": "Claude Code MBD System",
+    "requirements": [
+      "REQ-TABLE-001: Tables must be creatable from JSON and IPC formats",
+      "REQ-TABLE-002: Tables must support slice, filter, and select operations",
+      "REQ-TABLE-003: Table operations must preserve data integrity",
+      "REQ-MEM-002: Table memory must be properly managed and disposed",
+      "REQ-ERROR-003: Table creation and operation errors must be handled"
+    ],
+    "test_generation_notes": [
+      "Zero-copy semantics must be verified for slice operations",
+      "Data integrity checks required for all transformations",
+      "Memory leak testing required for all disposal paths",
+      "Error condition testing must cover all invalid inputs",
+      "Performance timing validation for creation operations"
+    ]
+  }
+}

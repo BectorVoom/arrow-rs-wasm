@@ -1,0 +1,366 @@
+{
+  "model_id": "memory_management",
+  "model_type": "state_machine",
+  "version": "1.0.0",
+  "description": "Memory management state machine for WASM-side handle allocation, reference counting, and disposal",
+  "requirements": ["REQ-MEM-001", "REQ-MEM-002", "REQ-MEM-003", "REQ-MEM-004"],
+  "states": [
+    {
+      "id": "unallocated",
+      "name": "Unallocated",
+      "type": "initial",
+      "properties": {
+        "handle_id": null,
+        "memory_allocated": false,
+        "reference_count": 0,
+        "in_registry": false
+      },
+      "invariants": [
+        "handle_id === null",
+        "memory_allocated === false",
+        "reference_count === 0",
+        "in_registry === false"
+      ]
+    },
+    {
+      "id": "allocating",
+      "name": "Allocating Memory",
+      "type": "normal",
+      "properties": {
+        "handle_id": null,
+        "memory_allocated": false,
+        "allocation_in_progress": true,
+        "requested_size": ">0",
+        "reference_count": 0
+      },
+      "invariants": [
+        "allocation_in_progress === true",
+        "requested_size > 0",
+        "memory_allocated === false"
+      ]
+    },
+    {
+      "id": "allocated",
+      "name": "Allocated",
+      "type": "normal",
+      "properties": {
+        "handle_id": "number",
+        "memory_allocated": true,
+        "reference_count": 1,
+        "in_registry": true,
+        "allocation_size": ">0",
+        "can_be_accessed": true
+      },
+      "invariants": [
+        "handle_id !== null",
+        "memory_allocated === true",
+        "reference_count >= 1",
+        "in_registry === true",
+        "allocation_size > 0"
+      ]
+    },
+    {
+      "id": "referenced",
+      "name": "Multiple References",
+      "type": "normal",
+      "properties": {
+        "handle_id": "number",
+        "memory_allocated": true,
+        "reference_count": ">1",
+        "in_registry": true,
+        "allocation_size": ">0",
+        "can_be_accessed": true
+      },
+      "invariants": [
+        "handle_id !== null",
+        "memory_allocated === true",
+        "reference_count > 1",
+        "in_registry === true"
+      ]
+    },
+    {
+      "id": "disposing",
+      "name": "Disposing",
+      "type": "normal",
+      "properties": {
+        "handle_id": "number",
+        "memory_allocated": true,
+        "reference_count": 0,
+        "disposal_in_progress": true,
+        "can_be_accessed": false
+      },
+      "invariants": [
+        "disposal_in_progress === true",
+        "reference_count === 0",
+        "can_be_accessed === false"
+      ]
+    },
+    {
+      "id": "disposed",
+      "name": "Disposed",
+      "type": "final",
+      "properties": {
+        "handle_id": null,
+        "memory_allocated": false,
+        "reference_count": 0,
+        "in_registry": false,
+        "disposed": true,
+        "can_be_accessed": false
+      },
+      "invariants": [
+        "disposed === true",
+        "memory_allocated === false",
+        "reference_count === 0",
+        "in_registry === false"
+      ]
+    },
+    {
+      "id": "error",
+      "name": "Memory Error",
+      "type": "error",
+      "properties": {
+        "error_occurred": true,
+        "error_code": "string",
+        "error_message": "string",
+        "memory_corrupted": "boolean",
+        "recovery_possible": "boolean"
+      },
+      "invariants": [
+        "error_occurred === true",
+        "error_code !== null"
+      ]
+    }
+  ],
+  "transitions": [
+    {
+      "id": "allocate_memory",
+      "from": "unallocated",
+      "to": "allocating",
+      "trigger": "allocate",
+      "guard": "requested_size > 0 && memory_available",
+      "action": "begin_allocation",
+      "requirements": ["REQ-MEM-001"],
+      "test_data": {
+        "allocation_sizes": [
+          "small: 1KB",
+          "medium: 100KB", 
+          "large: 10MB"
+        ],
+        "timing_constraints": "< 10ms for < 1MB"
+      }
+    },
+    {
+      "id": "allocation_success",
+      "from": "allocating",
+      "to": "allocated",
+      "trigger": "allocation_complete",
+      "guard": "memory_allocated_successfully",
+      "action": "register_handle",
+      "requirements": ["REQ-MEM-001"],
+      "test_data": {
+        "handle_validation": "handle_id > 0",
+        "registry_insertion": "handle_findable_in_registry"
+      }
+    },
+    {
+      "id": "allocation_failed",
+      "from": "allocating",
+      "to": "error",
+      "trigger": "allocation_failed",
+      "guard": "true",
+      "action": "set_allocation_error",
+      "requirements": ["REQ-MEM-004"],
+      "test_data": {
+        "error_conditions": [
+          "out_of_memory",
+          "allocation_too_large",
+          "memory_fragmentation"
+        ]
+      }
+    },
+    {
+      "id": "add_reference",
+      "from": "allocated",
+      "to": "referenced",
+      "trigger": "increment_ref",
+      "guard": "reference_count >= 1",
+      "action": "increase_reference_count",
+      "requirements": ["REQ-MEM-002"],
+      "test_data": {
+        "reference_scenarios": [
+          "table_slice_creation",
+          "column_access",
+          "multiple_operations"
+        ]
+      }
+    },
+    {
+      "id": "add_more_references",
+      "from": "referenced",
+      "to": "referenced",
+      "trigger": "increment_ref",
+      "guard": "reference_count > 1",
+      "action": "increase_reference_count",
+      "requirements": ["REQ-MEM-002"],
+      "test_data": {
+        "max_references": 1000,
+        "reference_tracking": "accurate_count_maintained"
+      }
+    },
+    {
+      "id": "remove_reference_to_single",
+      "from": "referenced",
+      "to": "allocated",
+      "trigger": "decrement_ref",
+      "guard": "reference_count == 2",
+      "action": "decrease_reference_count",
+      "requirements": ["REQ-MEM-002"],
+      "test_data": {
+        "ref_count_validation": "count_decreases_by_one"
+      }
+    },
+    {
+      "id": "remove_reference_stay_referenced",
+      "from": "referenced",
+      "to": "referenced",
+      "trigger": "decrement_ref",
+      "guard": "reference_count > 2",
+      "action": "decrease_reference_count",
+      "requirements": ["REQ-MEM-002"]
+    },
+    {
+      "id": "dispose_single_ref",
+      "from": "allocated",
+      "to": "disposing",
+      "trigger": "dispose",
+      "guard": "reference_count == 1",
+      "action": "begin_disposal",
+      "requirements": ["REQ-MEM-003"],
+      "test_data": {
+        "disposal_triggers": [
+          "explicit_dispose_call",
+          "table_disposal",
+          "scope_cleanup"
+        ]
+      }
+    },
+    {
+      "id": "remove_final_reference",
+      "from": "allocated",
+      "to": "disposing",
+      "trigger": "decrement_ref",
+      "guard": "reference_count == 1",
+      "action": "begin_disposal",
+      "requirements": ["REQ-MEM-003"]
+    },
+    {
+      "id": "dispose_completion",
+      "from": "disposing",
+      "to": "disposed",
+      "trigger": "disposal_complete",
+      "guard": "memory_freed && handle_removed",
+      "action": "finalize_disposal",
+      "requirements": ["REQ-MEM-003"],
+      "test_data": {
+        "disposal_verification": [
+          "memory_actually_freed",
+          "handle_removed_from_registry",
+          "subsequent_access_fails"
+        ]
+      }
+    },
+    {
+      "id": "disposal_error",
+      "from": "disposing",
+      "to": "error",
+      "trigger": "disposal_failed",
+      "guard": "true",
+      "action": "set_disposal_error",
+      "requirements": ["REQ-MEM-004"],
+      "test_data": {
+        "disposal_errors": [
+          "double_disposal",
+          "memory_corruption",
+          "registry_inconsistency"
+        ]
+      }
+    },
+    {
+      "id": "memory_corruption_detected",
+      "from": "allocated",
+      "to": "error",
+      "trigger": "corruption_detected",
+      "guard": "true",
+      "action": "set_corruption_error",
+      "requirements": ["REQ-MEM-004"],
+      "test_data": {
+        "corruption_scenarios": [
+          "buffer_overflow",
+          "use_after_free",
+          "invalid_handle_access"
+        ]
+      }
+    },
+    {
+      "id": "referenced_corruption",
+      "from": "referenced",
+      "to": "error",
+      "trigger": "corruption_detected",
+      "guard": "true",
+      "action": "set_corruption_error",
+      "requirements": ["REQ-MEM-004"]
+    },
+    {
+      "id": "invalid_reference_operation",
+      "from": "allocated",
+      "to": "error",
+      "trigger": "invalid_ref_operation",
+      "guard": "true",
+      "action": "set_reference_error",
+      "requirements": ["REQ-MEM-004"],
+      "test_data": {
+        "invalid_operations": [
+          "decrement_below_zero",
+          "invalid_handle_access",
+          "race_condition"
+        ]
+      }
+    },
+    {
+      "id": "force_cleanup",
+      "from": "error",
+      "to": "disposed",
+      "trigger": "force_disposal",
+      "guard": "recovery_not_possible",
+      "action": "emergency_cleanup",
+      "requirements": ["REQ-MEM-004"],
+      "test_data": {
+        "emergency_cleanup": "best_effort_memory_recovery"
+      }
+    }
+  ],
+  "metadata": {
+    "created": "2025-01-27",
+    "author": "Claude Code MBD System",
+    "requirements": [
+      "REQ-MEM-001: Memory allocation must be efficient and trackable",
+      "REQ-MEM-002: Reference counting must be accurate and thread-safe",
+      "REQ-MEM-003: Memory disposal must be complete and leak-free",
+      "REQ-MEM-004: Memory errors must be detected and handled gracefully"
+    ],
+    "test_generation_notes": [
+      "Memory leak testing required for all allocation/disposal cycles",
+      "Reference counting accuracy must be validated",
+      "Error conditions require memory corruption detection",
+      "Performance testing for allocation/disposal timing",
+      "Stress testing with high reference counts and rapid disposal"
+    ],
+    "memory_safety_requirements": [
+      "No use-after-free conditions",
+      "No double-disposal scenarios", 
+      "Accurate reference counting in all paths",
+      "Memory corruption detection and recovery",
+      "Emergency cleanup capabilities for error states"
+    ]
+  }
+}

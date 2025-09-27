@@ -1,0 +1,389 @@
+{
+  "model_id": "row_interface_flow",
+  "model_type": "data_flow",
+  "version": "1.0.0",
+  "description": "Data flow model for Row interface operations including value access and object conversion",
+  "requirements": ["REQ-ROW-001", "REQ-ROW-002", "REQ-DATA-002", "REQ-TYPE-001"],
+  "operations": [
+    {
+      "operation_id": "row_get_by_column",
+      "name": "Get Value by Column Name",
+      "type": "data_access",
+      "inputs": [
+        {
+          "name": "row",
+          "type": "Row",
+          "constraints": [
+            "row_valid === true",
+            "table_accessible === true",
+            "row_index_valid === true"
+          ]
+        },
+        {
+          "name": "column_name",
+          "type": "string",
+          "constraints": [
+            "column_name !== null",
+            "column_name !== empty",
+            "column_exists_in_schema"
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "name": "value",
+          "type": "unknown",
+          "constraints": [
+            "type matches column data type",
+            "null if value is null",
+            "proper type conversion"
+          ]
+        }
+      ],
+      "preconditions": [
+        "row.table_accessible === true",
+        "column_name exists in table schema",
+        "row.row_index < table.num_rows",
+        "row.row_index >= 0"
+      ],
+      "postconditions": [
+        "returned value matches column type",
+        "null values preserved as null",
+        "numeric types converted to JavaScript numbers",
+        "string types converted to JavaScript strings",
+        "boolean types converted to JavaScript booleans"
+      ],
+      "error_conditions": [
+        {
+          "condition": "column_not_found",
+          "error_code": "COLUMN_NOT_FOUND",
+          "message": "Column 'name' not found in table schema"
+        },
+        {
+          "condition": "invalid_row_index",
+          "error_code": "INDEX_OUT_OF_BOUNDS", 
+          "message": "Row index is out of bounds"
+        },
+        {
+          "condition": "table_disposed",
+          "error_code": "INVALID_HANDLE",
+          "message": "Table has been disposed"
+        }
+      ],
+      "test_scenarios": [
+        {
+          "scenario": "get_int32_value",
+          "table_data": [
+            {"id": 1, "name": "Alice"},
+            {"id": 2, "name": "Bob"}
+          ],
+          "row_index": 0,
+          "column_name": "id",
+          "expected_result": 1,
+          "expected_type": "number"
+        },
+        {
+          "scenario": "get_string_value",
+          "table_data": [
+            {"id": 1, "name": "Alice"},
+            {"id": 2, "name": "Bob"}
+          ],
+          "row_index": 1,
+          "column_name": "name",
+          "expected_result": "Bob",
+          "expected_type": "string"
+        },
+        {
+          "scenario": "get_null_value",
+          "table_data": [
+            {"id": 1, "name": null},
+            {"id": 2, "name": "Bob"}
+          ],
+          "row_index": 0,
+          "column_name": "name",
+          "expected_result": null,
+          "expected_type": "null"
+        },
+        {
+          "scenario": "get_nonexistent_column",
+          "table_data": [
+            {"id": 1, "name": "Alice"}
+          ],
+          "row_index": 0,
+          "column_name": "nonexistent",
+          "expected_error": "COLUMN_NOT_FOUND"
+        }
+      ],
+      "performance_requirements": {
+        "max_latency": "< 1ms per access",
+        "memory_overhead": "O(1) per operation",
+        "caching": "column metadata cached for efficiency"
+      }
+    },
+    {
+      "operation_id": "row_get_by_index",
+      "name": "Get Value by Column Index",
+      "type": "data_access",
+      "inputs": [
+        {
+          "name": "row",
+          "type": "Row",
+          "constraints": [
+            "row_valid === true",
+            "table_accessible === true"
+          ]
+        },
+        {
+          "name": "column_index",
+          "type": "number",
+          "constraints": [
+            "column_index >= 0",
+            "column_index < table.num_columns",
+            "integer_value"
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "name": "value",
+          "type": "unknown",
+          "constraints": [
+            "type matches column data type",
+            "null if value is null"
+          ]
+        }
+      ],
+      "preconditions": [
+        "row.table_accessible === true",
+        "column_index >= 0",
+        "column_index < table.num_columns",
+        "row.row_index < table.num_rows"
+      ],
+      "postconditions": [
+        "returned value matches column type at index",
+        "type conversion consistent with get_by_name",
+        "null handling identical to get_by_name"
+      ],
+      "error_conditions": [
+        {
+          "condition": "column_index_out_of_bounds",
+          "error_code": "INDEX_OUT_OF_BOUNDS",
+          "message": "Column index out of bounds"
+        },
+        {
+          "condition": "negative_column_index",
+          "error_code": "INVALID_INDEX", 
+          "message": "Column index cannot be negative"
+        }
+      ],
+      "test_scenarios": [
+        {
+          "scenario": "get_first_column",
+          "table_data": [
+            {"id": 1, "name": "Alice", "active": true}
+          ],
+          "row_index": 0,
+          "column_index": 0,
+          "expected_result": 1,
+          "expected_type": "number"
+        },
+        {
+          "scenario": "get_last_column",
+          "table_data": [
+            {"id": 1, "name": "Alice", "active": true}
+          ],
+          "row_index": 0,
+          "column_index": 2,
+          "expected_result": true,
+          "expected_type": "boolean"
+        },
+        {
+          "scenario": "invalid_column_index",
+          "table_data": [
+            {"id": 1, "name": "Alice"}
+          ],
+          "row_index": 0, 
+          "column_index": 5,
+          "expected_error": "INDEX_OUT_OF_BOUNDS"
+        }
+      ]
+    },
+    {
+      "operation_id": "row_to_object",
+      "name": "Convert Row to JavaScript Object", 
+      "type": "conversion",
+      "inputs": [
+        {
+          "name": "row",
+          "type": "Row",
+          "constraints": [
+            "row_valid === true",
+            "table_accessible === true"
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "name": "object",
+          "type": "Record<string, unknown>",
+          "constraints": [
+            "all column names as keys",
+            "all values properly converted",
+            "null values preserved"
+          ]
+        }
+      ],
+      "preconditions": [
+        "row.table_accessible === true",
+        "row.row_index valid",
+        "table schema available"
+      ],
+      "postconditions": [
+        "object contains all table columns as properties",
+        "property names match column names",
+        "property values match column types",
+        "null values represented as null",
+        "object is plain JavaScript object"
+      ],
+      "test_scenarios": [
+        {
+          "scenario": "convert_complete_row",
+          "table_data": [
+            {"id": 1, "name": "Alice", "score": 95.5, "active": true}
+          ],
+          "row_index": 0,
+          "expected_result": {
+            "id": 1,
+            "name": "Alice", 
+            "score": 95.5,
+            "active": true
+          },
+          "validation": [
+            "object_has_all_properties",
+            "types_correctly_converted",
+            "values_match_source"
+          ]
+        },
+        {
+          "scenario": "convert_row_with_nulls",
+          "table_data": [
+            {"id": 1, "name": null, "score": 85.0, "active": null}
+          ],
+          "row_index": 0,
+          "expected_result": {
+            "id": 1,
+            "name": null,
+            "score": 85.0,
+            "active": null
+          },
+          "validation": [
+            "null_values_preserved",
+            "defined_values_converted"
+          ]
+        },
+        {
+          "scenario": "empty_table_schema",
+          "table_data": [{}],
+          "row_index": 0,
+          "expected_result": {},
+          "validation": ["empty_object_returned"]
+        }
+      ],
+      "performance_requirements": {
+        "max_latency": "< 10ms per row conversion", 
+        "memory_overhead": "O(columns) for result object",
+        "scalability": "linear with number of columns"
+      }
+    }
+  ],
+  "data_flow_constraints": [
+    {
+      "constraint_id": "type_consistency",
+      "description": "Type conversions must be consistent across all row operations",
+      "rules": [
+        "Int32/Int16/Int8 → JavaScript number",
+        "UInt32/UInt16/UInt8 → JavaScript number", 
+        "Float64/Float32 → JavaScript number",
+        "Utf8 → JavaScript string",
+        "Boolean → JavaScript boolean",
+        "null → JavaScript null"
+      ]
+    },
+    {
+      "constraint_id": "error_handling_consistency",
+      "description": "Error conditions must be handled consistently",
+      "rules": [
+        "invalid indices throw INDEX_OUT_OF_BOUNDS",
+        "nonexistent columns throw COLUMN_NOT_FOUND",
+        "disposed tables throw INVALID_HANDLE",
+        "error messages must be descriptive"
+      ]
+    },
+    {
+      "constraint_id": "performance_consistency",
+      "description": "Performance characteristics must be predictable",
+      "rules": [
+        "get operations are O(1) time complexity",
+        "toObject is O(columns) time complexity",
+        "memory overhead is predictable and bounded"
+      ]
+    },
+    {
+      "constraint_id": "data_integrity",
+      "description": "Data values must be preserved accurately",
+      "rules": [
+        "no precision loss in numeric conversions within JavaScript number range",
+        "string encoding preserved", 
+        "null values never converted to undefined",
+        "boolean values exactly preserved"
+      ]
+    }
+  ],
+  "integration_points": [
+    {
+      "point_id": "table_schema_access",
+      "description": "Interface with table schema system",
+      "dependencies": [
+        "table.schema accessible",
+        "column names and types available",
+        "column count information"
+      ]
+    },
+    {
+      "point_id": "column_data_access",
+      "description": "Interface with column value access system",
+      "dependencies": [
+        "column.get(index) operations",
+        "type conversion system",
+        "null value handling"
+      ]
+    },
+    {
+      "point_id": "memory_management",
+      "description": "Integration with handle-based memory system",
+      "dependencies": [
+        "table handle validation", 
+        "disposed state checking",
+        "resource cleanup on disposal"
+      ]
+    }
+  ],
+  "metadata": {
+    "created": "2024-12-27",
+    "author": "Claude Code MBD System",
+    "requirements": [
+      "REQ-ROW-001: Row interface must provide access to values by column name and index",
+      "REQ-ROW-002: Row must convert to JavaScript object with all column values",
+      "REQ-DATA-002: Data access must preserve type information and handle nulls",
+      "REQ-TYPE-001: Type conversions must be accurate and consistent"
+    ],
+    "test_generation_notes": [
+      "Test all supported data type conversions",
+      "Verify null value handling across all operations", 
+      "Test error conditions with clear assertions",
+      "Performance testing for various table sizes",
+      "Cross-verify object conversion accuracy",
+      "Test edge cases with empty tables and single-column tables"
+    ]
+  }
+}

@@ -1,0 +1,417 @@
+{
+  "model_id": "api_surface_model",
+  "model_type": "component",
+  "version": "1.0.0", 
+  "description": "API surface model defining the complete public interface, contracts, and interaction patterns",
+  "requirements": ["REQ-API-001", "REQ-API-002", "REQ-API-003", "REQ-SPEC-001"],
+  "api_categories": [
+    {
+      "category": "core_initialization",
+      "name": "Core Initialization APIs",
+      "description": "Module lifecycle and version management",
+      "stability": "stable",
+      "functions": [
+        {
+          "name": "initialize",
+          "signature": "() => Promise<void>",
+          "description": "Initialize the WASM module and setup memory allocator",
+          "preconditions": ["module_loaded"],
+          "postconditions": ["wasm_initialized", "memory_ready", "api_available"],
+          "side_effects": ["global_state_initialized", "error_handler_setup"],
+          "error_conditions": ["initialization_failed", "memory_allocation_failed"],
+          "timing_requirements": "< 100ms",
+          "idempotent": true,
+          "thread_safety": "single_threaded"
+        },
+        {
+          "name": "getVersion",
+          "signature": "() => VersionInfo",
+          "description": "Return library and Arrow version information", 
+          "preconditions": ["module_initialized"],
+          "postconditions": ["version_info_returned"],
+          "side_effects": [],
+          "error_conditions": ["module_not_initialized"],
+          "timing_requirements": "< 1ms",
+          "idempotent": true,
+          "thread_safety": "safe"
+        }
+      ]
+    },
+    {
+      "category": "table_creation",
+      "name": "Table Creation APIs", 
+      "description": "Table instantiation from various data sources",
+      "stability": "stable",
+      "functions": [
+        {
+          "name": "tableFromJSON",
+          "signature": "(data: Record<string, unknown>[], schema?: Schema) => Table",
+          "description": "Create Arrow table from JavaScript object array with optional schema",
+          "preconditions": ["module_initialized", "data_is_array", "data_not_empty"],
+          "postconditions": ["table_created", "schema_inferred_or_validated", "memory_allocated"],
+          "side_effects": ["memory_allocation", "handle_registration"],
+          "error_conditions": ["invalid_data_format", "schema_mismatch", "memory_allocation_failed", "type_inference_failed"],
+          "validation_rules": [
+            "data must be non-empty array",
+            "array elements must be objects",
+            "object properties must be consistent across rows",
+            "if schema provided, data must conform to schema"
+          ],
+          "timing_requirements": "< 50ms for 1K rows",
+          "memory_requirements": "O(n) where n is data size",
+          "idempotent": false
+        },
+        {
+          "name": "tableFromIPC",
+          "signature": "(buffer: ArrayBuffer) => Table",
+          "description": "Create Arrow table from IPC format buffer with zero-copy semantics",
+          "preconditions": ["module_initialized", "buffer_not_empty", "buffer_valid_ipc"],
+          "postconditions": ["table_created", "schema_parsed", "data_mapped"],
+          "side_effects": ["memory_mapping", "handle_registration"],
+          "error_conditions": ["invalid_ipc_format", "unsupported_schema", "corrupted_data", "memory_mapping_failed"],
+          "validation_rules": [
+            "buffer must contain valid Arrow IPC magic bytes",
+            "schema must be parseable",
+            "record batches must be valid",
+            "data integrity checks must pass"
+          ],
+          "timing_requirements": "< 20ms for 1K rows",
+          "memory_requirements": "zero-copy preferred",
+          "idempotent": false
+        }
+      ]
+    },
+    {
+      "category": "table_operations",
+      "name": "Table Operation APIs",
+      "description": "Table manipulation and data access operations",
+      "stability": "core_stable",
+      "functions": [
+        {
+          "name": "Table.numRows",
+          "signature": "() => number",
+          "description": "Get the number of rows in the table",
+          "preconditions": ["table_valid"],
+          "postconditions": ["row_count_returned"],
+          "side_effects": [],
+          "error_conditions": ["table_disposed"],
+          "timing_requirements": "< 1ms",
+          "idempotent": true,
+          "thread_safety": "safe"
+        },
+        {
+          "name": "Table.numColumns",
+          "signature": "() => number", 
+          "description": "Get the number of columns in the table",
+          "preconditions": ["table_valid"],
+          "postconditions": ["column_count_returned"],
+          "side_effects": [],
+          "error_conditions": ["table_disposed"],
+          "timing_requirements": "< 1ms",
+          "idempotent": true,
+          "thread_safety": "safe"
+        },
+        {
+          "name": "Table.schema",
+          "signature": "() => Schema",
+          "description": "Get the schema definition for the table",
+          "preconditions": ["table_valid"],
+          "postconditions": ["schema_returned"],
+          "side_effects": [],
+          "error_conditions": ["table_disposed"],
+          "timing_requirements": "< 1ms",
+          "idempotent": true,
+          "thread_safety": "safe"
+        },
+        {
+          "name": "Table.getColumn",
+          "signature": "(name: string) => Column",
+          "description": "Get column by name with error handling",
+          "preconditions": ["table_valid", "column_name_string"],
+          "postconditions": ["column_returned_or_error"],
+          "side_effects": ["column_handle_creation"],
+          "error_conditions": ["table_disposed", "column_not_found", "invalid_column_name"],
+          "validation_rules": [
+            "name must be non-empty string",
+            "column must exist in schema"
+          ],
+          "timing_requirements": "< 5ms",
+          "implementation_status": "needs_implementation"
+        },
+        {
+          "name": "Table.slice",
+          "signature": "(offset: number, length: number) => Table",
+          "description": "Create zero-copy slice of table with offset and length",
+          "preconditions": ["table_valid", "offset_valid", "length_valid"],
+          "postconditions": ["slice_table_created", "zero_copy_semantics"],
+          "side_effects": ["slice_handle_creation", "parent_reference_increment"],
+          "error_conditions": ["table_disposed", "offset_out_of_bounds", "length_invalid", "slice_exceeds_bounds"],
+          "validation_rules": [
+            "offset >= 0",
+            "length > 0", 
+            "offset + length <= numRows"
+          ],
+          "timing_requirements": "< 10ms",
+          "memory_requirements": "zero-copy - no data duplication",
+          "implementation_status": "needs_implementation"
+        },
+        {
+          "name": "Table.filter",
+          "signature": "(predicate: (row: Row) => boolean) => Table",
+          "description": "Filter table rows based on predicate function",
+          "preconditions": ["table_valid", "predicate_function"],
+          "postconditions": ["filtered_table_created"],
+          "side_effects": ["memory_allocation", "data_copying"],
+          "error_conditions": ["table_disposed", "predicate_error", "memory_allocation_failed"],
+          "validation_rules": [
+            "predicate must be function",
+            "predicate execution must be safe"
+          ],
+          "timing_requirements": "< 100ms for 1K rows",
+          "implementation_status": "needs_implementation"
+        },
+        {
+          "name": "Table.toArray",
+          "signature": "() => Record<string, unknown>[]",
+          "description": "Convert table to JavaScript object array",
+          "preconditions": ["table_valid"],
+          "postconditions": ["js_array_created", "data_integrity_preserved"],
+          "side_effects": ["memory_allocation", "type_conversion"],
+          "error_conditions": ["table_disposed", "conversion_failed", "memory_allocation_failed"],
+          "timing_requirements": "< 50ms for 1K rows",
+          "memory_requirements": "O(n) for result array",
+          "idempotent": true
+        },
+        {
+          "name": "Table.toIPC",
+          "signature": "(options?: WriteOptions) => ArrayBuffer",
+          "description": "Serialize table to Arrow IPC format",
+          "preconditions": ["table_valid"],
+          "postconditions": ["ipc_buffer_created", "format_compliant"],
+          "side_effects": ["memory_allocation", "serialization"],
+          "error_conditions": ["table_disposed", "serialization_failed", "unsupported_options"],
+          "timing_requirements": "< 100ms for 1K rows",
+          "idempotent": true
+        },
+        {
+          "name": "Table.dispose",
+          "signature": "() => void",
+          "description": "Explicitly release table memory and invalidate handle",
+          "preconditions": ["table_valid"],
+          "postconditions": ["memory_freed", "handle_invalidated"],
+          "side_effects": ["memory_deallocation", "handle_removal"],
+          "error_conditions": ["double_disposal"],
+          "timing_requirements": "< 10ms",
+          "idempotent": true
+        }
+      ]
+    },
+    {
+      "category": "column_operations",
+      "name": "Column Operation APIs",
+      "description": "Column-level data access and manipulation",
+      "stability": "developing",
+      "functions": [
+        {
+          "name": "Column.get",
+          "signature": "(index: number) => unknown",
+          "description": "Get value at specific index with type safety",
+          "preconditions": ["column_valid", "index_valid"],
+          "postconditions": ["value_returned_with_correct_type"],
+          "side_effects": [],
+          "error_conditions": ["column_disposed", "index_out_of_bounds"],
+          "validation_rules": [
+            "index >= 0",
+            "index < column.length"
+          ],
+          "timing_requirements": "< 1ms",
+          "implementation_status": "needs_implementation"
+        },
+        {
+          "name": "Column.toArray",
+          "signature": "() => unknown[]",
+          "description": "Convert entire column to JavaScript array",
+          "preconditions": ["column_valid"],
+          "postconditions": ["js_array_created", "types_preserved"],
+          "side_effects": ["memory_allocation"],
+          "error_conditions": ["column_disposed", "conversion_failed"],
+          "timing_requirements": "< 20ms for 1K values",
+          "implementation_status": "needs_implementation"
+        },
+        {
+          "name": "Column.statistics",
+          "signature": "() => ColumnStatistics",
+          "description": "Compute column statistics (min, max, count, etc.)",
+          "preconditions": ["column_valid"],
+          "postconditions": ["statistics_computed"],
+          "side_effects": ["computation", "result_caching"],
+          "error_conditions": ["column_disposed", "computation_failed"],
+          "timing_requirements": "< 50ms for 1K values",
+          "implementation_status": "needs_implementation"
+        }
+      ]
+    },
+    {
+      "category": "compute_functions",
+      "name": "Compute Function APIs",
+      "description": "Statistical and transformation operations",
+      "stability": "developing",
+      "functions": [
+        {
+          "name": "sum",
+          "signature": "(column: Column) => number",
+          "description": "Compute sum of numeric column",
+          "preconditions": ["column_valid", "column_numeric"],
+          "postconditions": ["sum_computed"],
+          "side_effects": [],
+          "error_conditions": ["column_disposed", "non_numeric_column", "overflow"],
+          "timing_requirements": "< 10ms for 1K values",
+          "implementation_status": "needs_implementation"
+        },
+        {
+          "name": "mean",
+          "signature": "(column: Column) => number",
+          "description": "Compute arithmetic mean of numeric column",
+          "preconditions": ["column_valid", "column_numeric"],
+          "postconditions": ["mean_computed"],
+          "side_effects": [],
+          "error_conditions": ["column_disposed", "non_numeric_column", "empty_column"],
+          "timing_requirements": "< 10ms for 1K values",
+          "implementation_status": "needs_implementation"
+        }
+      ]
+    }
+  ],
+  "type_definitions": [
+    {
+      "name": "VersionInfo",
+      "type": "interface",
+      "properties": {
+        "major": "number",
+        "minor": "number", 
+        "patch": "number",
+        "arrowVersion": "string"
+      },
+      "validation": "semver_compliant"
+    },
+    {
+      "name": "Schema",
+      "type": "interface",
+      "properties": {
+        "fields": "Field[]",
+        "metadata": "Map<string, string>"
+      },
+      "methods": ["getField", "getFieldIndex", "equals", "toJSON"]
+    },
+    {
+      "name": "Field",
+      "type": "interface",
+      "properties": {
+        "name": "string",
+        "dataType": "DataType",
+        "nullable": "boolean",
+        "metadata": "Map<string, string>"
+      }
+    },
+    {
+      "name": "DataType",
+      "type": "union",
+      "variants": [
+        "{ type: 'null' }",
+        "{ type: 'bool' }",
+        "{ type: 'int32' }",
+        "{ type: 'float64' }",
+        "{ type: 'utf8' }"
+      ],
+      "extensible": true
+    }
+  ],
+  "error_contracts": [
+    {
+      "error_type": "ArrowError",
+      "properties": {
+        "code": "ErrorCode",
+        "message": "string",
+        "details": "string?"
+      },
+      "error_codes": [
+        "INVALID_FORMAT",
+        "SCHEMA_MISMATCH", 
+        "OUT_OF_BOUNDS",
+        "TYPE_MISMATCH",
+        "MEMORY_ERROR",
+        "NOT_IMPLEMENTED"
+      ]
+    }
+  ],
+  "api_constraints": [
+    {
+      "constraint": "no_this_keyword",
+      "description": "All APIs avoid 'this' keyword usage",
+      "applies_to": "all_functions"
+    },
+    {
+      "constraint": "no_try_catch",
+      "description": "Error handling through Result types, not exceptions",
+      "applies_to": "all_functions"
+    },
+    {
+      "constraint": "explicit_memory_management",
+      "description": "All tables and columns require explicit disposal",
+      "applies_to": ["table_operations", "column_operations"]
+    },
+    {
+      "constraint": "handle_based_architecture",
+      "description": "WASM objects accessed through numeric handles",
+      "applies_to": ["table_operations", "column_operations"]
+    }
+  ],
+  "performance_contracts": [
+    {
+      "operation_class": "property_access",
+      "examples": ["numRows", "numColumns", "schema"],
+      "timing_requirement": "< 1ms",
+      "complexity": "O(1)"
+    },
+    {
+      "operation_class": "table_creation",
+      "examples": ["tableFromJSON", "tableFromIPC"],
+      "timing_requirement": "< 50ms for 1K rows",
+      "complexity": "O(n)"
+    },
+    {
+      "operation_class": "data_conversion",
+      "examples": ["toArray", "toIPC"],
+      "timing_requirement": "< 50ms for 1K rows",
+      "complexity": "O(n)"
+    },
+    {
+      "operation_class": "zero_copy_operations",
+      "examples": ["slice", "column_access"],
+      "timing_requirement": "< 10ms",
+      "memory_requirement": "no_data_duplication"
+    }
+  ],
+  "metadata": {
+    "created": "2025-01-27",
+    "author": "Claude Code MBD System",
+    "requirements": [
+      "REQ-API-001: Complete API surface conforming to specification",
+      "REQ-API-002: Consistent error handling and validation patterns",
+      "REQ-API-003: Performance contracts for all operations",
+      "REQ-SPEC-001: Full compliance with API specification document"
+    ],
+    "test_generation_notes": [
+      "Contract testing for all preconditions and postconditions",
+      "Performance testing against timing requirements",
+      "Error condition testing for all specified error cases",
+      "Type safety validation for all input/output types",
+      "Memory management testing for handle-based operations"
+    ],
+    "implementation_coverage": {
+      "fully_implemented": ["core_initialization", "basic_table_properties", "table_creation", "data_conversion"],
+      "partially_implemented": ["table_operations"],
+      "needs_implementation": ["column_operations", "compute_functions"]
+    }
+  }
+}

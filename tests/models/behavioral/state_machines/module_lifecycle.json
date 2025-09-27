@@ -1,0 +1,306 @@
+{
+  "model_id": "module_lifecycle",
+  "model_type": "state_machine",
+  "version": "1.0.0",
+  "description": "WASM module lifecycle state machine covering initialization, operation, and cleanup phases",
+  "requirements": ["REQ-INIT-001", "REQ-INIT-002", "REQ-CORE-001", "REQ-MEM-001"],
+  "states": [
+    {
+      "id": "uninitialized",
+      "name": "Uninitialized",
+      "type": "initial",
+      "properties": {
+        "wasm_loaded": false,
+        "memory_ready": false,
+        "api_available": false
+      },
+      "invariants": [
+        "wasm_loaded === false",
+        "memory_ready === false", 
+        "api_available === false"
+      ]
+    },
+    {
+      "id": "loading",
+      "name": "Loading WASM Module",
+      "type": "normal",
+      "properties": {
+        "wasm_loaded": false,
+        "memory_ready": false,
+        "api_available": false,
+        "loading_started": true
+      },
+      "invariants": [
+        "loading_started === true",
+        "wasm_loaded === false"
+      ]
+    },
+    {
+      "id": "initializing",
+      "name": "Initializing Runtime",
+      "type": "normal", 
+      "properties": {
+        "wasm_loaded": true,
+        "memory_ready": false,
+        "api_available": false,
+        "initialization_started": true
+      },
+      "invariants": [
+        "wasm_loaded === true",
+        "initialization_started === true",
+        "memory_ready === false"
+      ]
+    },
+    {
+      "id": "ready",
+      "name": "Ready for Operations",
+      "type": "normal",
+      "properties": {
+        "wasm_loaded": true,
+        "memory_ready": true,
+        "api_available": true,
+        "can_create_tables": true
+      },
+      "invariants": [
+        "wasm_loaded === true",
+        "memory_ready === true",
+        "api_available === true"
+      ]
+    },
+    {
+      "id": "operating",
+      "name": "Active Operations",
+      "type": "normal",
+      "properties": {
+        "wasm_loaded": true,
+        "memory_ready": true,
+        "api_available": true,
+        "active_tables": ">=0",
+        "can_create_tables": true
+      },
+      "invariants": [
+        "wasm_loaded === true",
+        "memory_ready === true",
+        "api_available === true",
+        "active_tables >= 0"
+      ]
+    },
+    {
+      "id": "error",
+      "name": "Error State",
+      "type": "error",
+      "properties": {
+        "error_occurred": true,
+        "error_code": "string",
+        "error_message": "string",
+        "recovery_possible": "boolean"
+      },
+      "invariants": [
+        "error_occurred === true",
+        "error_code !== null",
+        "error_message !== null"
+      ]
+    },
+    {
+      "id": "disposed",
+      "name": "Disposed",
+      "type": "final",
+      "properties": {
+        "wasm_loaded": false,
+        "memory_ready": false,
+        "api_available": false,
+        "disposed": true
+      },
+      "invariants": [
+        "disposed === true",
+        "api_available === false"
+      ]
+    }
+  ],
+  "transitions": [
+    {
+      "id": "start_loading",
+      "from": "uninitialized",
+      "to": "loading",
+      "trigger": "load_wasm_module",
+      "guard": "true",
+      "action": "begin_wasm_load",
+      "requirements": ["REQ-INIT-001"],
+      "test_data": {
+        "valid_inputs": ["valid_wasm_url", "valid_wasm_binary"],
+        "expected_timing": "< 100ms"
+      }
+    },
+    {
+      "id": "wasm_loaded",
+      "from": "loading", 
+      "to": "initializing",
+      "trigger": "wasm_load_complete",
+      "guard": "wasm_binary_valid",
+      "action": "start_initialization",
+      "requirements": ["REQ-INIT-001"],
+      "test_data": {
+        "expected_timing": "< 50ms after load"
+      }
+    },
+    {
+      "id": "load_failed",
+      "from": "loading",
+      "to": "error",
+      "trigger": "wasm_load_failed",
+      "guard": "true",
+      "action": "set_error_state",
+      "requirements": ["REQ-ERROR-001"],
+      "test_data": {
+        "error_conditions": ["invalid_wasm", "network_error", "browser_incompatible"]
+      }
+    },
+    {
+      "id": "initialization_complete",
+      "from": "initializing",
+      "to": "ready", 
+      "trigger": "initialize_complete",
+      "guard": "memory_setup_successful",
+      "action": "enable_api",
+      "requirements": ["REQ-INIT-002"],
+      "test_data": {
+        "expected_timing": "< 20ms",
+        "memory_threshold": "< 2MB"
+      }
+    },
+    {
+      "id": "initialization_failed", 
+      "from": "initializing",
+      "to": "error",
+      "trigger": "initialize_failed",
+      "guard": "true",
+      "action": "set_error_state",
+      "requirements": ["REQ-ERROR-001"],
+      "test_data": {
+        "error_conditions": ["memory_allocation_failed", "panic_hook_failed"]
+      }
+    },
+    {
+      "id": "first_operation",
+      "from": "ready",
+      "to": "operating", 
+      "trigger": "api_call",
+      "guard": "api_available",
+      "action": "execute_operation",
+      "requirements": ["REQ-CORE-001"],
+      "test_data": {
+        "valid_operations": ["getVersion", "tableFromJSON", "tableFromIPC"]
+      }
+    },
+    {
+      "id": "continue_operation",
+      "from": "operating",
+      "to": "operating",
+      "trigger": "api_call", 
+      "guard": "api_available",
+      "action": "execute_operation",
+      "requirements": ["REQ-CORE-001"],
+      "test_data": {
+        "concurrent_operations": true,
+        "max_active_tables": 1000
+      }
+    },
+    {
+      "id": "return_to_ready",
+      "from": "operating",
+      "to": "ready",
+      "trigger": "all_operations_complete",
+      "guard": "active_tables == 0",
+      "action": "cleanup_transient_state",
+      "requirements": ["REQ-MEM-001"],
+      "test_data": {
+        "cleanup_verification": "memory_usage_decreased"
+      }
+    },
+    {
+      "id": "operation_error",
+      "from": "operating",
+      "to": "error",
+      "trigger": "critical_error", 
+      "guard": "error_is_unrecoverable",
+      "action": "set_error_state",
+      "requirements": ["REQ-ERROR-001"],
+      "test_data": {
+        "critical_errors": ["memory_corruption", "invalid_handle", "wasm_trap"]
+      }
+    },
+    {
+      "id": "ready_error",
+      "from": "ready",
+      "to": "error",
+      "trigger": "critical_error",
+      "guard": "error_is_unrecoverable", 
+      "action": "set_error_state",
+      "requirements": ["REQ-ERROR-001"]
+    },
+    {
+      "id": "error_recovery",
+      "from": "error",
+      "to": "ready",
+      "trigger": "recover",
+      "guard": "recovery_possible",
+      "action": "reset_to_ready_state",
+      "requirements": ["REQ-ERROR-002"],
+      "test_data": {
+        "recoverable_errors": ["validation_error", "out_of_bounds"]
+      }
+    },
+    {
+      "id": "dispose_from_ready",
+      "from": "ready",
+      "to": "disposed",
+      "trigger": "dispose",
+      "guard": "true",
+      "action": "cleanup_all_resources",
+      "requirements": ["REQ-MEM-001"],
+      "test_data": {
+        "cleanup_verification": "all_handles_freed"
+      }
+    },
+    {
+      "id": "dispose_from_operating", 
+      "from": "operating",
+      "to": "disposed",
+      "trigger": "dispose",
+      "guard": "true",
+      "action": "cleanup_all_resources",
+      "requirements": ["REQ-MEM-001"],
+      "test_data": {
+        "cleanup_verification": "active_tables_disposed"
+      }
+    },
+    {
+      "id": "dispose_from_error",
+      "from": "error", 
+      "to": "disposed",
+      "trigger": "dispose",
+      "guard": "true",
+      "action": "cleanup_all_resources",
+      "requirements": ["REQ-MEM-001"]
+    }
+  ],
+  "metadata": {
+    "created": "2025-01-27",
+    "author": "Claude Code MBD System",
+    "requirements": [
+      "REQ-INIT-001: Module must initialize properly from WASM binary",
+      "REQ-INIT-002: Initialization must complete within timing constraints",
+      "REQ-CORE-001: Core API operations must be available after initialization",
+      "REQ-MEM-001: Memory management must prevent leaks and handle disposal",
+      "REQ-ERROR-001: Error conditions must be properly captured and reported",
+      "REQ-ERROR-002: Recoverable errors must allow system recovery"
+    ],
+    "test_generation_notes": [
+      "Each state should have validation tests for invariants",
+      "Each transition should have positive and negative test cases",
+      "Error states require specific error condition testing",
+      "Performance requirements embedded in test_data sections",
+      "Memory validation required for disposal transitions"
+    ]
+  }
+}

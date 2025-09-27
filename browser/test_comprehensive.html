@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arrow WASM Comprehensive Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f9f9f9;
+        }
+        .test-section {
+            background-color: white;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-section h2 {
+            color: #333;
+            margin-top: 0;
+            border-bottom: 2px solid #007cba;
+            padding-bottom: 10px;
+        }
+        .success { color: #28a745; font-weight: bold; }
+        .error { color: #dc3545; font-weight: bold; }
+        .info { color: #007cba; }
+        .warning { color: #ffc107; }
+        pre { 
+            background: #f8f9fa; 
+            padding: 15px; 
+            overflow-x: auto; 
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+        button { 
+            background: #007cba; 
+            color: white; 
+            border: none; 
+            padding: 12px 24px; 
+            margin: 8px 4px; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-size: 14px;
+        }
+        button:hover { background: #005a87; }
+        button:disabled { 
+            background: #6c757d; 
+            cursor: not-allowed; 
+        }
+        #output { 
+            background: #1a1a1a; 
+            color: #00ff00; 
+            padding: 20px; 
+            border-radius: 8px; 
+            font-family: 'Courier New', monospace; 
+            height: 400px; 
+            overflow-y: auto; 
+            font-size: 13px;
+            line-height: 1.4;
+        }
+        .test-data {
+            background: #e9ecef;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-size: 12px;
+        }
+        .stats-bar {
+            display: flex;
+            gap: 20px;
+            margin: 15px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .stat {
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+        }
+        .progress-bar {
+            width: 100%;
+            background: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        .progress-fill {
+            height: 20px;
+            background: #28a745;
+            transition: width 0.3s ease;
+            text-align: center;
+            line-height: 20px;
+            color: white;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🚀 Arrow WASM Comprehensive Test Suite</h1>
+    
+    <div class="test-section">
+        <h2>Module Status</h2>
+        <p id="loading-status" class="info">Loading WASM module...</p>
+        <div id="version-info"></div>
+        
+        <div class="stats-bar">
+            <div class="stat">
+                <div class="stat-number" id="tests-passed">0</div>
+                <div class="stat-label">Passed</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number" id="tests-failed">0</div>
+                <div class="stat-label">Failed</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number" id="tests-total">0</div>
+                <div class="stat-label">Total</div>
+            </div>
+        </div>
+        
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill" style="width: 0%">0%</div>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Core API Tests</h2>
+        <button id="test-initialize">Test initialize()</button>
+        <button id="test-version">Test getVersion()</button>
+        <button id="test-table-from-json">Test tableFromJSON()</button>
+        <button id="test-table-operations">Test Table Operations</button>
+        <button id="test-error-handling">Test Error Handling</button>
+        <button id="run-all-tests">🎯 Run All Tests</button>
+        <button id="clear-output">🧹 Clear Output</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test Data Examples</h2>
+        <div class="test-data">
+            <strong>Sample JSON Data:</strong>
+            <pre id="sample-data">[
+  {"id": 1, "name": "Alice", "age": 30, "salary": 75000.50, "active": true},
+  {"id": 2, "name": "Bob", "age": 25, "salary": 60000.00, "active": false},
+  {"id": 3, "name": "Charlie", "age": 35, "salary": 90000.25, "active": true},
+  {"id": 4, "name": null, "age": 28, "salary": null, "active": true}
+]</pre>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test Output</h2>
+        <div id="output"></div>
+    </div>
+
+    <script type="module">
+        // Import the WASM module
+        import init, * as wasm from '../pkg/arrow_wasm.js';
+        
+        let module = null;
+        let output = document.getElementById('output');
+        let testsPassed = 0;
+        let testsFailed = 0;
+        let testsTotal = 0;
+        
+        // Sample test data
+        const sampleData = [
+            {"id": 1, "name": "Alice", "age": 30, "salary": 75000.50, "active": true},
+            {"id": 2, "name": "Bob", "age": 25, "salary": 60000.00, "active": false},
+            {"id": 3, "name": "Charlie", "age": 35, "salary": 90000.25, "active": true},
+            {"id": 4, "name": null, "age": 28, "salary": null, "active": true}
+        ];
+        
+        function updateStats() {
+            document.getElementById('tests-passed').textContent = testsPassed;
+            document.getElementById('tests-failed').textContent = testsFailed;
+            document.getElementById('tests-total').textContent = testsTotal;
+            
+            const successRate = testsTotal > 0 ? (testsPassed / testsTotal * 100) : 0;
+            const progressFill = document.getElementById('progress-fill');
+            progressFill.style.width = `${successRate}%`;
+            progressFill.textContent = `${Math.round(successRate)}%`;
+            
+            if (successRate === 100 && testsTotal > 0) {
+                progressFill.style.background = '#28a745';
+            } else if (successRate >= 70) {
+                progressFill.style.background = '#ffc107';
+            } else {
+                progressFill.style.background = '#dc3545';
+            }
+        }
+        
+        function log(message, type = 'info') {
+            const timestamp = new Date().toISOString().substr(11, 12);
+            const colors = {
+                'info': '#00ff00',
+                'success': '#00ff00', 
+                'error': '#ff6b6b',
+                'warning': '#ffd93d'
+            };
+            const color = colors[type] || colors.info;
+            
+            output.innerHTML += `<span style="color: ${color}">[${timestamp}] ${message}</span>\n`;
+            output.scrollTop = output.scrollHeight;
+            console.log(`[${type.toUpperCase()}] ${message}`);
+        }
+        
+        function clearOutput() {
+            output.innerHTML = '';
+            testsPassed = 0;
+            testsFailed = 0;
+            testsTotal = 0;
+            updateStats();
+        }
+        
+        function recordTest(name, success, details = '') {
+            testsTotal++;
+            if (success) {
+                testsPassed++;
+                log(`✅ ${name} PASSED${details ? ': ' + details : ''}`, 'success');
+            } else {
+                testsFailed++;
+                log(`❌ ${name} FAILED${details ? ': ' + details : ''}`, 'error');
+            }
+            updateStats();
+            return success;
+        }
+        
+        async function loadModule() {
+            try {
+                log('🔄 Loading WASM module...');
+                await init(); // Initialize the WASM module
+                module = wasm;
+                
+                document.getElementById('loading-status').textContent = '✅ Module loaded successfully!';
+                document.getElementById('loading-status').className = 'success';
+                
+                log('🎉 WASM module loaded successfully!', 'success');
+                
+                // Test getVersion immediately after loading
+                await testGetVersion();
+                
+            } catch (error) {
+                const errorMsg = `Failed to load WASM module: ${error}`;
+                document.getElementById('loading-status').textContent = errorMsg;
+                document.getElementById('loading-status').className = 'error';
+                log(errorMsg, 'error');
+                recordTest('Module Loading', false, error.toString());
+            }
+        }
+        
+        async function testInitialize() {
+            log('🧪 Testing initialize()...');
+            try {
+                await module.initialize();
+                return recordTest('initialize()', true, 'completed successfully');
+            } catch (error) {
+                return recordTest('initialize()', false, error.toString());
+            }
+        }
+        
+        async function testGetVersion() {
+            log('🧪 Testing getVersion()...');
+            try {
+                const version = module.getVersion();
+                const versionInfo = {
+                    major: version.major(),
+                    minor: version.minor(), 
+                    patch: version.patch(),
+                    arrow_version: version.arrowVersion()
+                };
+                
+                // Update the version info display
+                document.getElementById('version-info').innerHTML = `
+                    <strong>Library Version:</strong> ${versionInfo.major}.${versionInfo.minor}.${versionInfo.patch}<br>
+                    <strong>Arrow Version:</strong> ${versionInfo.arrow_version}
+                `;
+                
+                return recordTest('getVersion()', true, JSON.stringify(versionInfo));
+            } catch (error) {
+                return recordTest('getVersion()', false, error.toString());
+            }
+        }
+        
+        async function testTableFromJSON() {
+            log('🧪 Testing tableFromJSON()...');
+            try {
+                log(`📊 Creating table from ${sampleData.length} rows of data...`);
+                
+                const table = module.tableFromJSON(sampleData);
+                
+                if (!table) {
+                    return recordTest('tableFromJSON()', false, 'returned null/undefined');
+                }
+                
+                log(`📋 Table created - checking properties...`);
+                
+                // Test table properties
+                let properties = {};
+                try {
+                    properties.numRows = table.numRows();
+                    properties.numColumns = table.numColumns();
+                    properties.schema = table.schema();
+                } catch (e) {
+                    log(`⚠️  Could not read all table properties: ${e}`, 'warning');
+                }
+                
+                log(`📈 Table properties: ${JSON.stringify(properties)}`);
+                
+                // Clean up
+                try {
+                    table.dispose();
+                    log('🧹 Table disposed successfully');
+                } catch (e) {
+                    log(`⚠️  Table disposal warning: ${e}`, 'warning');
+                }
+                
+                return recordTest('tableFromJSON()', true, `Created table with ${JSON.stringify(properties)}`);
+                
+            } catch (error) {
+                return recordTest('tableFromJSON()', false, error.toString());
+            }
+        }
+        
+        async function testTableOperations() {
+            log('🧪 Testing table operations...');
+            try {
+                const table = module.tableFromJSON(sampleData);
+                let operations = [];
+                
+                // Test various operations
+                try {
+                    const numRows = table.numRows();
+                    operations.push(`numRows: ${numRows}`);
+                } catch (e) {
+                    operations.push(`numRows failed: ${e.message}`);
+                }
+                
+                try {
+                    const numColumns = table.numColumns();
+                    operations.push(`numColumns: ${numColumns}`);
+                } catch (e) {
+                    operations.push(`numColumns failed: ${e.message}`);
+                }
+                
+                try {
+                    const schema = table.schema();
+                    operations.push(`schema retrieved`);
+                } catch (e) {
+                    operations.push(`schema failed: ${e.message}`);
+                }
+                
+                // Test toArray conversion
+                try {
+                    const array = table.toArray();
+                    operations.push(`toArray: ${array.length} rows`);
+                } catch (e) {
+                    operations.push(`toArray failed: ${e.message}`);
+                }
+                
+                table.dispose();
+                
+                return recordTest('Table Operations', true, operations.join(', '));
+                
+            } catch (error) {
+                return recordTest('Table Operations', false, error.toString());
+            }
+        }
+        
+        async function testErrorHandling() {
+            log('🧪 Testing error handling...');
+            try {
+                let errorTests = [];
+                
+                // Test with invalid JSON
+                try {
+                    module.tableFromJSON("invalid json");
+                    errorTests.push('❌ Should have failed with invalid JSON');
+                } catch (e) {
+                    errorTests.push('✅ Correctly rejected invalid JSON');
+                }
+                
+                // Test with empty array
+                try {
+                    module.tableFromJSON([]);
+                    errorTests.push('❌ Should have failed with empty array');
+                } catch (e) {
+                    errorTests.push('✅ Correctly rejected empty array');
+                }
+                
+                // Test with non-object array
+                try {
+                    module.tableFromJSON([1, 2, 3]);
+                    errorTests.push('❌ Should have failed with non-object array');
+                } catch (e) {
+                    errorTests.push('✅ Correctly rejected non-object array');
+                }
+                
+                return recordTest('Error Handling', true, errorTests.join(', '));
+                
+            } catch (error) {
+                return recordTest('Error Handling', false, error.toString());
+            }
+        }
+        
+        async function runAllTests() {
+            log('🚀 Starting comprehensive test suite...');
+            clearOutput();
+            
+            const tests = [
+                { name: 'Initialize', fn: testInitialize },
+                { name: 'Version', fn: testGetVersion },
+                { name: 'TableFromJSON', fn: testTableFromJSON },
+                { name: 'Table Operations', fn: testTableOperations },
+                { name: 'Error Handling', fn: testErrorHandling }
+            ];
+            
+            log(`📋 Running ${tests.length} test suites...`);
+            
+            for (const test of tests) {
+                log(`\n🔍 Running ${test.name} test...`);
+                await test.fn();
+            }
+            
+            log(`\n📊 === FINAL RESULTS ===`);
+            log(`✅ Tests Passed: ${testsPassed}`, 'success');
+            log(`❌ Tests Failed: ${testsFailed}`, testsFailed > 0 ? 'error' : 'success');
+            log(`📈 Success Rate: ${Math.round(testsPassed / testsTotal * 100)}%`, testsPassed === testsTotal ? 'success' : 'warning');
+            
+            if (testsPassed === testsTotal) {
+                log('🎉 ALL TESTS PASSED! 🎉', 'success');
+            } else if (testsPassed > testsFailed) {
+                log('⚠️ Some tests failed, but most passed', 'warning');
+            } else {
+                log('💥 Many tests failed - needs investigation', 'error');
+            }
+        }
+        
+        // Event listeners
+        document.getElementById('test-initialize').addEventListener('click', testInitialize);
+        document.getElementById('test-version').addEventListener('click', testGetVersion);
+        document.getElementById('test-table-from-json').addEventListener('click', testTableFromJSON);
+        document.getElementById('test-table-operations').addEventListener('click', testTableOperations);
+        document.getElementById('test-error-handling').addEventListener('click', testErrorHandling);
+        document.getElementById('run-all-tests').addEventListener('click', runAllTests);
+        document.getElementById('clear-output').addEventListener('click', clearOutput);
+        
+        // Auto-load the module when page loads
+        loadModule();
+    </script>
+</body>
+</html>

@@ -1,0 +1,1119 @@
+{
+  "model_id": "column_lifecycle",
+  "model_type": "state_machine",
+  "generated_at": "2025-09-27T02:03:29.695Z",
+  "test_cases": [
+    {
+      "test_id": "column_lifecycle_state_nonexistent_validation",
+      "test_name": "Validate Nonexistent state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "nonexistent",
+      "requirements": [
+        "REQ-COLUMN-001",
+        "REQ-COLUMN-002",
+        "REQ-COLUMN-003",
+        "REQ-DATA-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Nonexistent state",
+          "expected": "System reaches Nonexistent state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"column_handle\":null,\"table_reference\":null,\"column_index\":null,\"data_accessible\":false}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for column_lifecycle_state_nonexistent_validation\n// Model: column_lifecycle, Element: nonexistent\n\ndescribe('column_lifecycle_state_nonexistent_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Nonexistent state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "column_lifecycle_state_creating_validation",
+      "test_name": "Validate Creating from Table state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "creating",
+      "requirements": [
+        "REQ-COLUMN-001",
+        "REQ-COLUMN-002",
+        "REQ-COLUMN-003",
+        "REQ-DATA-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Creating from Table state",
+          "expected": "System reaches Creating from Table state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"column_handle\":null,\"table_reference\":\"number\",\"column_index\":\">=0\",\"creation_in_progress\":true,\"data_accessible\":false}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for column_lifecycle_state_creating_validation\n// Model: column_lifecycle, Element: creating\n\ndescribe('column_lifecycle_state_creating_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Creating from Table state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "column_lifecycle_state_active_validation",
+      "test_name": "Validate Active Column state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "active",
+      "requirements": [
+        "REQ-COLUMN-001",
+        "REQ-COLUMN-002",
+        "REQ-COLUMN-003",
+        "REQ-DATA-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Active Column state",
+          "expected": "System reaches Active Column state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"column_handle\":\"number\",\"table_reference\":\"number\",\"column_index\":\">=0\",\"name\":\"string\",\"data_type\":\"string\",\"length\":\">=0\",\"null_count\":\">=0\",\"data_accessible\":true,\"statistics_available\":true}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for column_lifecycle_state_active_validation\n// Model: column_lifecycle, Element: active\n\ndescribe('column_lifecycle_state_active_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Active Column state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "column_lifecycle_state_sliced_validation",
+      "test_name": "Validate Sliced Column View state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "sliced",
+      "requirements": [
+        "REQ-COLUMN-001",
+        "REQ-COLUMN-002",
+        "REQ-COLUMN-003",
+        "REQ-DATA-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Sliced Column View state",
+          "expected": "System reaches Sliced Column View state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"column_handle\":\"number\",\"parent_column\":\"number\",\"slice_offset\":\">=0\",\"slice_length\":\">0\",\"data_accessible\":true,\"is_slice\":true,\"statistics_available\":true}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for column_lifecycle_state_sliced_validation\n// Model: column_lifecycle, Element: sliced\n\ndescribe('column_lifecycle_state_sliced_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Sliced Column View state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "column_lifecycle_state_converted_to_array_validation",
+      "test_name": "Validate Converted to JavaScript Array state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "converted_to_array",
+      "requirements": [
+        "REQ-COLUMN-001",
+        "REQ-COLUMN-002",
+        "REQ-COLUMN-003",
+        "REQ-DATA-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Converted to JavaScript Array state",
+          "expected": "System reaches Converted to JavaScript Array state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"column_handle\":\"number\",\"js_array_created\":true,\"data_accessible\":true,\"conversion_complete\":true,\"array_length\":\">=0\"}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for column_lifecycle_state_converted_to_array_validation\n// Model: column_lifecycle, Element: converted_to_array\n\ndescribe('column_lifecycle_state_converted_to_array_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Converted to JavaScript Array state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "column_lifecycle_state_statistics_computed_validation",
+      "test_name": "Validate Statistics Computed state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "statistics_computed",
+      "requirements": [
+        "REQ-COLUMN-001",
+        "REQ-COLUMN-002",
+        "REQ-COLUMN-003",
+        "REQ-DATA-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Statistics Computed state",
+          "expected": "System reaches Statistics Computed state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"column_handle\":\"number\",\"data_accessible\":true,\"statistics_computed\":true,\"min_value\":\"number or string or null\",\"max_value\":\"number or string or null\",\"null_count\":\">=0\"}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for column_lifecycle_state_statistics_computed_validation\n// Model: column_lifecycle, Element: statistics_computed\n\ndescribe('column_lifecycle_state_statistics_computed_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Statistics Computed state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "column_lifecycle_state_error_validation",
+      "test_name": "Validate Error State state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "error",
+      "requirements": [
+        "REQ-COLUMN-001",
+        "REQ-COLUMN-002",
+        "REQ-COLUMN-003",
+        "REQ-DATA-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Error State state",
+          "expected": "System reaches Error State state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"error_occurred\":true,\"error_code\":\"string\",\"error_message\":\"string\",\"column_handle\":\"number or null\",\"recovery_possible\":\"boolean\"}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for column_lifecycle_state_error_validation\n// Model: column_lifecycle, Element: error\n\ndescribe('column_lifecycle_state_error_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Error State state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "column_lifecycle_state_disposed_validation",
+      "test_name": "Validate Disposed state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "disposed",
+      "requirements": [
+        "REQ-COLUMN-001",
+        "REQ-COLUMN-002",
+        "REQ-COLUMN-003",
+        "REQ-DATA-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Disposed state",
+          "expected": "System reaches Disposed state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"column_handle\":null,\"table_reference\":null,\"data_accessible\":false,\"disposed\":true}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for column_lifecycle_state_disposed_validation\n// Model: column_lifecycle, Element: disposed\n\ndescribe('column_lifecycle_state_disposed_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Disposed state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "column_lifecycle_transition_create_from_table_by_name",
+      "test_name": "Test transition: Nonexistent → Creating from Table",
+      "test_type": "transition_test",
+      "model_element": "create_from_table_by_name",
+      "requirements": [
+        "REQ-COLUMN-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Nonexistent state",
+          "expected": "System state is nonexistent"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: table_valid && column_name_exists",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: getColumn",
+          "expected": "Event getColumn is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: begin_column_creation",
+          "expected": "Action begin_column_creation completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Creating from Table state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "valid_inputs": [
+          "existing_column_name",
+          "column_with_nulls",
+          "numeric_column",
+          "string_column"
+        ],
+        "invalid_inputs": [
+          "nonexistent_column_name",
+          "null_column_name",
+          "empty_string"
+        ]
+      },
+      "browser_test_code": "\n// Generated test for column_lifecycle_transition_create_from_table_by_name\n// Model: column_lifecycle, Element: create_from_table_by_name\n\ndescribe('column_lifecycle_transition_create_from_table_by_name', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: nonexistent\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "column_lifecycle_transition_create_from_table_by_index",
+      "test_name": "Test transition: Nonexistent → Creating from Table",
+      "test_type": "transition_test",
+      "model_element": "create_from_table_by_index",
+      "requirements": [
+        "REQ-COLUMN-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Nonexistent state",
+          "expected": "System state is nonexistent"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: table_valid && column_index_valid",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: getColumnAt",
+          "expected": "Event getColumnAt is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: begin_column_creation_by_index",
+          "expected": "Action begin_column_creation_by_index completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Creating from Table state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "valid_inputs": [
+          "index_0",
+          "index_within_bounds",
+          "last_column_index"
+        ],
+        "invalid_inputs": [
+          "negative_index",
+          "index_too_large",
+          "index_equal_to_num_columns"
+        ]
+      },
+      "browser_test_code": "\n// Generated test for column_lifecycle_transition_create_from_table_by_index\n// Model: column_lifecycle, Element: create_from_table_by_index\n\ndescribe('column_lifecycle_transition_create_from_table_by_index', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: nonexistent\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "column_lifecycle_transition_creation_success",
+      "test_name": "Test transition: Creating from Table → Active Column",
+      "test_type": "transition_test",
+      "model_element": "creation_success",
+      "requirements": [
+        "REQ-COLUMN-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Creating from Table state",
+          "expected": "System state is creating"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: column_handle_created && metadata_loaded",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: column_creation_complete",
+          "expected": "Event column_creation_complete is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: activate_column",
+          "expected": "Action activate_column completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Active Column state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "expected_properties": [
+          "name_populated",
+          "data_type_identified",
+          "length_calculated",
+          "null_count_computed"
+        ],
+        "performance": "< 10ms for column metadata"
+      },
+      "browser_test_code": "\n// Generated test for column_lifecycle_transition_creation_success\n// Model: column_lifecycle, Element: creation_success\n\ndescribe('column_lifecycle_transition_creation_success', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: creating\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "column_lifecycle_transition_creation_failed",
+      "test_name": "Test transition: Creating from Table → Error State",
+      "test_type": "transition_test",
+      "model_element": "creation_failed",
+      "requirements": [
+        "REQ-ERROR-004"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Creating from Table state",
+          "expected": "System state is creating"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: true",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: column_creation_failed",
+          "expected": "Event column_creation_failed is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: set_error_state",
+          "expected": "Action set_error_state completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Error State state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "error_conditions": [
+          "invalid_table_handle",
+          "column_index_out_of_bounds",
+          "column_name_not_found"
+        ]
+      },
+      "browser_test_code": "\n// Generated test for column_lifecycle_transition_creation_failed\n// Model: column_lifecycle, Element: creation_failed\n\ndescribe('column_lifecycle_transition_creation_failed', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: creating\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "column_lifecycle_transition_slice_column",
+      "test_name": "Test transition: Active Column → Sliced Column View",
+      "test_type": "transition_test",
+      "model_element": "slice_column",
+      "requirements": [
+        "REQ-COLUMN-002"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Active Column state",
+          "expected": "System state is active"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: offset_valid && length_valid",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: slice",
+          "expected": "Event slice is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: create_column_slice",
+          "expected": "Action create_column_slice completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Sliced Column View state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "valid_slices": [
+          "offset=0, length=10",
+          "offset=50, length=25",
+          "full_column_slice"
+        ],
+        "invalid_slices": [
+          "negative_offset",
+          "zero_length",
+          "offset_beyond_bounds",
+          "offset_plus_length_too_large"
+        ],
+        "zero_copy": "no_data_duplication"
+      },
+      "browser_test_code": "\n// Generated test for column_lifecycle_transition_slice_column\n// Model: column_lifecycle, Element: slice_column\n\ndescribe('column_lifecycle_transition_slice_column', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: active\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "column_lifecycle_transition_convert_to_array",
+      "test_name": "Test transition: Active Column → Converted to JavaScript Array",
+      "test_type": "transition_test",
+      "model_element": "convert_to_array",
+      "requirements": [
+        "REQ-DATA-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Active Column state",
+          "expected": "System state is active"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: data_accessible",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: toArray",
+          "expected": "Event toArray is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: convert_column_to_js_array",
+          "expected": "Action convert_column_to_js_array completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Converted to JavaScript Array state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "type_conversions": [
+          "int32_to_number",
+          "float64_to_number",
+          "utf8_to_string",
+          "boolean_to_boolean",
+          "null_preservation"
+        ],
+        "performance": "< 50ms for 1k values",
+        "data_integrity": "exact_value_match"
+      },
+      "browser_test_code": "\n// Generated test for column_lifecycle_transition_convert_to_array\n// Model: column_lifecycle, Element: convert_to_array\n\ndescribe('column_lifecycle_transition_convert_to_array', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: active\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "column_lifecycle_transition_compute_statistics",
+      "test_name": "Test transition: Active Column → Statistics Computed",
+      "test_type": "transition_test",
+      "model_element": "compute_statistics",
+      "requirements": [
+        "REQ-COLUMN-003"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Active Column state",
+          "expected": "System state is active"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: data_accessible",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: statistics",
+          "expected": "Event statistics is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: calculate_column_statistics",
+          "expected": "Action calculate_column_statistics completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Statistics Computed state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "numeric_stats": [
+          "min_value_correct",
+          "max_value_correct",
+          "null_count_accurate"
+        ],
+        "string_stats": [
+          "lexicographic_min_max",
+          "null_handling"
+        ],
+        "performance": "< 20ms for 1k values"
+      },
+      "browser_test_code": "\n// Generated test for column_lifecycle_transition_compute_statistics\n// Model: column_lifecycle, Element: compute_statistics\n\ndescribe('column_lifecycle_transition_compute_statistics', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: active\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "column_lifecycle_transition_access_value",
+      "test_name": "Test transition: Active Column → Active Column",
+      "test_type": "transition_test",
+      "model_element": "access_value",
+      "requirements": [
+        "REQ-DATA-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Active Column state",
+          "expected": "System state is active"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: index_valid",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: get",
+          "expected": "Event get is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: return_value_at_index",
+          "expected": "Action return_value_at_index completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Active Column state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "valid_indices": [
+          "index_0",
+          "middle_index",
+          "last_index"
+        ],
+        "invalid_indices": [
+          "negative_index",
+          "index_too_large"
+        ],
+        "value_types": [
+          "numeric_value",
+          "string_value",
+          "boolean_value",
+          "null_value"
+        ],
+        "performance": "< 1ms per access"
+      },
+      "browser_test_code": "\n// Generated test for column_lifecycle_transition_access_value\n// Model: column_lifecycle, Element: access_value\n\ndescribe('column_lifecycle_transition_access_value', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: active\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "column_lifecycle_transition_check_null_status",
+      "test_name": "Test transition: Active Column → Active Column",
+      "test_type": "transition_test",
+      "model_element": "check_null_status",
+      "requirements": [
+        "REQ-DATA-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Active Column state",
+          "expected": "System state is active"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: index_valid",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: isNull",
+          "expected": "Event isNull is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: return_null_status",
+          "expected": "Action return_null_status completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Active Column state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "null_checking": [
+          "null_value_returns_true",
+          "non_null_value_returns_false",
+          "index_bounds_checking"
+        ]
+      },
+      "browser_test_code": "\n// Generated test for column_lifecycle_transition_check_null_status\n// Model: column_lifecycle, Element: check_null_status\n\ndescribe('column_lifecycle_transition_check_null_status', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: active\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "column_lifecycle_transition_slice_from_slice",
+      "test_name": "Test transition: Sliced Column View → Sliced Column View",
+      "test_type": "transition_test",
+      "model_element": "slice_from_slice",
+      "requirements": [
+        "REQ-COLUMN-002"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Sliced Column View state",
+          "expected": "System state is sliced"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: offset_valid && length_valid && within_slice_bounds",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: slice",
+          "expected": "Event slice is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: create_nested_slice",
+          "expected": "Action create_nested_slice completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Sliced Column View state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "nested_slicing": "slice_of_slice_allowed",
+        "bounds_checking": "relative_to_parent_slice"
+      },
+      "browser_test_code": "\n// Generated test for column_lifecycle_transition_slice_from_slice\n// Model: column_lifecycle, Element: slice_from_slice\n\ndescribe('column_lifecycle_transition_slice_from_slice', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: sliced\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "column_lifecycle_transition_operation_error",
+      "test_name": "Test transition: Active Column → Error State",
+      "test_type": "transition_test",
+      "model_element": "operation_error",
+      "requirements": [
+        "REQ-ERROR-004"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Active Column state",
+          "expected": "System state is active"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: error_is_critical",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: operation_failed",
+          "expected": "Event operation_failed is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: set_error_state",
+          "expected": "Action set_error_state completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Error State state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "error_conditions": [
+          "invalid_index_access",
+          "memory_corruption",
+          "handle_invalidated",
+          "type_conversion_error"
+        ]
+      },
+      "browser_test_code": "\n// Generated test for column_lifecycle_transition_operation_error\n// Model: column_lifecycle, Element: operation_error\n\ndescribe('column_lifecycle_transition_operation_error', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: active\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "column_lifecycle_transition_dispose_active",
+      "test_name": "Test transition: Active Column → Disposed",
+      "test_type": "transition_test",
+      "model_element": "dispose_active",
+      "requirements": [
+        "REQ-MEM-003"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Active Column state",
+          "expected": "System state is active"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: true",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: dispose",
+          "expected": "Event dispose is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: cleanup_column_resources",
+          "expected": "Action cleanup_column_resources completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Disposed state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "cleanup_verification": [
+          "handle_removed",
+          "subsequent_access_fails",
+          "parent_table_unaffected"
+        ]
+      },
+      "browser_test_code": "\n// Generated test for column_lifecycle_transition_dispose_active\n// Model: column_lifecycle, Element: dispose_active\n\ndescribe('column_lifecycle_transition_dispose_active', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: active\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "column_lifecycle_transition_dispose_sliced",
+      "test_name": "Test transition: Sliced Column View → Disposed",
+      "test_type": "transition_test",
+      "model_element": "dispose_sliced",
+      "requirements": [
+        "REQ-MEM-003"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Sliced Column View state",
+          "expected": "System state is sliced"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: true",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: dispose",
+          "expected": "Event dispose is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: cleanup_slice_resources",
+          "expected": "Action cleanup_slice_resources completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Disposed state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "parent_column_unaffected": "parent_remains_valid"
+      },
+      "browser_test_code": "\n// Generated test for column_lifecycle_transition_dispose_sliced\n// Model: column_lifecycle, Element: dispose_sliced\n\ndescribe('column_lifecycle_transition_dispose_sliced', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: sliced\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "column_lifecycle_transition_dispose_converted",
+      "test_name": "Test transition: Converted to JavaScript Array → Disposed",
+      "test_type": "transition_test",
+      "model_element": "dispose_converted",
+      "requirements": [
+        "REQ-MEM-003"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Converted to JavaScript Array state",
+          "expected": "System state is converted_to_array"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: true",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: dispose",
+          "expected": "Event dispose is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: cleanup_conversion_resources",
+          "expected": "Action cleanup_conversion_resources completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Disposed state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {},
+      "browser_test_code": "\n// Generated test for column_lifecycle_transition_dispose_converted\n// Model: column_lifecycle, Element: dispose_converted\n\ndescribe('column_lifecycle_transition_dispose_converted', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: converted_to_array\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "column_lifecycle_transition_dispose_statistics",
+      "test_name": "Test transition: Statistics Computed → Disposed",
+      "test_type": "transition_test",
+      "model_element": "dispose_statistics",
+      "requirements": [
+        "REQ-MEM-003"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Statistics Computed state",
+          "expected": "System state is statistics_computed"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: true",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: dispose",
+          "expected": "Event dispose is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: cleanup_statistics_resources",
+          "expected": "Action cleanup_statistics_resources completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Disposed state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {},
+      "browser_test_code": "\n// Generated test for column_lifecycle_transition_dispose_statistics\n// Model: column_lifecycle, Element: dispose_statistics\n\ndescribe('column_lifecycle_transition_dispose_statistics', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: statistics_computed\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "column_lifecycle_transition_dispose_error",
+      "test_name": "Test transition: Error State → Disposed",
+      "test_type": "transition_test",
+      "model_element": "dispose_error",
+      "requirements": [
+        "REQ-MEM-003"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Error State state",
+          "expected": "System state is error"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: true",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: dispose",
+          "expected": "Event dispose is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: cleanup_error_resources",
+          "expected": "Action cleanup_error_resources completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Disposed state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {},
+      "browser_test_code": "\n// Generated test for column_lifecycle_transition_dispose_error\n// Model: column_lifecycle, Element: dispose_error\n\ndescribe('column_lifecycle_transition_dispose_error', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: error\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    }
+  ]
+}

@@ -1,0 +1,449 @@
+{
+  "model_id": "column_lifecycle",
+  "model_type": "state_machine",
+  "version": "1.0.0",
+  "description": "Column lifecycle state machine covering creation, data access, transformations, and disposal",
+  "requirements": ["REQ-COLUMN-001", "REQ-COLUMN-002", "REQ-COLUMN-003", "REQ-DATA-001"],
+  "states": [
+    {
+      "id": "nonexistent",
+      "name": "Nonexistent",
+      "type": "initial",
+      "properties": {
+        "column_handle": null,
+        "table_reference": null,
+        "column_index": null,
+        "data_accessible": false
+      },
+      "invariants": [
+        "column_handle === null",
+        "table_reference === null",
+        "data_accessible === false"
+      ]
+    },
+    {
+      "id": "creating",
+      "name": "Creating from Table",
+      "type": "normal", 
+      "properties": {
+        "column_handle": null,
+        "table_reference": "number",
+        "column_index": ">=0",
+        "creation_in_progress": true,
+        "data_accessible": false
+      },
+      "invariants": [
+        "creation_in_progress === true",
+        "table_reference !== null",
+        "column_index >= 0",
+        "column_handle === null"
+      ]
+    },
+    {
+      "id": "active",
+      "name": "Active Column",
+      "type": "normal",
+      "properties": {
+        "column_handle": "number",
+        "table_reference": "number", 
+        "column_index": ">=0",
+        "name": "string",
+        "data_type": "string",
+        "length": ">=0",
+        "null_count": ">=0",
+        "data_accessible": true,
+        "statistics_available": true
+      },
+      "invariants": [
+        "column_handle !== null",
+        "table_reference !== null",
+        "data_accessible === true",
+        "length >= 0",
+        "null_count >= 0",
+        "null_count <= length",
+        "name !== null",
+        "data_type !== null"
+      ]
+    },
+    {
+      "id": "sliced",
+      "name": "Sliced Column View",
+      "type": "normal",
+      "properties": {
+        "column_handle": "number",
+        "parent_column": "number",
+        "slice_offset": ">=0",
+        "slice_length": ">0",
+        "data_accessible": true,
+        "is_slice": true,
+        "statistics_available": true
+      },
+      "invariants": [
+        "is_slice === true",
+        "parent_column !== null",
+        "slice_offset >= 0",
+        "slice_length > 0",
+        "slice_offset + slice_length <= parent_length"
+      ]
+    },
+    {
+      "id": "converted_to_array",
+      "name": "Converted to JavaScript Array",
+      "type": "normal",
+      "properties": {
+        "column_handle": "number",
+        "js_array_created": true,
+        "data_accessible": true,
+        "conversion_complete": true,
+        "array_length": ">=0"
+      },
+      "invariants": [
+        "js_array_created === true",
+        "conversion_complete === true",
+        "array_length === length"
+      ]
+    },
+    {
+      "id": "statistics_computed",
+      "name": "Statistics Computed",
+      "type": "normal",
+      "properties": {
+        "column_handle": "number",
+        "data_accessible": true,
+        "statistics_computed": true,
+        "min_value": "number or string or null",
+        "max_value": "number or string or null",
+        "null_count": ">=0"
+      },
+      "invariants": [
+        "statistics_computed === true",
+        "null_count >= 0",
+        "null_count <= length"
+      ]
+    },
+    {
+      "id": "error",
+      "name": "Error State",
+      "type": "error",
+      "properties": {
+        "error_occurred": true,
+        "error_code": "string",
+        "error_message": "string",
+        "column_handle": "number or null",
+        "recovery_possible": "boolean"
+      },
+      "invariants": [
+        "error_occurred === true",
+        "error_code !== null",
+        "error_message !== null"
+      ]
+    },
+    {
+      "id": "disposed",
+      "name": "Disposed",
+      "type": "final",
+      "properties": {
+        "column_handle": null,
+        "table_reference": null,
+        "data_accessible": false,
+        "disposed": true
+      },
+      "invariants": [
+        "disposed === true",
+        "column_handle === null",
+        "data_accessible === false"
+      ]
+    }
+  ],
+  "transitions": [
+    {
+      "id": "create_from_table_by_name",
+      "from": "nonexistent",
+      "to": "creating",
+      "trigger": "getColumn",
+      "guard": "table_valid && column_name_exists",
+      "action": "begin_column_creation",
+      "requirements": ["REQ-COLUMN-001"],
+      "test_data": {
+        "valid_inputs": [
+          "existing_column_name",
+          "column_with_nulls",
+          "numeric_column",
+          "string_column"
+        ],
+        "invalid_inputs": [
+          "nonexistent_column_name",
+          "null_column_name",
+          "empty_string"
+        ]
+      }
+    },
+    {
+      "id": "create_from_table_by_index",
+      "from": "nonexistent", 
+      "to": "creating",
+      "trigger": "getColumnAt",
+      "guard": "table_valid && column_index_valid",
+      "action": "begin_column_creation_by_index",
+      "requirements": ["REQ-COLUMN-001"],
+      "test_data": {
+        "valid_inputs": [
+          "index_0",
+          "index_within_bounds",
+          "last_column_index"
+        ],
+        "invalid_inputs": [
+          "negative_index",
+          "index_too_large",
+          "index_equal_to_num_columns"
+        ]
+      }
+    },
+    {
+      "id": "creation_success",
+      "from": "creating",
+      "to": "active",
+      "trigger": "column_creation_complete",
+      "guard": "column_handle_created && metadata_loaded",
+      "action": "activate_column",
+      "requirements": ["REQ-COLUMN-001"],
+      "test_data": {
+        "expected_properties": [
+          "name_populated",
+          "data_type_identified",
+          "length_calculated", 
+          "null_count_computed"
+        ],
+        "performance": "< 10ms for column metadata"
+      }
+    },
+    {
+      "id": "creation_failed",
+      "from": "creating",
+      "to": "error",
+      "trigger": "column_creation_failed",
+      "guard": "true",
+      "action": "set_error_state",
+      "requirements": ["REQ-ERROR-004"],
+      "test_data": {
+        "error_conditions": [
+          "invalid_table_handle",
+          "column_index_out_of_bounds",
+          "column_name_not_found"
+        ]
+      }
+    },
+    {
+      "id": "slice_column",
+      "from": "active",
+      "to": "sliced", 
+      "trigger": "slice",
+      "guard": "offset_valid && length_valid",
+      "action": "create_column_slice",
+      "requirements": ["REQ-COLUMN-002"],
+      "test_data": {
+        "valid_slices": [
+          "offset=0, length=10",
+          "offset=50, length=25",
+          "full_column_slice"
+        ],
+        "invalid_slices": [
+          "negative_offset",
+          "zero_length",
+          "offset_beyond_bounds",
+          "offset_plus_length_too_large"
+        ],
+        "zero_copy": "no_data_duplication"
+      }
+    },
+    {
+      "id": "convert_to_array",
+      "from": "active",
+      "to": "converted_to_array",
+      "trigger": "toArray",
+      "guard": "data_accessible",
+      "action": "convert_column_to_js_array",
+      "requirements": ["REQ-DATA-001"],
+      "test_data": {
+        "type_conversions": [
+          "int32_to_number",
+          "float64_to_number", 
+          "utf8_to_string",
+          "boolean_to_boolean",
+          "null_preservation"
+        ],
+        "performance": "< 50ms for 1k values",
+        "data_integrity": "exact_value_match"
+      }
+    },
+    {
+      "id": "compute_statistics",
+      "from": "active",
+      "to": "statistics_computed",
+      "trigger": "statistics",
+      "guard": "data_accessible",
+      "action": "calculate_column_statistics",
+      "requirements": ["REQ-COLUMN-003"],
+      "test_data": {
+        "numeric_stats": [
+          "min_value_correct",
+          "max_value_correct",
+          "null_count_accurate"
+        ],
+        "string_stats": [
+          "lexicographic_min_max",
+          "null_handling"
+        ],
+        "performance": "< 20ms for 1k values"
+      }
+    },
+    {
+      "id": "access_value",
+      "from": "active",
+      "to": "active",
+      "trigger": "get",
+      "guard": "index_valid",
+      "action": "return_value_at_index",
+      "requirements": ["REQ-DATA-001"],
+      "test_data": {
+        "valid_indices": [
+          "index_0",
+          "middle_index",
+          "last_index"
+        ],
+        "invalid_indices": [
+          "negative_index",
+          "index_too_large"
+        ],
+        "value_types": [
+          "numeric_value",
+          "string_value", 
+          "boolean_value",
+          "null_value"
+        ],
+        "performance": "< 1ms per access"
+      }
+    },
+    {
+      "id": "check_null_status",
+      "from": "active",
+      "to": "active",
+      "trigger": "isNull",
+      "guard": "index_valid",
+      "action": "return_null_status",
+      "requirements": ["REQ-DATA-001"],
+      "test_data": {
+        "null_checking": [
+          "null_value_returns_true",
+          "non_null_value_returns_false",
+          "index_bounds_checking"
+        ]
+      }
+    },
+    {
+      "id": "slice_from_slice",
+      "from": "sliced",
+      "to": "sliced",
+      "trigger": "slice",
+      "guard": "offset_valid && length_valid && within_slice_bounds",
+      "action": "create_nested_slice",
+      "requirements": ["REQ-COLUMN-002"],
+      "test_data": {
+        "nested_slicing": "slice_of_slice_allowed",
+        "bounds_checking": "relative_to_parent_slice"
+      }
+    },
+    {
+      "id": "operation_error",
+      "from": "active",
+      "to": "error",
+      "trigger": "operation_failed",
+      "guard": "error_is_critical",
+      "action": "set_error_state",
+      "requirements": ["REQ-ERROR-004"],
+      "test_data": {
+        "error_conditions": [
+          "invalid_index_access",
+          "memory_corruption",
+          "handle_invalidated",
+          "type_conversion_error"
+        ]
+      }
+    },
+    {
+      "id": "dispose_active",
+      "from": "active",
+      "to": "disposed", 
+      "trigger": "dispose",
+      "guard": "true",
+      "action": "cleanup_column_resources",
+      "requirements": ["REQ-MEM-003"],
+      "test_data": {
+        "cleanup_verification": [
+          "handle_removed",
+          "subsequent_access_fails",
+          "parent_table_unaffected"
+        ]
+      }
+    },
+    {
+      "id": "dispose_sliced",
+      "from": "sliced",
+      "to": "disposed",
+      "trigger": "dispose", 
+      "guard": "true",
+      "action": "cleanup_slice_resources",
+      "requirements": ["REQ-MEM-003"],
+      "test_data": {
+        "parent_column_unaffected": "parent_remains_valid"
+      }
+    },
+    {
+      "id": "dispose_converted",
+      "from": "converted_to_array",
+      "to": "disposed",
+      "trigger": "dispose",
+      "guard": "true", 
+      "action": "cleanup_conversion_resources",
+      "requirements": ["REQ-MEM-003"]
+    },
+    {
+      "id": "dispose_statistics",
+      "from": "statistics_computed",
+      "to": "disposed",
+      "trigger": "dispose",
+      "guard": "true",
+      "action": "cleanup_statistics_resources",
+      "requirements": ["REQ-MEM-003"]
+    },
+    {
+      "id": "dispose_error",
+      "from": "error",
+      "to": "disposed",
+      "trigger": "dispose",
+      "guard": "true",
+      "action": "cleanup_error_resources", 
+      "requirements": ["REQ-MEM-003"]
+    }
+  ],
+  "metadata": {
+    "created": "2024-12-27",
+    "author": "Claude Code MBD System",
+    "requirements": [
+      "REQ-COLUMN-001: Columns must be creatable from table by name or index",
+      "REQ-COLUMN-002: Columns must support slice operations with bounds checking",
+      "REQ-COLUMN-003: Columns must provide statistics (min, max, null_count)",
+      "REQ-DATA-001: Data access must preserve type information and null values",
+      "REQ-MEM-003: Column memory must be properly managed and disposed",
+      "REQ-ERROR-004: Column operation errors must be handled gracefully"
+    ],
+    "test_generation_notes": [
+      "Zero-copy semantics must be verified for slice operations",
+      "Type conversion accuracy critical for toArray operations", 
+      "Index bounds checking required for all data access",
+      "Null value handling must be consistent across all operations",
+      "Performance timing validation for all compute operations",
+      "Memory leak testing for disposal of all column states"
+    ]
+  }
+}

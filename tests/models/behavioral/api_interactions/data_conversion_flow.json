@@ -1,0 +1,572 @@
+{
+  "model_id": "data_conversion_flow",
+  "model_type": "statechart",
+  "version": "1.0.0",
+  "description": "Data conversion flow model capturing JSON ↔ Arrow ↔ WASM transformations and API call sequences",
+  "requirements": ["REQ-CONV-001", "REQ-CONV-002", "REQ-CONV-003", "REQ-API-001"],
+  "states": [
+    {
+      "id": "initial",
+      "name": "Initial State",
+      "type": "initial",
+      "properties": {
+        "has_input_data": false,
+        "conversion_ready": false
+      },
+      "invariants": [
+        "has_input_data === false"
+      ]
+    },
+    {
+      "id": "json_input_received",
+      "name": "JSON Input Received",
+      "type": "normal",
+      "properties": {
+        "has_input_data": true,
+        "input_type": "json",
+        "data_validated": false,
+        "schema_inferred": false
+      },
+      "invariants": [
+        "input_type === 'json'",
+        "has_input_data === true"
+      ]
+    },
+    {
+      "id": "ipc_input_received",
+      "name": "IPC Input Received", 
+      "type": "normal",
+      "properties": {
+        "has_input_data": true,
+        "input_type": "ipc",
+        "buffer_validated": false,
+        "schema_parsed": false
+      },
+      "invariants": [
+        "input_type === 'ipc'",
+        "has_input_data === true"
+      ]
+    },
+    {
+      "id": "json_validating",
+      "name": "Validating JSON",
+      "type": "normal",
+      "properties": {
+        "input_type": "json",
+        "validation_in_progress": true,
+        "data_validated": false
+      },
+      "invariants": [
+        "validation_in_progress === true"
+      ]
+    },
+    {
+      "id": "ipc_validating",
+      "name": "Validating IPC Buffer",
+      "type": "normal",
+      "properties": {
+        "input_type": "ipc",
+        "validation_in_progress": true,
+        "buffer_validated": false
+      },
+      "invariants": [
+        "validation_in_progress === true"
+      ]
+    },
+    {
+      "id": "json_validated",
+      "name": "JSON Validated",
+      "type": "normal",
+      "properties": {
+        "input_type": "json",
+        "data_validated": true,
+        "schema_inferred": false,
+        "ready_for_inference": true
+      },
+      "invariants": [
+        "data_validated === true",
+        "ready_for_inference === true"
+      ]
+    },
+    {
+      "id": "ipc_validated",
+      "name": "IPC Buffer Validated",
+      "type": "normal",
+      "properties": {
+        "input_type": "ipc",
+        "buffer_validated": true,
+        "schema_parsed": false,
+        "ready_for_parsing": true
+      },
+      "invariants": [
+        "buffer_validated === true",
+        "ready_for_parsing === true"
+      ]
+    },
+    {
+      "id": "schema_inferring",
+      "name": "Inferring Schema from JSON",
+      "type": "normal",
+      "properties": {
+        "input_type": "json",
+        "schema_inference_in_progress": true,
+        "schema_inferred": false
+      },
+      "invariants": [
+        "schema_inference_in_progress === true"
+      ]
+    },
+    {
+      "id": "schema_parsing",
+      "name": "Parsing Schema from IPC",
+      "type": "normal",
+      "properties": {
+        "input_type": "ipc",
+        "schema_parsing_in_progress": true,
+        "schema_parsed": false
+      },
+      "invariants": [
+        "schema_parsing_in_progress === true"
+      ]
+    },
+    {
+      "id": "schema_ready",
+      "name": "Schema Ready",
+      "type": "normal",
+      "properties": {
+        "schema_available": true,
+        "schema_valid": true,
+        "ready_for_conversion": true,
+        "field_count": ">0"
+      },
+      "invariants": [
+        "schema_available === true",
+        "schema_valid === true",
+        "field_count > 0"
+      ]
+    },
+    {
+      "id": "converting_to_arrow",
+      "name": "Converting to Arrow",
+      "type": "normal",
+      "properties": {
+        "conversion_in_progress": true,
+        "arrow_arrays_creating": true,
+        "memory_allocating": true
+      },
+      "invariants": [
+        "conversion_in_progress === true"
+      ]
+    },
+    {
+      "id": "arrow_created",
+      "name": "Arrow Table Created",
+      "type": "normal",
+      "properties": {
+        "arrow_table_created": true,
+        "memory_allocated": true,
+        "handle_assigned": true,
+        "table_handle": "number",
+        "ready_for_operations": true
+      },
+      "invariants": [
+        "arrow_table_created === true",
+        "memory_allocated === true",
+        "table_handle !== null"
+      ]
+    },
+    {
+      "id": "converting_to_js",
+      "name": "Converting to JavaScript",
+      "type": "normal",
+      "properties": {
+        "js_conversion_in_progress": true,
+        "array_building": true
+      },
+      "invariants": [
+        "js_conversion_in_progress === true"
+      ]
+    },
+    {
+      "id": "js_array_ready",
+      "name": "JavaScript Array Ready",
+      "type": "normal",
+      "properties": {
+        "js_array_created": true,
+        "type_conversions_complete": true,
+        "null_handling_complete": true,
+        "ready_for_return": true
+      },
+      "invariants": [
+        "js_array_created === true",
+        "type_conversions_complete === true"
+      ]
+    },
+    {
+      "id": "converting_to_ipc",
+      "name": "Converting to IPC",
+      "type": "normal",
+      "properties": {
+        "ipc_conversion_in_progress": true,
+        "serialization_in_progress": true
+      },
+      "invariants": [
+        "ipc_conversion_in_progress === true"
+      ]
+    },
+    {
+      "id": "ipc_buffer_ready",
+      "name": "IPC Buffer Ready",
+      "type": "normal",
+      "properties": {
+        "ipc_buffer_created": true,
+        "serialization_complete": true,
+        "buffer_valid": true,
+        "ready_for_return": true
+      },
+      "invariants": [
+        "ipc_buffer_created === true",
+        "serialization_complete === true"
+      ]
+    },
+    {
+      "id": "validation_error",
+      "name": "Validation Error",
+      "type": "error",
+      "properties": {
+        "error_type": "validation",
+        "error_message": "string",
+        "invalid_input": true
+      },
+      "invariants": [
+        "error_type === 'validation'",
+        "invalid_input === true"
+      ]
+    },
+    {
+      "id": "conversion_error",
+      "name": "Conversion Error",
+      "type": "error", 
+      "properties": {
+        "error_type": "conversion",
+        "error_message": "string",
+        "conversion_failed": true
+      },
+      "invariants": [
+        "error_type === 'conversion'",
+        "conversion_failed === true"
+      ]
+    },
+    {
+      "id": "memory_error",
+      "name": "Memory Error",
+      "type": "error",
+      "properties": {
+        "error_type": "memory",
+        "error_message": "string",
+        "memory_allocation_failed": true
+      },
+      "invariants": [
+        "error_type === 'memory'",
+        "memory_allocation_failed === true"
+      ]
+    }
+  ],
+  "transitions": [
+    {
+      "id": "receive_json_input",
+      "from": "initial",
+      "to": "json_input_received",
+      "trigger": "tableFromJSON_called",
+      "guard": "input_is_array",
+      "action": "store_json_input",
+      "requirements": ["REQ-API-001"],
+      "test_data": {
+        "valid_inputs": [
+          "[{\"id\": 1, \"name\": \"test\"}]",
+          "large_json_array",
+          "json_with_null_values"
+        ]
+      }
+    },
+    {
+      "id": "receive_ipc_input",
+      "from": "initial",
+      "to": "ipc_input_received",
+      "trigger": "tableFromIPC_called",
+      "guard": "input_is_buffer",
+      "action": "store_ipc_buffer",
+      "requirements": ["REQ-API-001"],
+      "test_data": {
+        "valid_inputs": [
+          "valid_arrow_ipc_buffer",
+          "compressed_ipc_buffer"
+        ]
+      }
+    },
+    {
+      "id": "start_json_validation",
+      "from": "json_input_received",
+      "to": "json_validating",
+      "trigger": "begin_validation",
+      "guard": "true",
+      "action": "validate_json_structure",
+      "requirements": ["REQ-CONV-001"],
+      "test_data": {
+        "validation_checks": [
+          "is_array",
+          "elements_are_objects",
+          "consistent_properties"
+        ]
+      }
+    },
+    {
+      "id": "start_ipc_validation",
+      "from": "ipc_input_received",
+      "to": "ipc_validating",
+      "trigger": "begin_validation",
+      "guard": "true",
+      "action": "validate_ipc_format",
+      "requirements": ["REQ-CONV-001"],
+      "test_data": {
+        "validation_checks": [
+          "magic_bytes_valid",
+          "metadata_readable",
+          "schema_parseable"
+        ]
+      }
+    },
+    {
+      "id": "json_validation_success",
+      "from": "json_validating",
+      "to": "json_validated",
+      "trigger": "validation_complete",
+      "guard": "json_structure_valid",
+      "action": "mark_json_valid",
+      "requirements": ["REQ-CONV-001"]
+    },
+    {
+      "id": "ipc_validation_success",
+      "from": "ipc_validating",
+      "to": "ipc_validated",
+      "trigger": "validation_complete",
+      "guard": "ipc_format_valid",
+      "action": "mark_ipc_valid",
+      "requirements": ["REQ-CONV-001"]
+    },
+    {
+      "id": "json_validation_failed",
+      "from": "json_validating",
+      "to": "validation_error",
+      "trigger": "validation_failed",
+      "guard": "true",
+      "action": "set_validation_error",
+      "requirements": ["REQ-CONV-003"],
+      "test_data": {
+        "error_cases": [
+          "non_array_input",
+          "empty_array",
+          "inconsistent_schemas"
+        ]
+      }
+    },
+    {
+      "id": "ipc_validation_failed",
+      "from": "ipc_validating",
+      "to": "validation_error",
+      "trigger": "validation_failed",
+      "guard": "true",
+      "action": "set_validation_error",
+      "requirements": ["REQ-CONV-003"],
+      "test_data": {
+        "error_cases": [
+          "invalid_magic_bytes",
+          "corrupted_metadata",
+          "unsupported_version"
+        ]
+      }
+    },
+    {
+      "id": "start_schema_inference",
+      "from": "json_validated",
+      "to": "schema_inferring",
+      "trigger": "infer_schema",
+      "guard": "true",
+      "action": "begin_schema_inference",
+      "requirements": ["REQ-CONV-001"],
+      "test_data": {
+        "inference_types": [
+          "int32_detection",
+          "float64_detection",
+          "utf8_detection",
+          "bool_detection",
+          "null_handling"
+        ]
+      }
+    },
+    {
+      "id": "start_schema_parsing",
+      "from": "ipc_validated",
+      "to": "schema_parsing",
+      "trigger": "parse_schema",
+      "guard": "true",
+      "action": "begin_schema_parsing",
+      "requirements": ["REQ-CONV-001"]
+    },
+    {
+      "id": "schema_inference_success",
+      "from": "schema_inferring",
+      "to": "schema_ready",
+      "trigger": "inference_complete",
+      "guard": "schema_inferred_successfully",
+      "action": "finalize_inferred_schema",
+      "requirements": ["REQ-CONV-001"],
+      "test_data": {
+        "schema_validation": "all_fields_typed_correctly"
+      }
+    },
+    {
+      "id": "schema_parsing_success",
+      "from": "schema_parsing",
+      "to": "schema_ready",
+      "trigger": "parsing_complete",
+      "guard": "schema_parsed_successfully",
+      "action": "finalize_parsed_schema",
+      "requirements": ["REQ-CONV-001"]
+    },
+    {
+      "id": "start_arrow_conversion",
+      "from": "schema_ready",
+      "to": "converting_to_arrow",
+      "trigger": "convert_to_arrow",
+      "guard": "true",
+      "action": "begin_arrow_conversion",
+      "requirements": ["REQ-CONV-002"],
+      "test_data": {
+        "conversion_steps": [
+          "create_arrow_arrays",
+          "populate_data",
+          "handle_nulls",
+          "create_record_batch"
+        ]
+      }
+    },
+    {
+      "id": "arrow_conversion_success",
+      "from": "converting_to_arrow",
+      "to": "arrow_created",
+      "trigger": "conversion_complete",
+      "guard": "arrow_table_valid",
+      "action": "register_arrow_table",
+      "requirements": ["REQ-CONV-002"],
+      "test_data": {
+        "validation_checks": [
+          "table_handle_created",
+          "schema_preserved",
+          "data_integrity_maintained"
+        ]
+      }
+    },
+    {
+      "id": "start_js_conversion",
+      "from": "arrow_created",
+      "to": "converting_to_js",
+      "trigger": "toArray_called",
+      "guard": "true",
+      "action": "begin_js_conversion",
+      "requirements": ["REQ-CONV-002"],
+      "test_data": {
+        "conversion_requirements": [
+          "preserve_null_values",
+          "correct_type_mapping",
+          "maintain_row_order"
+        ]
+      }
+    },
+    {
+      "id": "start_ipc_conversion",
+      "from": "arrow_created",
+      "to": "converting_to_ipc",
+      "trigger": "toIPC_called",
+      "guard": "true",
+      "action": "begin_ipc_conversion",
+      "requirements": ["REQ-CONV-002"]
+    },
+    {
+      "id": "js_conversion_success",
+      "from": "converting_to_js",
+      "to": "js_array_ready",
+      "trigger": "conversion_complete",
+      "guard": "js_array_valid",
+      "action": "finalize_js_array",
+      "requirements": ["REQ-CONV-002"],
+      "test_data": {
+        "output_validation": [
+          "array_length_correct",
+          "null_values_preserved",
+          "types_converted_correctly"
+        ]
+      }
+    },
+    {
+      "id": "ipc_conversion_success",
+      "from": "converting_to_ipc",
+      "to": "ipc_buffer_ready",
+      "trigger": "conversion_complete",
+      "guard": "ipc_buffer_valid",
+      "action": "finalize_ipc_buffer",
+      "requirements": ["REQ-CONV-002"]
+    },
+    {
+      "id": "conversion_memory_error",
+      "from": "converting_to_arrow",
+      "to": "memory_error",
+      "trigger": "memory_allocation_failed",
+      "guard": "true",
+      "action": "set_memory_error",
+      "requirements": ["REQ-CONV-003"]
+    },
+    {
+      "id": "conversion_error_js",
+      "from": "converting_to_js",
+      "to": "conversion_error",
+      "trigger": "conversion_failed",
+      "guard": "true",
+      "action": "set_conversion_error",
+      "requirements": ["REQ-CONV-003"]
+    },
+    {
+      "id": "conversion_error_ipc",
+      "from": "converting_to_ipc",
+      "to": "conversion_error",
+      "trigger": "conversion_failed",
+      "guard": "true",
+      "action": "set_conversion_error",
+      "requirements": ["REQ-CONV-003"]
+    }
+  ],
+  "metadata": {
+    "created": "2025-01-27",
+    "author": "Claude Code MBD System",
+    "requirements": [
+      "REQ-CONV-001: Data validation and schema inference must be robust",
+      "REQ-CONV-002: Data conversions must preserve type and null information",
+      "REQ-CONV-003: Conversion errors must be properly detected and reported",
+      "REQ-API-001: API calls must follow proper input validation patterns"
+    ],
+    "test_generation_notes": [
+      "Round-trip testing required: JSON → Arrow → JSON should preserve data",
+      "Null value handling must be verified at each conversion step", 
+      "Type conversion accuracy testing for all supported Arrow types",
+      "Error injection testing for each conversion step",
+      "Performance validation for large datasets at each conversion stage"
+    ],
+    "data_integrity_requirements": [
+      "Schema preservation across all conversions",
+      "Null value preservation in all transformations",
+      "Type accuracy in bidirectional conversions",
+      "Row order maintenance throughout pipeline",
+      "Memory efficiency in conversion processes"
+    ]
+  }
+}

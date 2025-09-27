@@ -1,0 +1,396 @@
+{
+  "model_id": "type_system_flow",
+  "model_type": "data_flow",
+  "version": "1.0.0",
+  "description": "Type system data flow model capturing data type definitions, conversions, and transformations throughout the WASM Arrow library",
+  "requirements": ["REQ-TYPE-001", "REQ-TYPE-002", "REQ-TYPE-003", "REQ-CONV-001"],
+  "data_types": [
+    {
+      "id": "js_primitive",
+      "name": "JavaScript Primitive Types",
+      "category": "input",
+      "types": ["number", "string", "boolean", "null", "undefined"],
+      "constraints": {
+        "number": "IEEE 754 double precision",
+        "string": "UTF-16 encoded",
+        "boolean": "true/false",
+        "null": "explicit null value",
+        "undefined": "treated as null in Arrow context"
+      },
+      "source": "JavaScript runtime",
+      "validation_required": true
+    },
+    {
+      "id": "js_complex",
+      "name": "JavaScript Complex Types", 
+      "category": "input",
+      "types": ["Object", "Array", "ArrayBuffer", "Uint8Array"],
+      "constraints": {
+        "Object": "key-value pairs for row representation",
+        "Array": "homogeneous arrays or array of objects",
+        "ArrayBuffer": "binary data for IPC format",
+        "Uint8Array": "byte arrays for binary data"
+      },
+      "source": "JavaScript runtime",
+      "validation_required": true
+    },
+    {
+      "id": "arrow_primitive",
+      "name": "Arrow Primitive Types",
+      "category": "internal",
+      "types": [
+        "Null", "Bool", "Int8", "Int16", "Int32", "Int64",
+        "UInt8", "UInt16", "UInt32", "UInt64", 
+        "Float32", "Float64", "Utf8", "Binary"
+      ],
+      "constraints": {
+        "integer_types": "fixed width with explicit signedness",
+        "float_types": "IEEE 754 standard compliance",
+        "string_type": "UTF-8 encoded variable length",
+        "binary_type": "arbitrary byte sequences"
+      },
+      "source": "Arrow specification",
+      "memory_layout": "columnar"
+    },
+    {
+      "id": "arrow_temporal",
+      "name": "Arrow Temporal Types",
+      "category": "internal",
+      "types": ["Date32", "Date64", "Timestamp"],
+      "constraints": {
+        "Date32": "days since Unix epoch",
+        "Date64": "milliseconds since Unix epoch", 
+        "Timestamp": "with unit and optional timezone"
+      },
+      "source": "Arrow specification",
+      "implementation_status": "future"
+    },
+    {
+      "id": "arrow_complex",
+      "name": "Arrow Complex Types",
+      "category": "internal",
+      "types": ["List", "Struct", "Union", "Dictionary", "Map"],
+      "constraints": {
+        "List": "variable length arrays of single type",
+        "Struct": "fixed schema nested objects",
+        "Dictionary": "encoded categorical data",
+        "Union": "multiple possible types per value"
+      },
+      "source": "Arrow specification",
+      "implementation_status": "future"
+    },
+    {
+      "id": "wasm_handle",
+      "name": "WASM Handle Types",
+      "category": "bridge",
+      "types": ["TableHandle", "ColumnHandle", "SchemaHandle"],
+      "constraints": {
+        "handle_type": "u32 identifier",
+        "handle_validity": "validated through registry",
+        "handle_lifecycle": "explicit disposal required"
+      },
+      "source": "WASM bridge layer",
+      "memory_management": "manual"
+    }
+  ],
+  "conversion_flows": [
+    {
+      "id": "js_to_arrow_inference",
+      "name": "JavaScript to Arrow Schema Inference",
+      "source_type": "js_primitive",
+      "target_type": "arrow_primitive",
+      "direction": "input",
+      "process_steps": [
+        {
+          "step": 1,
+          "name": "Type Detection",
+          "operation": "analyze_js_value_type",
+          "input": "JavaScript value",
+          "output": "detected_type_hint",
+          "validation": "type_consistency_check"
+        },
+        {
+          "step": 2,
+          "name": "Type Mapping",
+          "operation": "map_js_to_arrow_type",
+          "input": "detected_type_hint",
+          "output": "arrow_data_type",
+          "rules": {
+            "number": "Float64 (default) or Int32 (if integer)",
+            "string": "Utf8",
+            "boolean": "Bool",
+            "null": "infer from non-null values"
+          }
+        },
+        {
+          "step": 3,
+          "name": "Schema Construction",
+          "operation": "build_arrow_schema",
+          "input": "arrow_data_type[]",
+          "output": "Schema",
+          "validation": "schema_consistency_check"
+        }
+      ],
+      "error_conditions": [
+        "inconsistent_types_across_rows",
+        "unsupported_js_type",
+        "all_null_column"
+      ],
+      "test_cases": [
+        "homogeneous_number_array",
+        "mixed_integer_float",
+        "string_with_nulls",
+        "boolean_column",
+        "mixed_type_error_case"
+      ]
+    },
+    {
+      "id": "js_to_arrow_conversion",
+      "name": "JavaScript to Arrow Data Conversion",
+      "source_type": "js_complex",
+      "target_type": "arrow_primitive",
+      "direction": "input",
+      "process_steps": [
+        {
+          "step": 1,
+          "name": "Value Extraction",
+          "operation": "extract_column_values",
+          "input": "Array<Object>",
+          "output": "column_value_arrays",
+          "validation": "value_type_consistency"
+        },
+        {
+          "step": 2,
+          "name": "Type Conversion",
+          "operation": "convert_js_values_to_arrow",
+          "input": "column_value_arrays + schema",
+          "output": "arrow_arrays",
+          "rules": {
+            "null_handling": "preserve null values",
+            "type_coercion": "strict type enforcement",
+            "validation": "range and format checking"
+          }
+        },
+        {
+          "step": 3,
+          "name": "Array Construction",
+          "operation": "build_arrow_arrays",
+          "input": "arrow_arrays + schema",
+          "output": "RecordBatch",
+          "validation": "array_length_consistency"
+        }
+      ],
+      "performance_requirements": {
+        "memory_efficiency": "minimize allocations",
+        "conversion_speed": "O(n) complexity",
+        "null_overhead": "minimal additional cost"
+      }
+    },
+    {
+      "id": "ipc_to_arrow_parsing",
+      "name": "IPC Buffer to Arrow Parsing",
+      "source_type": "js_complex",
+      "target_type": "arrow_primitive",
+      "direction": "input",
+      "process_steps": [
+        {
+          "step": 1,
+          "name": "Buffer Validation",
+          "operation": "validate_ipc_format",
+          "input": "ArrayBuffer",
+          "output": "validated_buffer",
+          "validation": "magic_bytes_and_metadata"
+        },
+        {
+          "step": 2,
+          "name": "Schema Parsing",
+          "operation": "parse_ipc_schema",
+          "input": "validated_buffer",
+          "output": "Schema",
+          "validation": "schema_format_compliance"
+        },
+        {
+          "step": 3,
+          "name": "Data Loading",
+          "operation": "load_ipc_record_batches",
+          "input": "validated_buffer + Schema",
+          "output": "RecordBatch[]",
+          "validation": "data_integrity_check"
+        }
+      ],
+      "zero_copy_requirements": [
+        "data_not_duplicated",
+        "memory_mapped_access",
+        "view_based_operations"
+      ]
+    },
+    {
+      "id": "arrow_to_js_conversion",
+      "name": "Arrow to JavaScript Conversion",
+      "source_type": "arrow_primitive", 
+      "target_type": "js_primitive",
+      "direction": "output",
+      "process_steps": [
+        {
+          "step": 1,
+          "name": "Schema Analysis",
+          "operation": "analyze_arrow_schema",
+          "input": "Schema",
+          "output": "conversion_strategy",
+          "validation": "type_mapping_availability"
+        },
+        {
+          "step": 2,
+          "name": "Value Extraction",
+          "operation": "extract_arrow_values",
+          "input": "RecordBatch + conversion_strategy",
+          "output": "js_value_arrays",
+          "rules": {
+            "type_mapping": {
+              "Int32": "number",
+              "Float64": "number", 
+              "Utf8": "string",
+              "Bool": "boolean",
+              "Null": "null"
+            },
+            "null_preservation": "Arrow nulls become JS null"
+          }
+        },
+        {
+          "step": 3,
+          "name": "Object Construction",
+          "operation": "build_js_objects",
+          "input": "js_value_arrays + field_names",
+          "output": "Array<Object>",
+          "validation": "object_structure_consistency"
+        }
+      ],
+      "type_safety_requirements": [
+        "no_type_information_loss",
+        "null_value_preservation",
+        "precision_maintenance_for_numbers"
+      ]
+    },
+    {
+      "id": "arrow_to_ipc_serialization",
+      "name": "Arrow to IPC Serialization",
+      "source_type": "arrow_primitive",
+      "target_type": "js_complex",
+      "direction": "output",
+      "process_steps": [
+        {
+          "step": 1,
+          "name": "Serialization Setup",
+          "operation": "prepare_ipc_writer",
+          "input": "Schema + WriteOptions",
+          "output": "ipc_writer_config",
+          "validation": "options_compatibility_check"
+        },
+        {
+          "step": 2,
+          "name": "Data Serialization",
+          "operation": "serialize_record_batches",
+          "input": "RecordBatch[] + ipc_writer_config",
+          "output": "serialized_data",
+          "validation": "serialization_integrity"
+        },
+        {
+          "step": 3,
+          "name": "Buffer Creation",
+          "operation": "create_ipc_buffer",
+          "input": "serialized_data",
+          "output": "ArrayBuffer",
+          "validation": "buffer_format_compliance"
+        }
+      ],
+      "format_requirements": [
+        "arrow_ipc_specification_compliance",
+        "compression_support",
+        "metadata_preservation"
+      ]
+    }
+  ],
+  "type_validation_rules": [
+    {
+      "rule_id": "js_input_validation",
+      "applies_to": ["js_primitive", "js_complex"],
+      "validations": [
+        "not_undefined_unless_null_intended",
+        "array_elements_consistent_type",
+        "object_properties_exist",
+        "buffer_not_empty"
+      ]
+    },
+    {
+      "rule_id": "arrow_schema_validation",
+      "applies_to": ["arrow_primitive", "arrow_temporal", "arrow_complex"],
+      "validations": [
+        "field_names_unique",
+        "types_supported_in_implementation",
+        "nullable_flags_consistent",
+        "metadata_well_formed"
+      ]
+    },
+    {
+      "rule_id": "conversion_validation",
+      "applies_to": ["all_conversions"],
+      "validations": [
+        "no_data_loss_in_supported_conversions",
+        "null_value_preservation",
+        "type_safety_maintained",
+        "error_conditions_detected"
+      ]
+    }
+  ],
+  "error_handling": [
+    {
+      "error_category": "type_mismatch",
+      "conditions": [
+        "js_value_incompatible_with_arrow_type",
+        "inconsistent_types_in_array",
+        "unsupported_type_conversion"
+      ],
+      "recovery_strategies": [
+        "type_coercion_with_warning",
+        "fallback_to_string_type",
+        "graceful_failure_with_detailed_error"
+      ]
+    },
+    {
+      "error_category": "validation_failure",
+      "conditions": [
+        "invalid_ipc_format",
+        "corrupted_schema",
+        "malformed_input_data"
+      ],
+      "recovery_strategies": [
+        "detailed_error_reporting",
+        "partial_data_recovery_if_possible",
+        "safe_failure_with_cleanup"
+      ]
+    }
+  ],
+  "metadata": {
+    "created": "2025-01-27",
+    "author": "Claude Code MBD System",
+    "requirements": [
+      "REQ-TYPE-001: Comprehensive type system supporting all Arrow primitive types",
+      "REQ-TYPE-002: Bidirectional type conversions with data integrity",
+      "REQ-TYPE-003: Robust type validation and error handling",
+      "REQ-CONV-001: Accurate schema inference from JavaScript data"
+    ],
+    "test_generation_notes": [
+      "Type conversion round-trip testing for all supported types",
+      "Edge case testing for type inference with mixed/null data",
+      "Performance testing for large-scale type conversions",
+      "Error injection testing for invalid type scenarios",
+      "Validation testing for all type system constraints"
+    ],
+    "implementation_priorities": [
+      "Phase 1: Core primitive types (Int32, Float64, Utf8, Bool, Null)",
+      "Phase 2: Additional numeric types (Int8, Int16, UInt*, Float32)",
+      "Phase 3: Temporal types (Date32, Date64, Timestamp)",
+      "Phase 4: Complex types (List, Struct, Dictionary)"
+    ]
+  }
+}

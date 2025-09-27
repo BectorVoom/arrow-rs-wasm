@@ -1,0 +1,393 @@
+{
+  "model_id": "module_dependencies",
+  "model_type": "component",
+  "version": "1.0.0",
+  "description": "Component architecture model defining module dependencies, interfaces, and relationships in the WASM Arrow library",
+  "requirements": ["REQ-ARCH-001", "REQ-ARCH-002", "REQ-ARCH-003", "REQ-MOD-001"],
+  "components": [
+    {
+      "id": "core",
+      "name": "Core Module",
+      "type": "core",
+      "responsibilities": [
+        "WASM module initialization",
+        "Memory allocator setup",
+        "Plugin registry management",
+        "Global error handling"
+      ],
+      "provides": [
+        "initialize()",
+        "getVersion()",
+        "onError()",
+        "dispose()"
+      ],
+      "dependencies": [],
+      "internal_dependencies": ["memory_manager", "error_handler"],
+      "rust_modules": ["src/core.rs"],
+      "wasm_exports": [
+        "initialize",
+        "get_version",
+        "set_error_handler"
+      ],
+      "properties": {
+        "singleton": true,
+        "stateful": true,
+        "thread_safe": false
+      }
+    },
+    {
+      "id": "types",
+      "name": "Type System Module",
+      "type": "foundation",
+      "responsibilities": [
+        "Data type definitions",
+        "Type conversions",
+        "Schema representation",
+        "Field definitions"
+      ],
+      "provides": [
+        "DataType enum",
+        "Field interface",
+        "Schema interface",
+        "type conversion utilities"
+      ],
+      "dependencies": ["core"],
+      "internal_dependencies": [],
+      "rust_modules": ["src/types.rs"],
+      "wasm_exports": [
+        "create_field",
+        "create_schema",
+        "type_to_string"
+      ],
+      "properties": {
+        "stateless": true,
+        "pure_functions": true,
+        "high_reuse": true
+      }
+    },
+    {
+      "id": "schema",
+      "name": "Schema Module",
+      "type": "core_functionality",
+      "responsibilities": [
+        "Schema creation and validation",
+        "Schema inference from data",
+        "Field manipulation",
+        "Metadata handling"
+      ],
+      "provides": [
+        "Schema creation functions",
+        "Schema validation",
+        "Field access methods",
+        "Metadata operations"
+      ],
+      "dependencies": ["core", "types"],
+      "internal_dependencies": ["error_handler"],
+      "rust_modules": ["src/schema.rs"],
+      "wasm_exports": [
+        "create_schema_from_fields",
+        "infer_schema_from_json",
+        "validate_schema"
+      ],
+      "properties": {
+        "stateless": true,
+        "validation_heavy": true
+      }
+    },
+    {
+      "id": "table",
+      "name": "Table Module",
+      "type": "core_functionality",
+      "responsibilities": [
+        "Table creation and lifecycle",
+        "Table operations (slice, filter, select)",
+        "Data access and conversion",
+        "Handle management"
+      ],
+      "provides": [
+        "tableFromJSON()",
+        "tableFromIPC()",
+        "Table interface methods",
+        "Data conversion functions"
+      ],
+      "dependencies": ["core", "types", "schema", "column", "io"],
+      "internal_dependencies": ["memory_manager", "handle_registry"],
+      "rust_modules": ["src/table.rs"],
+      "wasm_exports": [
+        "table_from_json",
+        "table_from_ipc",
+        "table_to_array",
+        "table_dispose"
+      ],
+      "properties": {
+        "stateful": true,
+        "memory_intensive": true,
+        "handle_based": true
+      }
+    },
+    {
+      "id": "column",
+      "name": "Column Module", 
+      "type": "core_functionality",
+      "responsibilities": [
+        "Column data access",
+        "Individual value retrieval",
+        "Column statistics",
+        "Type-specific operations"
+      ],
+      "provides": [
+        "Column interface methods",
+        "Value access functions",
+        "Statistics computation",
+        "Array conversion"
+      ],
+      "dependencies": ["core", "types"],
+      "internal_dependencies": ["memory_manager"],
+      "rust_modules": ["src/column.rs"],
+      "wasm_exports": [
+        "column_get_value",
+        "column_to_array",
+        "column_statistics",
+        "column_slice"
+      ],
+      "properties": {
+        "stateful": true,
+        "zero_copy_preferred": true,
+        "performance_critical": true
+      }
+    },
+    {
+      "id": "io",
+      "name": "Input/Output Module",
+      "type": "core_functionality",
+      "responsibilities": [
+        "File format reading/writing",
+        "IPC serialization/deserialization",
+        "Compression handling",
+        "Format validation"
+      ],
+      "provides": [
+        "readFile()",
+        "writeFile()",
+        "IPC format functions",
+        "Validation utilities"
+      ],
+      "dependencies": ["core", "types", "schema"],
+      "internal_dependencies": ["memory_manager"],
+      "rust_modules": ["src/io.rs"],
+      "wasm_exports": [
+        "read_arrow_file",
+        "write_arrow_file",
+        "validate_ipc_buffer"
+      ],
+      "properties": {
+        "io_intensive": true,
+        "format_specific": true,
+        "validation_heavy": true
+      }
+    },
+    {
+      "id": "compute",
+      "name": "Compute Module",
+      "type": "extended_functionality",
+      "responsibilities": [
+        "Statistical computations",
+        "Data transformations",
+        "Aggregation functions",
+        "Column operations"
+      ],
+      "provides": [
+        "Aggregation functions (sum, mean, etc.)",
+        "Transformation functions (cast, filter)",
+        "Statistical computations",
+        "Utility operations"
+      ],
+      "dependencies": ["core", "types", "column"],
+      "internal_dependencies": [],
+      "rust_modules": ["src/compute.rs"],
+      "wasm_exports": [
+        "compute_sum",
+        "compute_mean",
+        "compute_statistics",
+        "column_cast"
+      ],
+      "properties": {
+        "stateless": true,
+        "computation_heavy": true,
+        "performance_critical": true
+      }
+    },
+    {
+      "id": "plugin",
+      "name": "Plugin System Module",
+      "type": "extensibility",
+      "responsibilities": [
+        "Plugin registration and management",
+        "Plugin lifecycle control",
+        "Extension point definitions",
+        "Plugin API enforcement"
+      ],
+      "provides": [
+        "Plugin registration functions",
+        "Plugin lifecycle management",
+        "Extension interfaces",
+        "Plugin utilities"
+      ],
+      "dependencies": ["core", "types"],
+      "internal_dependencies": ["plugin_registry"],
+      "rust_modules": ["src/plugin.rs"],
+      "wasm_exports": [
+        "register_plugin",
+        "unregister_plugin",
+        "list_plugins"
+      ],
+      "properties": {
+        "extensible": true,
+        "dynamic_loading": false,
+        "future_oriented": true
+      }
+    },
+    {
+      "id": "error",
+      "name": "Error Handling Module",
+      "type": "foundation",
+      "responsibilities": [
+        "Error type definitions",
+        "Error reporting and propagation",
+        "Error recovery mechanisms",
+        "Diagnostic information"
+      ],
+      "provides": [
+        "ArrowError class",
+        "Error code definitions",
+        "Error handling utilities",
+        "Diagnostic functions"
+      ],
+      "dependencies": ["core"],
+      "internal_dependencies": [],
+      "rust_modules": ["src/error.rs"],
+      "wasm_exports": [
+        "get_last_error",
+        "clear_error_state",
+        "format_error_message"
+      ],
+      "properties": {
+        "cross_cutting": true,
+        "always_available": true,
+        "minimal_dependencies": true
+      }
+    }
+  ],
+  "interfaces": [
+    {
+      "id": "wasm_js_bridge",
+      "name": "WASM-JavaScript Bridge",
+      "type": "boundary",
+      "description": "Interface between WASM module and JavaScript runtime",
+      "methods": [
+        "All wasm_exports from each component",
+        "Memory access functions",
+        "Handle management functions"
+      ],
+      "data_flow": "bidirectional",
+      "serialization": "wasm-bindgen"
+    },
+    {
+      "id": "memory_interface",
+      "name": "Memory Management Interface",
+      "type": "internal",
+      "description": "Internal interface for memory allocation and handle management",
+      "methods": [
+        "allocate_handle()",
+        "deallocate_handle()",
+        "get_object_by_handle()",
+        "register_object()"
+      ],
+      "data_flow": "internal",
+      "thread_safety": "single_threaded"
+    },
+    {
+      "id": "error_interface",
+      "name": "Error Handling Interface",
+      "type": "cross_cutting",
+      "description": "Cross-cutting interface for error propagation",
+      "methods": [
+        "report_error()",
+        "set_error_context()",
+        "clear_error()",
+        "get_error_details()"
+      ],
+      "data_flow": "internal",
+      "global_state": true
+    }
+  ],
+  "dependency_graph": {
+    "layers": [
+      {
+        "layer": 0,
+        "name": "Foundation",
+        "components": ["core", "types", "error"],
+        "description": "Base layer with no external dependencies"
+      },
+      {
+        "layer": 1,
+        "name": "Core Services",
+        "components": ["schema", "io"],
+        "description": "Core services that depend on foundation"
+      },
+      {
+        "layer": 2,
+        "name": "Data Operations",
+        "components": ["column", "table"],
+        "description": "Data manipulation and access layer"
+      },
+      {
+        "layer": 3,
+        "name": "Extended Features",
+        "components": ["compute", "plugin"],
+        "description": "Advanced features and extensibility"
+      }
+    ],
+    "critical_paths": [
+      ["core", "types", "schema", "table"],
+      ["core", "types", "io", "table"],
+      ["core", "types", "column", "table"],
+      ["core", "error", "all_modules"]
+    ]
+  },
+  "build_order": [
+    "core",
+    "types", 
+    "error",
+    "schema",
+    "io",
+    "column",
+    "table",
+    "compute",
+    "plugin"
+  ],
+  "metadata": {
+    "created": "2025-01-27",
+    "author": "Claude Code MBD System",
+    "requirements": [
+      "REQ-ARCH-001: Clear module separation and dependency management",
+      "REQ-ARCH-002: Well-defined interfaces between components",
+      "REQ-ARCH-003: Layered architecture with proper abstraction",
+      "REQ-MOD-001: Modular design enabling selective compilation"
+    ],
+    "test_generation_notes": [
+      "Dependency injection testing for each component",
+      "Interface compliance testing for all public APIs",
+      "Integration testing for critical dependency paths",
+      "Build order validation and circular dependency detection",
+      "Memory interface testing for handle-based components"
+    ],
+    "architectural_principles": [
+      "Dependency inversion: high-level modules don't depend on low-level modules",
+      "Interface segregation: clients depend only on interfaces they use",
+      "Single responsibility: each module has one clear purpose",
+      "Open/closed: modules open for extension, closed for modification",
+      "Separation of concerns: distinct aspects handled by different modules"
+    ]
+  }
+}

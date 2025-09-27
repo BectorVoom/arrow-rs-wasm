@@ -1,0 +1,26 @@
+{
+  "mcpServers": {
+    "docs-rs": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@nuskey8/docs-rs-mcp@latest"],
+      "env": {}
+    },
+    "mcp-obsidian": {
+      "command": "uvx",
+      "args": ["mcp-obsidian"],
+      "env": {
+        "OBSIDIAN_API_KEY": "0a24ac66cdc26ed54d8dcc377765add34f0ef7a95b4d9cd081cc51b55d3290a7",
+        "OBSIDIAN_HOST": "https://127.0.0.1:27124/",
+        "OBSIDIAN_PORT": "27124"
+      }
+    },
+    "brave-search-dev": {
+      "command": "node",
+      "args": ["/Users/ods/Documents/brave-search-mcp-server/dist/index.js"],
+      "env": {
+        "BRAVE_API_KEY": "BSAOjSwHkofBw2zUgCqO0P2G28_F0gp"
+      }
+    }
+  }
+}

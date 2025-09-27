@@ -1,0 +1,528 @@
+{
+  "model_id": "error_handling_flow",
+  "model_type": "statechart",
+  "version": "1.0.0",
+  "description": "Error handling flow model capturing error detection, propagation, recovery, and cleanup procedures",
+  "requirements": ["REQ-ERROR-001", "REQ-ERROR-002", "REQ-ERROR-003", "REQ-ERROR-004"],
+  "states": [
+    {
+      "id": "normal_operation",
+      "name": "Normal Operation",
+      "type": "initial",
+      "properties": {
+        "error_occurred": false,
+        "operation_in_progress": false,
+        "system_healthy": true
+      },
+      "invariants": [
+        "error_occurred === false",
+        "system_healthy === true"
+      ]
+    },
+    {
+      "id": "operation_executing",
+      "name": "Operation Executing",
+      "type": "normal",
+      "properties": {
+        "operation_in_progress": true,
+        "operation_type": "string",
+        "error_occurred": false,
+        "can_fail": true
+      },
+      "invariants": [
+        "operation_in_progress === true",
+        "operation_type !== null"
+      ]
+    },
+    {
+      "id": "error_detected",
+      "name": "Error Detected",
+      "type": "normal",
+      "properties": {
+        "error_occurred": true,
+        "error_detected": true,
+        "error_type": "string",
+        "error_severity": "string",
+        "recovery_assessed": false
+      },
+      "invariants": [
+        "error_occurred === true",
+        "error_detected === true",
+        "error_type !== null"
+      ]
+    },
+    {
+      "id": "error_classifying",
+      "name": "Classifying Error",
+      "type": "normal",
+      "properties": {
+        "error_occurred": true,
+        "classification_in_progress": true,
+        "error_code": "string or null",
+        "error_category": "string or null"
+      },
+      "invariants": [
+        "classification_in_progress === true"
+      ]
+    },
+    {
+      "id": "recoverable_error",
+      "name": "Recoverable Error",
+      "type": "normal",
+      "properties": {
+        "error_occurred": true,
+        "error_classified": true,
+        "is_recoverable": true,
+        "recovery_strategy": "string",
+        "can_retry": true
+      },
+      "invariants": [
+        "is_recoverable === true",
+        "recovery_strategy !== null"
+      ]
+    },
+    {
+      "id": "critical_error",
+      "name": "Critical Error",
+      "type": "error",
+      "properties": {
+        "error_occurred": true,
+        "error_classified": true,
+        "is_recoverable": false,
+        "system_compromised": true,
+        "requires_cleanup": true
+      },
+      "invariants": [
+        "is_recoverable === false",
+        "system_compromised === true"
+      ]
+    },
+    {
+      "id": "recovering",
+      "name": "Attempting Recovery",
+      "type": "normal",
+      "properties": {
+        "error_occurred": true,
+        "recovery_in_progress": true,
+        "recovery_strategy": "string",
+        "retry_count": ">=0"
+      },
+      "invariants": [
+        "recovery_in_progress === true",
+        "retry_count >= 0"
+      ]
+    },
+    {
+      "id": "cleanup_required",
+      "name": "Cleanup Required",
+      "type": "normal",
+      "properties": {
+        "error_occurred": true,
+        "cleanup_needed": true,
+        "resources_to_cleanup": "array",
+        "cleanup_in_progress": false
+      },
+      "invariants": [
+        "cleanup_needed === true"
+      ]
+    },
+    {
+      "id": "cleaning_up",
+      "name": "Cleaning Up",
+      "type": "normal",
+      "properties": {
+        "error_occurred": true,
+        "cleanup_in_progress": true,
+        "resources_being_cleaned": "array",
+        "cleanup_strategy": "string"
+      },
+      "invariants": [
+        "cleanup_in_progress === true"
+      ]
+    },
+    {
+      "id": "error_reported",
+      "name": "Error Reported",
+      "type": "normal",
+      "properties": {
+        "error_occurred": true,
+        "error_reported": true,
+        "error_message": "string",
+        "error_details": "object",
+        "user_notified": true
+      },
+      "invariants": [
+        "error_reported === true",
+        "error_message !== null"
+      ]
+    },
+    {
+      "id": "recovery_successful",
+      "name": "Recovery Successful",
+      "type": "normal",
+      "properties": {
+        "error_occurred": false,
+        "recovery_completed": true,
+        "system_restored": true,
+        "operation_can_continue": true
+      },
+      "invariants": [
+        "recovery_completed === true",
+        "system_restored === true"
+      ]
+    },
+    {
+      "id": "recovery_failed",
+      "name": "Recovery Failed",
+      "type": "error",
+      "properties": {
+        "error_occurred": true,
+        "recovery_attempted": true,
+        "recovery_failed": true,
+        "system_compromised": true
+      },
+      "invariants": [
+        "recovery_failed === true",
+        "system_compromised === true"
+      ]
+    },
+    {
+      "id": "system_shutdown",
+      "name": "System Shutdown",
+      "type": "final",
+      "properties": {
+        "system_operational": false,
+        "all_resources_cleaned": true,
+        "safe_shutdown": true
+      },
+      "invariants": [
+        "system_operational === false",
+        "safe_shutdown === true"
+      ]
+    }
+  ],
+  "transitions": [
+    {
+      "id": "start_operation",
+      "from": "normal_operation",
+      "to": "operation_executing",
+      "trigger": "api_call_started",
+      "guard": "system_healthy",
+      "action": "begin_operation_monitoring",
+      "requirements": ["REQ-ERROR-001"],
+      "test_data": {
+        "monitored_operations": [
+          "tableFromJSON",
+          "tableFromIPC",
+          "table.toArray",
+          "table.dispose"
+        ]
+      }
+    },
+    {
+      "id": "operation_success",
+      "from": "operation_executing",
+      "to": "normal_operation",
+      "trigger": "operation_completed",
+      "guard": "no_error_detected",
+      "action": "complete_operation",
+      "requirements": ["REQ-ERROR-001"]
+    },
+    {
+      "id": "detect_validation_error",
+      "from": "operation_executing",
+      "to": "error_detected",
+      "trigger": "validation_failed",
+      "guard": "true",
+      "action": "capture_validation_error",
+      "requirements": ["REQ-ERROR-001"],
+      "test_data": {
+        "validation_errors": [
+          "invalid_json_format",
+          "unsupported_data_type",
+          "schema_mismatch",
+          "null_input_data"
+        ]
+      }
+    },
+    {
+      "id": "detect_memory_error",
+      "from": "operation_executing",
+      "to": "error_detected",
+      "trigger": "memory_error_occurred",
+      "guard": "true",
+      "action": "capture_memory_error",
+      "requirements": ["REQ-ERROR-001"],
+      "test_data": {
+        "memory_errors": [
+          "allocation_failed",
+          "out_of_memory",
+          "buffer_overflow",
+          "use_after_free"
+        ]
+      }
+    },
+    {
+      "id": "detect_conversion_error",
+      "from": "operation_executing",
+      "to": "error_detected",
+      "trigger": "conversion_failed",
+      "guard": "true",
+      "action": "capture_conversion_error",
+      "requirements": ["REQ-ERROR-001"],
+      "test_data": {
+        "conversion_errors": [
+          "type_conversion_failed",
+          "schema_inference_failed",
+          "ipc_parsing_failed",
+          "data_corruption"
+        ]
+      }
+    },
+    {
+      "id": "start_error_classification",
+      "from": "error_detected",
+      "to": "error_classifying",
+      "trigger": "classify_error",
+      "guard": "true",
+      "action": "begin_error_analysis",
+      "requirements": ["REQ-ERROR-002"],
+      "test_data": {
+        "classification_criteria": [
+          "error_severity_assessment",
+          "recovery_possibility_analysis",
+          "system_impact_evaluation"
+        ]
+      }
+    },
+    {
+      "id": "classify_as_recoverable",
+      "from": "error_classifying",
+      "to": "recoverable_error",
+      "trigger": "classification_complete",
+      "guard": "error_is_recoverable",
+      "action": "set_recovery_strategy",
+      "requirements": ["REQ-ERROR-002"],
+      "test_data": {
+        "recoverable_conditions": [
+          "validation_error_with_fallback",
+          "temporary_memory_shortage",
+          "retryable_operation_failure"
+        ]
+      }
+    },
+    {
+      "id": "classify_as_critical",
+      "from": "error_classifying",
+      "to": "critical_error",
+      "trigger": "classification_complete",
+      "guard": "error_is_critical",
+      "action": "mark_system_compromised",
+      "requirements": ["REQ-ERROR-002"],
+      "test_data": {
+        "critical_conditions": [
+          "memory_corruption",
+          "wasm_module_crash",
+          "unrecoverable_state",
+          "security_violation"
+        ]
+      }
+    },
+    {
+      "id": "attempt_recovery",
+      "from": "recoverable_error",
+      "to": "recovering",
+      "trigger": "start_recovery",
+      "guard": "recovery_strategy_available",
+      "action": "execute_recovery_procedure",
+      "requirements": ["REQ-ERROR-003"],
+      "test_data": {
+        "recovery_strategies": [
+          "input_sanitization_retry",
+          "memory_cleanup_retry",
+          "schema_fallback",
+          "graceful_degradation"
+        ]
+      }
+    },
+    {
+      "id": "recovery_succeeded",
+      "from": "recovering",
+      "to": "recovery_successful",
+      "trigger": "recovery_complete",
+      "guard": "system_restored",
+      "action": "restore_normal_state",
+      "requirements": ["REQ-ERROR-003"],
+      "test_data": {
+        "success_indicators": [
+          "operation_can_retry",
+          "memory_stable",
+          "handles_valid",
+          "api_responsive"
+        ]
+      }
+    },
+    {
+      "id": "recovery_failed_attempt",
+      "from": "recovering",
+      "to": "recovery_failed",
+      "trigger": "recovery_failed",
+      "guard": "recovery_unsuccessful",
+      "action": "mark_recovery_failure",
+      "requirements": ["REQ-ERROR-003"],
+      "test_data": {
+        "failure_conditions": [
+          "retry_limit_exceeded",
+          "resources_exhausted",
+          "state_corruption_detected",
+          "cascading_failures"
+        ]
+      }
+    },
+    {
+      "id": "require_cleanup_from_critical",
+      "from": "critical_error",
+      "to": "cleanup_required",
+      "trigger": "assess_cleanup_needs",
+      "guard": "true",
+      "action": "identify_cleanup_requirements",
+      "requirements": ["REQ-ERROR-004"],
+      "test_data": {
+        "cleanup_scenarios": [
+          "dispose_all_tables",
+          "free_leaked_memory",
+          "reset_handle_registry",
+          "clear_error_state"
+        ]
+      }
+    },
+    {
+      "id": "require_cleanup_from_recovery_failed",
+      "from": "recovery_failed",
+      "to": "cleanup_required",
+      "trigger": "assess_cleanup_needs",
+      "guard": "true",
+      "action": "identify_cleanup_requirements",
+      "requirements": ["REQ-ERROR-004"]
+    },
+    {
+      "id": "start_cleanup",
+      "from": "cleanup_required",
+      "to": "cleaning_up",
+      "trigger": "begin_cleanup",
+      "guard": "true",
+      "action": "execute_cleanup_procedure",
+      "requirements": ["REQ-ERROR-004"],
+      "test_data": {
+        "cleanup_procedures": [
+          "emergency_memory_cleanup",
+          "handle_registry_reset",
+          "partial_state_recovery",
+          "safe_shutdown_preparation"
+        ]
+      }
+    },
+    {
+      "id": "report_recoverable_error",
+      "from": "recoverable_error",
+      "to": "error_reported",
+      "trigger": "report_error",
+      "guard": "true",
+      "action": "generate_error_report",
+      "requirements": ["REQ-ERROR-002"],
+      "test_data": {
+        "report_contents": [
+          "error_code_and_message",
+          "operation_context",
+          "recovery_instructions",
+          "troubleshooting_info"
+        ]
+      }
+    },
+    {
+      "id": "report_critical_error",
+      "from": "critical_error",
+      "to": "error_reported",
+      "trigger": "report_error",
+      "guard": "true",
+      "action": "generate_critical_error_report",
+      "requirements": ["REQ-ERROR-002"],
+      "test_data": {
+        "critical_report_contents": [
+          "detailed_error_analysis",
+          "system_state_snapshot",
+          "failure_timeline",
+          "recommended_actions"
+        ]
+      }
+    },
+    {
+      "id": "cleanup_successful",
+      "from": "cleaning_up",
+      "to": "error_reported",
+      "trigger": "cleanup_complete",
+      "guard": "cleanup_successful",
+      "action": "finalize_error_handling",
+      "requirements": ["REQ-ERROR-004"]
+    },
+    {
+      "id": "cleanup_failed_shutdown",
+      "from": "cleaning_up",
+      "to": "system_shutdown",
+      "trigger": "cleanup_failed",
+      "guard": "cleanup_impossible",
+      "action": "initiate_emergency_shutdown",
+      "requirements": ["REQ-ERROR-004"],
+      "test_data": {
+        "shutdown_triggers": [
+          "memory_corruption_unrecoverable",
+          "infinite_error_loop",
+          "resource_exhaustion",
+          "security_breach"
+        ]
+      }
+    },
+    {
+      "id": "return_to_normal",
+      "from": "recovery_successful",
+      "to": "normal_operation",
+      "trigger": "resume_operations",
+      "guard": "system_fully_restored",
+      "action": "reset_error_state",
+      "requirements": ["REQ-ERROR-003"]
+    },
+    {
+      "id": "shutdown_from_critical",
+      "from": "critical_error",
+      "to": "system_shutdown",
+      "trigger": "emergency_shutdown",
+      "guard": "system_unrecoverable",
+      "action": "immediate_shutdown",
+      "requirements": ["REQ-ERROR-004"]
+    }
+  ],
+  "metadata": {
+    "created": "2025-01-27",
+    "author": "Claude Code MBD System",
+    "requirements": [
+      "REQ-ERROR-001: All errors must be detected and properly captured",
+      "REQ-ERROR-002: Errors must be classified and recovery assessed",
+      "REQ-ERROR-003: Recoverable errors must allow system recovery",
+      "REQ-ERROR-004: Critical errors must trigger proper cleanup procedures"
+    ],
+    "test_generation_notes": [
+      "Error injection testing required for each error detection transition",
+      "Recovery procedure validation for all recoverable error types",
+      "Cleanup verification for all critical error scenarios",
+      "Error reporting validation for proper message generation",
+      "System state consistency checks after error handling"
+    ],
+    "error_handling_requirements": [
+      "No silent failures - all errors must be detected",
+      "Proper error classification based on severity and recoverability",
+      "Resource cleanup required for all error paths",
+      "User-friendly error messages with actionable information",
+      "System stability maintained even under error conditions"
+    ]
+  }
+}

@@ -1,0 +1,1131 @@
+{
+  "model_id": "table_lifecycle",
+  "model_type": "state_machine",
+  "generated_at": "2025-09-27T02:03:29.698Z",
+  "test_cases": [
+    {
+      "test_id": "table_lifecycle_state_nonexistent_validation",
+      "test_name": "Validate Nonexistent state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "nonexistent",
+      "requirements": [
+        "REQ-TABLE-001",
+        "REQ-TABLE-002",
+        "REQ-TABLE-003",
+        "REQ-MEM-002"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Nonexistent state",
+          "expected": "System reaches Nonexistent state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"table_handle\":null,\"schema_defined\":false,\"data_loaded\":false,\"memory_allocated\":false}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for table_lifecycle_state_nonexistent_validation\n// Model: table_lifecycle, Element: nonexistent\n\ndescribe('table_lifecycle_state_nonexistent_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Nonexistent state\n        // Table should not exist initially\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "table_lifecycle_state_creating_from_json_validation",
+      "test_name": "Validate Creating from JSON state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "creating_from_json",
+      "requirements": [
+        "REQ-TABLE-001",
+        "REQ-TABLE-002",
+        "REQ-TABLE-003",
+        "REQ-MEM-002"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Creating from JSON state",
+          "expected": "System reaches Creating from JSON state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"table_handle\":null,\"schema_defined\":false,\"data_loaded\":false,\"memory_allocated\":false,\"creation_in_progress\":true,\"source_type\":\"json\"}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for table_lifecycle_state_creating_from_json_validation\n// Model: table_lifecycle, Element: creating_from_json\n\ndescribe('table_lifecycle_state_creating_from_json_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Creating from JSON state\n        wasmModule.tableFromJSON(testData); // Don't await to catch in creating state\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "table_lifecycle_state_creating_from_ipc_validation",
+      "test_name": "Validate Creating from IPC state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "creating_from_ipc",
+      "requirements": [
+        "REQ-TABLE-001",
+        "REQ-TABLE-002",
+        "REQ-TABLE-003",
+        "REQ-MEM-002"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Creating from IPC state",
+          "expected": "System reaches Creating from IPC state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"table_handle\":null,\"schema_defined\":false,\"data_loaded\":false,\"memory_allocated\":false,\"creation_in_progress\":true,\"source_type\":\"ipc\"}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for table_lifecycle_state_creating_from_ipc_validation\n// Model: table_lifecycle, Element: creating_from_ipc\n\ndescribe('table_lifecycle_state_creating_from_ipc_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Creating from IPC state\n        // Navigate to creating_from_ipc state\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "table_lifecycle_state_active_validation",
+      "test_name": "Validate Active Table state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "active",
+      "requirements": [
+        "REQ-TABLE-001",
+        "REQ-TABLE-002",
+        "REQ-TABLE-003",
+        "REQ-MEM-002"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Active Table state",
+          "expected": "System reaches Active Table state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"table_handle\":\"number\",\"schema_defined\":true,\"data_loaded\":true,\"memory_allocated\":true,\"num_rows\":\">=0\",\"num_columns\":\">0\",\"can_access_data\":true}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for table_lifecycle_state_active_validation\n// Model: table_lifecycle, Element: active\n\ndescribe('table_lifecycle_state_active_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Active Table state\n        const table = await wasmModule.tableFromJSON(testData);\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "table_lifecycle_state_sliced_validation",
+      "test_name": "Validate Sliced View state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "sliced",
+      "requirements": [
+        "REQ-TABLE-001",
+        "REQ-TABLE-002",
+        "REQ-TABLE-003",
+        "REQ-MEM-002"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Sliced View state",
+          "expected": "System reaches Sliced View state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"table_handle\":\"number\",\"schema_defined\":true,\"data_loaded\":true,\"memory_allocated\":true,\"is_slice\":true,\"parent_table\":\"number\",\"slice_offset\":\">=0\",\"slice_length\":\">0\",\"can_access_data\":true}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for table_lifecycle_state_sliced_validation\n// Model: table_lifecycle, Element: sliced\n\ndescribe('table_lifecycle_state_sliced_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Sliced View state\n        // Navigate to sliced state\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "table_lifecycle_state_filtered_validation",
+      "test_name": "Validate Filtered Table state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "filtered",
+      "requirements": [
+        "REQ-TABLE-001",
+        "REQ-TABLE-002",
+        "REQ-TABLE-003",
+        "REQ-MEM-002"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Filtered Table state",
+          "expected": "System reaches Filtered Table state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"table_handle\":\"number\",\"schema_defined\":true,\"data_loaded\":true,\"memory_allocated\":true,\"is_filtered\":true,\"source_table\":\"number\",\"filter_applied\":true,\"can_access_data\":true}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for table_lifecycle_state_filtered_validation\n// Model: table_lifecycle, Element: filtered\n\ndescribe('table_lifecycle_state_filtered_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Filtered Table state\n        // Navigate to filtered state\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "table_lifecycle_state_selected_validation",
+      "test_name": "Validate Column Selected state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "selected",
+      "requirements": [
+        "REQ-TABLE-001",
+        "REQ-TABLE-002",
+        "REQ-TABLE-003",
+        "REQ-MEM-002"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Column Selected state",
+          "expected": "System reaches Column Selected state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"table_handle\":\"number\",\"schema_defined\":true,\"data_loaded\":true,\"memory_allocated\":true,\"is_selected\":true,\"source_table\":\"number\",\"selected_columns\":\"array\",\"can_access_data\":true}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for table_lifecycle_state_selected_validation\n// Model: table_lifecycle, Element: selected\n\ndescribe('table_lifecycle_state_selected_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Column Selected state\n        // Navigate to selected state\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "table_lifecycle_state_error_validation",
+      "test_name": "Validate Error State state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "error",
+      "requirements": [
+        "REQ-TABLE-001",
+        "REQ-TABLE-002",
+        "REQ-TABLE-003",
+        "REQ-MEM-002"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Error State state",
+          "expected": "System reaches Error State state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"error_occurred\":true,\"error_code\":\"string\",\"error_message\":\"string\",\"table_handle\":\"number or null\",\"recovery_possible\":\"boolean\"}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for table_lifecycle_state_error_validation\n// Model: table_lifecycle, Element: error\n\ndescribe('table_lifecycle_state_error_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Error State state\n        // Navigate to error state\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "table_lifecycle_state_disposed_validation",
+      "test_name": "Validate Disposed state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "disposed",
+      "requirements": [
+        "REQ-TABLE-001",
+        "REQ-TABLE-002",
+        "REQ-TABLE-003",
+        "REQ-MEM-002"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Disposed state",
+          "expected": "System reaches Disposed state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"table_handle\":null,\"schema_defined\":false,\"data_loaded\":false,\"memory_allocated\":false,\"disposed\":true}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for table_lifecycle_state_disposed_validation\n// Model: table_lifecycle, Element: disposed\n\ndescribe('table_lifecycle_state_disposed_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Disposed state\n        // Navigate to disposed state\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "table_lifecycle_transition_create_from_json",
+      "test_name": "Test transition: Nonexistent → Creating from JSON",
+      "test_type": "transition_test",
+      "model_element": "create_from_json",
+      "requirements": [
+        "REQ-TABLE-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Nonexistent state",
+          "expected": "System state is nonexistent"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: json_data_valid",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: tableFromJSON",
+          "expected": "Event tableFromJSON is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: begin_json_conversion",
+          "expected": "Action begin_json_conversion completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Creating from JSON state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "valid_inputs": [
+          "simple_json_array",
+          "json_with_nulls",
+          "json_with_mixed_types"
+        ],
+        "invalid_inputs": [
+          "null_data",
+          "empty_array",
+          "non_array_data"
+        ]
+      },
+      "browser_test_code": "\n// Generated test for table_lifecycle_transition_create_from_json\n// Model: table_lifecycle, Element: create_from_json\n\ndescribe('table_lifecycle_transition_create_from_json', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: nonexistent\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "table_lifecycle_transition_create_from_ipc",
+      "test_name": "Test transition: Nonexistent → Creating from IPC",
+      "test_type": "transition_test",
+      "model_element": "create_from_ipc",
+      "requirements": [
+        "REQ-TABLE-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Nonexistent state",
+          "expected": "System state is nonexistent"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: ipc_buffer_valid",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: tableFromIPC",
+          "expected": "Event tableFromIPC is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: begin_ipc_parsing",
+          "expected": "Action begin_ipc_parsing completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Creating from IPC state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "valid_inputs": [
+          "valid_arrow_ipc_buffer",
+          "compressed_ipc_buffer",
+          "multi_batch_ipc_buffer",
+          "single_batch_ipc_buffer"
+        ],
+        "invalid_inputs": [
+          "invalid_magic_bytes",
+          "corrupted_buffer",
+          "empty_buffer"
+        ]
+      },
+      "browser_test_code": "\n// Generated test for table_lifecycle_transition_create_from_ipc\n// Model: table_lifecycle, Element: create_from_ipc\n\ndescribe('table_lifecycle_transition_create_from_ipc', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: nonexistent\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "table_lifecycle_transition_json_creation_success",
+      "test_name": "Test transition: Creating from JSON → Active Table",
+      "test_type": "transition_test",
+      "model_element": "json_creation_success",
+      "requirements": [
+        "REQ-TABLE-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Creating from JSON state",
+          "expected": "System state is creating_from_json"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: schema_inferred && data_converted",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: json_conversion_complete",
+          "expected": "Event json_conversion_complete is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: create_table_handle",
+          "expected": "Action create_table_handle completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Active Table state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "schema_inference": "automatic_type_detection",
+        "expected_timing": "< 50ms for 1k rows"
+      },
+      "browser_test_code": "\n// Generated test for table_lifecycle_transition_json_creation_success\n// Model: table_lifecycle, Element: json_creation_success\n\ndescribe('table_lifecycle_transition_json_creation_success', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: creating_from_json\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "table_lifecycle_transition_ipc_creation_success",
+      "test_name": "Test transition: Creating from IPC → Active Table",
+      "test_type": "transition_test",
+      "model_element": "ipc_creation_success",
+      "requirements": [
+        "REQ-TABLE-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Creating from IPC state",
+          "expected": "System state is creating_from_ipc"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: schema_parsed && data_loaded",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: ipc_parsing_complete",
+          "expected": "Event ipc_parsing_complete is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: create_table_handle",
+          "expected": "Action create_table_handle completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Active Table state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "zero_copy": "data_not_duplicated",
+        "expected_timing": "< 20ms for 1k rows",
+        "multi_batch_handling": "automatic_concatenation",
+        "single_batch_optimization": "direct_usage_without_concat",
+        "batch_validation": "schema_consistency_across_batches"
+      },
+      "browser_test_code": "\n// Generated test for table_lifecycle_transition_ipc_creation_success\n// Model: table_lifecycle, Element: ipc_creation_success\n\ndescribe('table_lifecycle_transition_ipc_creation_success', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: creating_from_ipc\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "table_lifecycle_transition_json_creation_failed",
+      "test_name": "Test transition: Creating from JSON → Error State",
+      "test_type": "transition_test",
+      "model_element": "json_creation_failed",
+      "requirements": [
+        "REQ-ERROR-003"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Creating from JSON state",
+          "expected": "System state is creating_from_json"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: true",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: json_conversion_failed",
+          "expected": "Event json_conversion_failed is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: set_error_state",
+          "expected": "Action set_error_state completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Error State state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "error_conditions": [
+          "schema_inference_failed",
+          "type_conversion_error",
+          "memory_allocation_failed"
+        ]
+      },
+      "browser_test_code": "\n// Generated test for table_lifecycle_transition_json_creation_failed\n// Model: table_lifecycle, Element: json_creation_failed\n\ndescribe('table_lifecycle_transition_json_creation_failed', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: creating_from_json\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "table_lifecycle_transition_ipc_creation_failed",
+      "test_name": "Test transition: Creating from IPC → Error State",
+      "test_type": "transition_test",
+      "model_element": "ipc_creation_failed",
+      "requirements": [
+        "REQ-ERROR-003"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Creating from IPC state",
+          "expected": "System state is creating_from_ipc"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: true",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: ipc_parsing_failed",
+          "expected": "Event ipc_parsing_failed is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: set_error_state",
+          "expected": "Action set_error_state completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Error State state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "error_conditions": [
+          "invalid_arrow_format",
+          "unsupported_schema",
+          "memory_allocation_failed"
+        ]
+      },
+      "browser_test_code": "\n// Generated test for table_lifecycle_transition_ipc_creation_failed\n// Model: table_lifecycle, Element: ipc_creation_failed\n\ndescribe('table_lifecycle_transition_ipc_creation_failed', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: creating_from_ipc\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "table_lifecycle_transition_slice_table",
+      "test_name": "Test transition: Active Table → Sliced View",
+      "test_type": "transition_test",
+      "model_element": "slice_table",
+      "requirements": [
+        "REQ-TABLE-002"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Active Table state",
+          "expected": "System state is active"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: offset_valid && length_valid",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: slice",
+          "expected": "Event slice is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: create_slice_view",
+          "expected": "Action create_slice_view completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Sliced View state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "valid_slices": [
+          "offset=0, length=10",
+          "offset=100, length=50",
+          "offset=0, length=numRows"
+        ],
+        "invalid_slices": [
+          "offset=-1",
+          "offset=numRows+1",
+          "length=0",
+          "offset+length > numRows"
+        ],
+        "zero_copy": "no_data_duplication"
+      },
+      "browser_test_code": "\n// Generated test for table_lifecycle_transition_slice_table\n// Model: table_lifecycle, Element: slice_table\n\ndescribe('table_lifecycle_transition_slice_table', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: active\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "table_lifecycle_transition_filter_table",
+      "test_name": "Test transition: Active Table → Filtered Table",
+      "test_type": "transition_test",
+      "model_element": "filter_table",
+      "requirements": [
+        "REQ-TABLE-002"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Active Table state",
+          "expected": "System state is active"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: predicate_function_valid",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: filter",
+          "expected": "Event filter is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: apply_filter",
+          "expected": "Action apply_filter completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Filtered Table state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "predicates": [
+          "row => row.get('value') > 100",
+          "row => row.get('active') === true",
+          "row => row.get('name') !== null"
+        ],
+        "expected_behavior": "new_table_with_matching_rows"
+      },
+      "browser_test_code": "\n// Generated test for table_lifecycle_transition_filter_table\n// Model: table_lifecycle, Element: filter_table\n\ndescribe('table_lifecycle_transition_filter_table', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: active\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "table_lifecycle_transition_select_columns",
+      "test_name": "Test transition: Active Table → Column Selected",
+      "test_type": "transition_test",
+      "model_element": "select_columns",
+      "requirements": [
+        "REQ-TABLE-002"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Active Table state",
+          "expected": "System state is active"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: columns_exist",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: select",
+          "expected": "Event select is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: create_column_projection",
+          "expected": "Action create_column_projection completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Column Selected state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "valid_selections": [
+          "['id', 'name']",
+          "['value']",
+          "all_column_names"
+        ],
+        "invalid_selections": [
+          "['nonexistent_column']",
+          "[]",
+          "null"
+        ]
+      },
+      "browser_test_code": "\n// Generated test for table_lifecycle_transition_select_columns\n// Model: table_lifecycle, Element: select_columns\n\ndescribe('table_lifecycle_transition_select_columns', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: active\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "table_lifecycle_transition_slice_from_slice",
+      "test_name": "Test transition: Sliced View → Sliced View",
+      "test_type": "transition_test",
+      "model_element": "slice_from_slice",
+      "requirements": [
+        "REQ-TABLE-002"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Sliced View state",
+          "expected": "System state is sliced"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: offset_valid && length_valid && within_slice_bounds",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: slice",
+          "expected": "Event slice is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: create_nested_slice",
+          "expected": "Action create_nested_slice completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Sliced View state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "nested_slicing": "slice_of_slice_allowed"
+      },
+      "browser_test_code": "\n// Generated test for table_lifecycle_transition_slice_from_slice\n// Model: table_lifecycle, Element: slice_from_slice\n\ndescribe('table_lifecycle_transition_slice_from_slice', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: sliced\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "table_lifecycle_transition_operation_error",
+      "test_name": "Test transition: Active Table → Error State",
+      "test_type": "transition_test",
+      "model_element": "operation_error",
+      "requirements": [
+        "REQ-ERROR-003"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Active Table state",
+          "expected": "System state is active"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: error_is_critical",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: operation_failed",
+          "expected": "Event operation_failed is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: set_error_state",
+          "expected": "Action set_error_state completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Error State state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "error_conditions": [
+          "invalid_column_access",
+          "memory_corruption",
+          "handle_invalidated"
+        ]
+      },
+      "browser_test_code": "\n// Generated test for table_lifecycle_transition_operation_error\n// Model: table_lifecycle, Element: operation_error\n\ndescribe('table_lifecycle_transition_operation_error', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: active\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "table_lifecycle_transition_dispose_active",
+      "test_name": "Test transition: Active Table → Disposed",
+      "test_type": "transition_test",
+      "model_element": "dispose_active",
+      "requirements": [
+        "REQ-MEM-002"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Active Table state",
+          "expected": "System state is active"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: true",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: dispose",
+          "expected": "Event dispose is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: cleanup_table_resources",
+          "expected": "Action cleanup_table_resources completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Disposed state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "cleanup_verification": [
+          "handle_removed_from_registry",
+          "memory_freed",
+          "subsequent_access_fails"
+        ]
+      },
+      "browser_test_code": "\n// Generated test for table_lifecycle_transition_dispose_active\n// Model: table_lifecycle, Element: dispose_active\n\ndescribe('table_lifecycle_transition_dispose_active', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: active\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "table_lifecycle_transition_dispose_sliced",
+      "test_name": "Test transition: Sliced View → Disposed",
+      "test_type": "transition_test",
+      "model_element": "dispose_sliced",
+      "requirements": [
+        "REQ-MEM-002"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Sliced View state",
+          "expected": "System state is sliced"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: true",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: dispose",
+          "expected": "Event dispose is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: cleanup_slice_resources",
+          "expected": "Action cleanup_slice_resources completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Disposed state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "parent_table_unaffected": "parent_remains_valid"
+      },
+      "browser_test_code": "\n// Generated test for table_lifecycle_transition_dispose_sliced\n// Model: table_lifecycle, Element: dispose_sliced\n\ndescribe('table_lifecycle_transition_dispose_sliced', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: sliced\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "table_lifecycle_transition_dispose_filtered",
+      "test_name": "Test transition: Filtered Table → Disposed",
+      "test_type": "transition_test",
+      "model_element": "dispose_filtered",
+      "requirements": [
+        "REQ-MEM-002"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Filtered Table state",
+          "expected": "System state is filtered"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: true",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: dispose",
+          "expected": "Event dispose is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: cleanup_filter_resources",
+          "expected": "Action cleanup_filter_resources completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Disposed state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {},
+      "browser_test_code": "\n// Generated test for table_lifecycle_transition_dispose_filtered\n// Model: table_lifecycle, Element: dispose_filtered\n\ndescribe('table_lifecycle_transition_dispose_filtered', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: filtered\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "table_lifecycle_transition_dispose_selected",
+      "test_name": "Test transition: Column Selected → Disposed",
+      "test_type": "transition_test",
+      "model_element": "dispose_selected",
+      "requirements": [
+        "REQ-MEM-002"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Column Selected state",
+          "expected": "System state is selected"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: true",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: dispose",
+          "expected": "Event dispose is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: cleanup_selection_resources",
+          "expected": "Action cleanup_selection_resources completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Disposed state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {},
+      "browser_test_code": "\n// Generated test for table_lifecycle_transition_dispose_selected\n// Model: table_lifecycle, Element: dispose_selected\n\ndescribe('table_lifecycle_transition_dispose_selected', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: selected\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "table_lifecycle_transition_dispose_error",
+      "test_name": "Test transition: Error State → Disposed",
+      "test_type": "transition_test",
+      "model_element": "dispose_error",
+      "requirements": [
+        "REQ-MEM-002"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Error State state",
+          "expected": "System state is error"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: true",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: dispose",
+          "expected": "Event dispose is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: cleanup_error_resources",
+          "expected": "Action cleanup_error_resources completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Disposed state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {},
+      "browser_test_code": "\n// Generated test for table_lifecycle_transition_dispose_error\n// Model: table_lifecycle, Element: dispose_error\n\ndescribe('table_lifecycle_transition_dispose_error', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: error\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    }
+  ]
+}

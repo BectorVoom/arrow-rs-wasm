@@ -1,0 +1,489 @@
+{
+  "model_id": "compute_operations_flow",
+  "model_type": "data_flow",
+  "version": "1.0.0", 
+  "description": "Data flow model for compute operations on Arrow columns including aggregations and statistics",
+  "requirements": ["REQ-COMPUTE-001", "REQ-COMPUTE-002", "REQ-COMPUTE-003", "REQ-PERFORMANCE-001"],
+  "operations": [
+    {
+      "operation_id": "sum_aggregation",
+      "name": "Sum Aggregation",
+      "type": "aggregation",
+      "inputs": [
+        {
+          "name": "column",
+          "type": "Column",
+          "constraints": [
+            "data_type in ['Int32', 'Float64']",
+            "column_accessible === true",
+            "length >= 0"
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "name": "sum_result",
+          "type": "number",
+          "constraints": [
+            "finite_number || sum === 0",
+            "null_values_ignored"
+          ]
+        }
+      ],
+      "preconditions": [
+        "column.data_accessible === true",
+        "column.data_type === 'Int32' || column.data_type === 'Float64'",
+        "column.handle !== null"
+      ],
+      "postconditions": [
+        "result is finite number",
+        "null values excluded from calculation",
+        "empty column returns 0"
+      ],
+      "error_conditions": [
+        {
+          "condition": "unsupported_data_type",
+          "error_code": "TYPE_MISMATCH",
+          "message": "Sum operation not supported for this data type"
+        },
+        {
+          "condition": "invalid_column_handle",
+          "error_code": "INVALID_HANDLE",
+          "message": "Column handle is invalid"
+        }
+      ],
+      "test_scenarios": [
+        {
+          "scenario": "int32_column_sum",
+          "input_data": [1, 2, 3, null, 5],
+          "expected_result": 11,
+          "data_type": "Int32"
+        },
+        {
+          "scenario": "float64_column_sum", 
+          "input_data": [1.5, 2.7, null, 4.8],
+          "expected_result": 9.0,
+          "data_type": "Float64"
+        },
+        {
+          "scenario": "all_null_column",
+          "input_data": [null, null, null],
+          "expected_result": 0,
+          "data_type": "Int32"
+        },
+        {
+          "scenario": "empty_column",
+          "input_data": [],
+          "expected_result": 0,
+          "data_type": "Int32"
+        }
+      ],
+      "performance_requirements": {
+        "max_latency": "50ms for 10k values",
+        "memory_overhead": "O(1) additional memory",
+        "null_handling": "skip nulls efficiently"
+      }
+    },
+    {
+      "operation_id": "mean_aggregation",
+      "name": "Mean Aggregation",
+      "type": "aggregation",
+      "inputs": [
+        {
+          "name": "column",
+          "type": "Column", 
+          "constraints": [
+            "data_type in ['Int32', 'Float64']",
+            "column_accessible === true",
+            "length >= 0"
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "name": "mean_result",
+          "type": "number",
+          "constraints": [
+            "finite_number || error_thrown",
+            "null_values_ignored"
+          ]
+        }
+      ],
+      "preconditions": [
+        "column.data_accessible === true",
+        "column.data_type === 'Int32' || column.data_type === 'Float64'",
+        "non_null_values_exist"
+      ],
+      "postconditions": [
+        "result is finite number or error thrown",
+        "result = sum_of_non_null_values / count_of_non_null_values",
+        "NaN values excluded from calculation"
+      ],
+      "error_conditions": [
+        {
+          "condition": "no_valid_values",
+          "error_code": "EMPTY_COLUMN", 
+          "message": "Cannot compute mean of empty column"
+        },
+        {
+          "condition": "unsupported_data_type",
+          "error_code": "TYPE_MISMATCH",
+          "message": "Mean operation not supported for this data type"
+        }
+      ],
+      "test_scenarios": [
+        {
+          "scenario": "int32_column_mean",
+          "input_data": [2, 4, 6, null, 8],
+          "expected_result": 5.0,
+          "data_type": "Int32"
+        },
+        {
+          "scenario": "float64_with_nan",
+          "input_data": [1.0, "NaN", 3.0, null],
+          "expected_result": 2.0,
+          "data_type": "Float64"
+        },
+        {
+          "scenario": "single_value",
+          "input_data": [42],
+          "expected_result": 42.0,
+          "data_type": "Int32"
+        }
+      ]
+    },
+    {
+      "operation_id": "min_aggregation",
+      "name": "Minimum Value",
+      "type": "aggregation",
+      "inputs": [
+        {
+          "name": "column",
+          "type": "Column",
+          "constraints": [
+            "data_type in ['Int32', 'Float64', 'Utf8']",
+            "column_accessible === true",
+            "length >= 0"
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "name": "min_result",
+          "type": "number | string | null",
+          "constraints": [
+            "type matches input column type",
+            "null if no valid values"
+          ]
+        }
+      ],
+      "test_scenarios": [
+        {
+          "scenario": "numeric_min",
+          "input_data": [5, 1, 9, null, 3],
+          "expected_result": 1,
+          "data_type": "Int32"
+        },
+        {
+          "scenario": "string_min",
+          "input_data": ["zebra", "apple", null, "banana"],
+          "expected_result": "apple",
+          "data_type": "Utf8"
+        },
+        {
+          "scenario": "all_null",
+          "input_data": [null, null],
+          "expected_result": null,
+          "data_type": "Int32"
+        }
+      ]
+    },
+    {
+      "operation_id": "max_aggregation", 
+      "name": "Maximum Value",
+      "type": "aggregation",
+      "inputs": [
+        {
+          "name": "column",
+          "type": "Column",
+          "constraints": [
+            "data_type in ['Int32', 'Float64', 'Utf8']",
+            "column_accessible === true",
+            "length >= 0"
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "name": "max_result",
+          "type": "number | string | null",
+          "constraints": [
+            "type matches input column type",
+            "null if no valid values"
+          ]
+        }
+      ],
+      "test_scenarios": [
+        {
+          "scenario": "numeric_max",
+          "input_data": [5, 1, 9, null, 3],
+          "expected_result": 9,
+          "data_type": "Int32"
+        },
+        {
+          "scenario": "string_max",
+          "input_data": ["zebra", "apple", null, "banana"],
+          "expected_result": "zebra",
+          "data_type": "Utf8"
+        }
+      ]
+    },
+    {
+      "operation_id": "count_aggregation",
+      "name": "Count Non-Null Values",
+      "type": "aggregation",
+      "inputs": [
+        {
+          "name": "column",
+          "type": "Column",
+          "constraints": [
+            "column_accessible === true",
+            "length >= 0"
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "name": "count_result",
+          "type": "number",
+          "constraints": [
+            "integer >= 0",
+            "count <= column.length"
+          ]
+        }
+      ],
+      "postconditions": [
+        "result === column.length - column.null_count",
+        "result >= 0",
+        "result <= column.length"
+      ],
+      "test_scenarios": [
+        {
+          "scenario": "mixed_nulls",
+          "input_data": [1, null, 3, null, 5],
+          "expected_result": 3,
+          "data_type": "Int32"
+        },
+        {
+          "scenario": "no_nulls",
+          "input_data": [1, 2, 3, 4],
+          "expected_result": 4,
+          "data_type": "Int32"
+        },
+        {
+          "scenario": "all_nulls",
+          "input_data": [null, null, null],
+          "expected_result": 0,
+          "data_type": "Int32"
+        }
+      ]
+    },
+    {
+      "operation_id": "count_distinct_aggregation",
+      "name": "Count Distinct Values",
+      "type": "aggregation",
+      "inputs": [
+        {
+          "name": "column",
+          "type": "Column",
+          "constraints": [
+            "data_type in ['Int32', 'Float64', 'Utf8', 'Boolean']",
+            "column_accessible === true",
+            "length >= 0"
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "name": "distinct_count_result",
+          "type": "number",
+          "constraints": [
+            "integer >= 0",
+            "count <= column.length",
+            "count <= non_null_values"
+          ]
+        }
+      ],
+      "preconditions": [
+        "column.data_accessible === true",
+        "column.data_type in ['Int32', 'Float64', 'Utf8', 'Boolean']",
+        "column.handle !== null"
+      ],
+      "postconditions": [
+        "result === unique_non_null_values_count",
+        "result >= 0",
+        "result <= column.length - column.null_count",
+        "null values excluded from distinct count"
+      ],
+      "error_conditions": [
+        {
+          "condition": "unsupported_data_type",
+          "error_code": "TYPE_MISMATCH",
+          "message": "CountDistinct operation not supported for this data type"
+        },
+        {
+          "condition": "invalid_column_handle",
+          "error_code": "INVALID_HANDLE",
+          "message": "Column handle is invalid"
+        }
+      ],
+      "test_scenarios": [
+        {
+          "scenario": "int32_with_duplicates",
+          "input_data": [1, 2, 1, null, 3, 2],
+          "expected_result": 3,
+          "data_type": "Int32",
+          "description": "Three unique values: 1, 2, 3"
+        },
+        {
+          "scenario": "string_with_duplicates",
+          "input_data": ["apple", "banana", "apple", null, "cherry"],
+          "expected_result": 3,
+          "data_type": "Utf8",
+          "description": "Three unique values: apple, banana, cherry"
+        },
+        {
+          "scenario": "boolean_column",
+          "input_data": [true, false, true, null, false, true],
+          "expected_result": 2,
+          "data_type": "Boolean",
+          "description": "Two unique values: true, false"
+        },
+        {
+          "scenario": "all_same_values",
+          "input_data": [5, 5, 5, 5],
+          "expected_result": 1,
+          "data_type": "Int32",
+          "description": "One unique value: 5"
+        },
+        {
+          "scenario": "all_nulls",
+          "input_data": [null, null, null],
+          "expected_result": 0,
+          "data_type": "Int32",
+          "description": "No non-null values"
+        },
+        {
+          "scenario": "empty_column",
+          "input_data": [],
+          "expected_result": 0,
+          "data_type": "Int32",
+          "description": "Empty column"
+        },
+        {
+          "scenario": "float64_with_precision",
+          "input_data": [1.0, 1.000001, 1.0, null, 2.5],
+          "expected_result": 3,
+          "data_type": "Float64",
+          "description": "Three unique values considering precision"
+        }
+      ],
+      "performance_requirements": {
+        "max_latency": "100ms for 10k values",
+        "memory_overhead": "O(n) for HashSet storage",
+        "null_handling": "skip nulls efficiently",
+        "algorithm": "HashSet-based distinct counting"
+      },
+      "implementation_notes": [
+        "Uses HashSet<String> for distinct value tracking",
+        "Converts all values to strings for comparison",
+        "Memory usage scales with number of distinct values",
+        "Efficient for columns with low cardinality"
+      ]
+    }
+  ],
+  "data_flow_constraints": [
+    {
+      "constraint_id": "null_handling_consistency",
+      "description": "All aggregation operations must handle null values consistently",
+      "rules": [
+        "null values are excluded from calculations",
+        "null values do not contribute to counts in mean calculation",
+        "operations on all-null columns return appropriate defaults or errors"
+      ]
+    },
+    {
+      "constraint_id": "type_safety",
+      "description": "Operations must validate input types and provide clear error messages",
+      "rules": [
+        "unsupported data types must throw TYPE_MISMATCH error",
+        "invalid column handles must throw INVALID_HANDLE error",
+        "operation results must match expected return types"
+      ]
+    },
+    {
+      "constraint_id": "performance_bounds",
+      "description": "All operations must meet performance requirements",
+      "rules": [
+        "linear time complexity O(n) where n is column length",
+        "constant additional memory O(1) for aggregations",
+        "operations should complete within specified time limits"
+      ]
+    },
+    {
+      "constraint_id": "numerical_stability",
+      "description": "Numerical operations must handle edge cases appropriately", 
+      "rules": [
+        "NaN values in Float64 columns excluded from calculations",
+        "overflow handling for large numeric sums",
+        "precision preservation for floating point operations"
+      ]
+    }
+  ],
+  "integration_points": [
+    {
+      "point_id": "column_access", 
+      "description": "Interface with column data access system",
+      "dependencies": [
+        "column.data_accessible === true",
+        "valid column handle required",
+        "column type information available"
+      ]
+    },
+    {
+      "point_id": "error_system",
+      "description": "Integration with error handling framework",
+      "dependencies": [
+        "error codes defined in error module",
+        "error messages localized and descriptive",
+        "error propagation to JavaScript layer"
+      ]
+    },
+    {
+      "point_id": "type_system",
+      "description": "Integration with Arrow type system",
+      "dependencies": [
+        "type checking against Arrow schema",
+        "type conversion between Rust and JavaScript",
+        "null value representation consistency"
+      ]
+    }
+  ],
+  "metadata": {
+    "created": "2024-12-27",
+    "author": "Claude Code MBD System", 
+    "requirements": [
+      "REQ-COMPUTE-001: Aggregation functions must work on supported data types",
+      "REQ-COMPUTE-002: Operations must handle null values appropriately",
+      "REQ-COMPUTE-003: Performance requirements must be met for common data sizes",
+      "REQ-PERFORMANCE-001: Operations must have predictable time and space complexity"
+    ],
+    "test_generation_notes": [
+      "Test null handling edge cases for all operations",
+      "Verify type checking and error messages",
+      "Performance testing with various column sizes",
+      "Cross-verify results with reference implementations",
+      "Test numerical stability with edge case values"
+    ]
+  }
+}

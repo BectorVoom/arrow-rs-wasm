@@ -1,0 +1,375 @@
+{
+  "model_id": "array_builder_lifecycle",
+  "model_type": "state_machine",
+  "version": "1.0.0",
+  "description": "ArrayBuilder lifecycle state machine covering creation, value appending, and column finishing",
+  "requirements": ["REQ-BUILDER-001", "REQ-BUILDER-002", "REQ-BUILDER-003", "REQ-MEM-003"],
+  "states": [
+    {
+      "id": "uninitialized",
+      "name": "Uninitialized",
+      "type": "initial",
+      "properties": {
+        "builder_handle": null,
+        "data_type": null,
+        "capacity": 0,
+        "values_appended": 0,
+        "can_append": false
+      },
+      "invariants": [
+        "builder_handle === null",
+        "data_type === null",
+        "values_appended === 0"
+      ]
+    },
+    {
+      "id": "empty",
+      "name": "Empty Builder",
+      "type": "normal",
+      "properties": {
+        "builder_handle": "number",
+        "data_type": "DataType",
+        "capacity": ">0",
+        "values_appended": 0,
+        "can_append": true,
+        "builder_initialized": true
+      },
+      "invariants": [
+        "builder_handle !== null",
+        "data_type !== null",
+        "values_appended === 0",
+        "can_append === true"
+      ]
+    },
+    {
+      "id": "building",
+      "name": "Building with Values",
+      "type": "normal",
+      "properties": {
+        "builder_handle": "number",
+        "data_type": "DataType",
+        "capacity": ">0",
+        "values_appended": ">0",
+        "can_append": true,
+        "has_data": true
+      },
+      "invariants": [
+        "builder_handle !== null",
+        "values_appended > 0",
+        "can_append === true",
+        "has_data === true"
+      ]
+    },
+    {
+      "id": "finished",
+      "name": "Finished Builder",
+      "type": "normal",
+      "properties": {
+        "builder_handle": "number",
+        "data_type": "DataType",
+        "values_appended": ">=0",
+        "can_append": false,
+        "column_created": true,
+        "result_column": "Column"
+      },
+      "invariants": [
+        "can_append === false",
+        "column_created === true",
+        "result_column !== null"
+      ]
+    },
+    {
+      "id": "cleared",
+      "name": "Cleared Builder",
+      "type": "normal",
+      "properties": {
+        "builder_handle": "number",
+        "data_type": "DataType",
+        "capacity": ">0",
+        "values_appended": 0,
+        "can_append": true,
+        "builder_reset": true
+      },
+      "invariants": [
+        "values_appended === 0",
+        "can_append === true",
+        "builder_reset === true"
+      ]
+    },
+    {
+      "id": "error",
+      "name": "Error State",
+      "type": "error",
+      "properties": {
+        "error_occurred": true,
+        "error_code": "string",
+        "error_message": "string",
+        "builder_handle": "number or null",
+        "recovery_possible": "boolean"
+      },
+      "invariants": [
+        "error_occurred === true",
+        "error_code !== null",
+        "error_message !== null"
+      ]
+    }
+  ],
+  "transitions": [
+    {
+      "id": "initialize_builder",
+      "from": "uninitialized",
+      "to": "empty",
+      "trigger": "ArrayBuilder.new",
+      "guard": "data_type_valid && capacity_valid",
+      "action": "create_builder_instance",
+      "requirements": ["REQ-BUILDER-001"],
+      "test_data": {
+        "valid_types": [
+          "DataType.newInt32()",
+          "DataType.newFloat64()",
+          "DataType.newUtf8()",
+          "DataType.newBool()"
+        ],
+        "valid_capacities": [
+          "256 (default)",
+          "100",
+          "1000",
+          "null (uses default)"
+        ],
+        "invalid_inputs": [
+          "unsupported_data_type",
+          "negative_capacity"
+        ]
+      }
+    },
+    {
+      "id": "append_value",
+      "from": "empty",
+      "to": "building",
+      "trigger": "append",
+      "guard": "value_type_compatible",
+      "action": "store_value_in_builder",
+      "requirements": ["REQ-BUILDER-002"],
+      "test_data": {
+        "valid_values": [
+          "42 for Int32",
+          "3.14 for Float64",
+          "'hello' for Utf8",
+          "true for Boolean"
+        ],
+        "null_values": [
+          "null",
+          "undefined"
+        ],
+        "type_conversions": [
+          "string_to_number_coercion",
+          "number_to_string_coercion"
+        ]
+      }
+    },
+    {
+      "id": "append_additional_value",
+      "from": "building",
+      "to": "building",
+      "trigger": "append",
+      "guard": "value_type_compatible",
+      "action": "store_additional_value",
+      "requirements": ["REQ-BUILDER-002"],
+      "test_data": {
+        "multiple_appends": "sequential_value_storage",
+        "capacity_expansion": "automatic_if_needed"
+      }
+    },
+    {
+      "id": "append_null_to_empty",
+      "from": "empty",
+      "to": "building",
+      "trigger": "appendNull",
+      "guard": "true",
+      "action": "store_null_value",
+      "requirements": ["REQ-BUILDER-002"],
+      "test_data": {
+        "null_representation": "proper_null_marking"
+      }
+    },
+    {
+      "id": "append_null_to_building",
+      "from": "building",
+      "to": "building",
+      "trigger": "appendNull",
+      "guard": "true",
+      "action": "store_additional_null",
+      "requirements": ["REQ-BUILDER-002"]
+    },
+    {
+      "id": "append_values_to_empty",
+      "from": "empty",
+      "to": "building",
+      "trigger": "appendValues",
+      "guard": "values_array_valid",
+      "action": "store_multiple_values",
+      "requirements": ["REQ-BUILDER-002"],
+      "test_data": {
+        "valid_arrays": [
+          "[1, 2, 3, null, 5]",
+          "['a', 'b', null, 'c']",
+          "[true, false, null]"
+        ],
+        "empty_array": "[]",
+        "batch_efficiency": "optimized_bulk_append"
+      }
+    },
+    {
+      "id": "append_values_to_building",
+      "from": "building",
+      "to": "building",
+      "trigger": "appendValues",
+      "guard": "values_array_valid",
+      "action": "store_additional_multiple_values",
+      "requirements": ["REQ-BUILDER-002"]
+    },
+    {
+      "id": "finish_from_empty",
+      "from": "empty",
+      "to": "finished",
+      "trigger": "finish",
+      "guard": "true",
+      "action": "create_empty_column",
+      "requirements": ["REQ-BUILDER-003"],
+      "test_data": {
+        "empty_column_properties": [
+          "length === 0",
+          "schema_matches_builder_type",
+          "valid_column_handle"
+        ]
+      }
+    },
+    {
+      "id": "finish_from_building",
+      "from": "building",
+      "to": "finished",
+      "trigger": "finish",
+      "guard": "true",
+      "action": "create_populated_column",
+      "requirements": ["REQ-BUILDER-003"],
+      "test_data": {
+        "column_properties": [
+          "length === values_appended",
+          "data_integrity_preserved",
+          "null_values_properly_represented",
+          "column_registered_in_table_registry"
+        ],
+        "performance": "< 10ms for 1k values"
+      }
+    },
+    {
+      "id": "clear_from_building",
+      "from": "building",
+      "to": "cleared",
+      "trigger": "clear",
+      "guard": "true",
+      "action": "reset_builder_state",
+      "requirements": ["REQ-BUILDER-002"],
+      "test_data": {
+        "state_reset": [
+          "values_appended = 0",
+          "internal_storage_cleared",
+          "can_append_again"
+        ]
+      }
+    },
+    {
+      "id": "clear_from_empty",
+      "from": "empty",
+      "to": "cleared",
+      "trigger": "clear",
+      "guard": "true",
+      "action": "reset_empty_builder",
+      "requirements": ["REQ-BUILDER-002"]
+    },
+    {
+      "id": "append_after_clear",
+      "from": "cleared",
+      "to": "building",
+      "trigger": "append",
+      "guard": "value_type_compatible",
+      "action": "store_value_after_clear",
+      "requirements": ["REQ-BUILDER-002"],
+      "test_data": {
+        "reuse_verification": "builder_works_normally_after_clear"
+      }
+    },
+    {
+      "id": "finish_after_clear",
+      "from": "cleared",
+      "to": "finished",
+      "trigger": "finish",
+      "guard": "true",
+      "action": "create_empty_column_after_clear",
+      "requirements": ["REQ-BUILDER-003"]
+    },
+    {
+      "id": "type_mismatch_error",
+      "from": "empty",
+      "to": "error",
+      "trigger": "append",
+      "guard": "value_type_incompatible",
+      "action": "set_type_error",
+      "requirements": ["REQ-ERROR-004"],
+      "test_data": {
+        "error_scenarios": [
+          "string_to_int32_incompatible",
+          "object_to_primitive_incompatible",
+          "complex_type_unsupported"
+        ]
+      }
+    },
+    {
+      "id": "invalid_array_error",
+      "from": "empty",
+      "to": "error",
+      "trigger": "appendValues",
+      "guard": "values_array_invalid",
+      "action": "set_array_error",
+      "requirements": ["REQ-ERROR-004"],
+      "test_data": {
+        "error_scenarios": [
+          "non_array_input",
+          "mixed_incompatible_types"
+        ]
+      }
+    },
+    {
+      "id": "finish_after_error",
+      "from": "error",
+      "to": "error",
+      "trigger": "finish",
+      "guard": "error_state_active",
+      "action": "return_error_result",
+      "requirements": ["REQ-ERROR-004"],
+      "test_data": {
+        "error_persistence": "finish_fails_when_in_error_state"
+      }
+    }
+  ],
+  "metadata": {
+    "created": "2025-09-27",
+    "author": "Claude Code MBD System",
+    "requirements": [
+      "REQ-BUILDER-001: ArrayBuilder must be createable for supported data types",
+      "REQ-BUILDER-002: ArrayBuilder must support appending values and nulls",
+      "REQ-BUILDER-003: ArrayBuilder must create valid Column when finished",
+      "REQ-MEM-003: ArrayBuilder memory must be properly managed",
+      "REQ-ERROR-004: ArrayBuilder must handle type mismatches and invalid inputs"
+    ],
+    "test_generation_notes": [
+      "Test all supported data types (Int32, Float64, Utf8, Boolean)",
+      "Verify null value handling across all operations",
+      "Test builder reuse after clear operation",
+      "Validate memory management and cleanup",
+      "Test error conditions and recovery",
+      "Performance testing for bulk operations",
+      "Type conversion and coercion edge cases"
+    ]
+  }
+}
