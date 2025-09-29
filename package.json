@@ -1,6 +1,6 @@
 {
   "name": "arrow-rs-wasm",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "WebAssembly library for Arrow/Feather/Parquet data with zero-copy ownership semantics and LZ4 compression",
   "type": "module",
   "main": "dist/index.js",
