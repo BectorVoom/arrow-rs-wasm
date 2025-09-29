@@ -1,7 +1,9 @@
 # arrow-rs-wasm
 
 [![npm version](https://badge.fury.io/js/arrow-rs-wasm.svg)](https://www.npmjs.com/package/arrow-rs-wasm)
+[![CI](https://github.com/BectorVoom/arrow-rs-wasm/workflows/CI/badge.svg)](https://github.com/BectorVoom/arrow-rs-wasm/actions)
 [![License: MIT OR Apache-2.0](https://img.shields.io/badge/License-MIT%20OR%20Apache--2.0-blue.svg)](https://github.com/BectorVoom/arrow-rs-wasm#license)
+[![WASM](https://img.shields.io/badge/WebAssembly-ready-brightgreen.svg)](https://webassembly.org/)
 
 A high-performance WebAssembly library for reading, writing, and processing Apache Arrow, Feather, and Parquet data with zero-copy semantics and LZ4 compression support.
 
@@ -450,6 +452,9 @@ at your option.
 - [GitHub repository](https://github.com/BectorVoom/arrow-rs-wasm)
 - [Apache Arrow project](https://arrow.apache.org/)
 - [WebAssembly](https://webassembly.org/)
+- [arrow](https://github.com/apache/arrow-rs) - The official Rust Arrow implementation
+- [wasm-bindgen](https://github.com/rustwasm/wasm-bindgen) - Rust and WebAssembly integration
+- [lz4_flex](https://github.com/PSeitz/lz4_flex) - Pure Rust LZ4 implementation
 
 ---
 
