@@ -1,0 +1,391 @@
+{
+  "model_id": "enhanced_api_lifecycle",
+  "model_type": "state_machine", 
+  "version": "2.0.0",
+  "description": "Enhanced WASM API lifecycle state machine covering initialization, file format operations, plugin management, and comprehensive error handling",
+  "requirements": ["REQ-INIT-001", "REQ-INIT-002", "REQ-CORE-001", "REQ-FORMAT-001", "REQ-PLUGIN-001", "REQ-MEM-001"],
+  "states": [
+    {
+      "id": "uninitialized",
+      "name": "Uninitialized",
+      "type": "initial",
+      "properties": {
+        "wasm_loaded": false,
+        "memory_ready": false,
+        "api_available": false,
+        "plugin_registry_ready": false
+      },
+      "invariants": [
+        "wasm_loaded === false",
+        "memory_ready === false",
+        "api_available === false",
+        "plugin_registry_ready === false"
+      ]
+    },
+    {
+      "id": "initializing",
+      "name": "Initializing Runtime",
+      "type": "normal",
+      "properties": {
+        "wasm_loaded": true,
+        "memory_ready": false,
+        "api_available": false,
+        "plugin_registry_ready": false,
+        "initialization_started": true
+      },
+      "invariants": [
+        "wasm_loaded === true",
+        "initialization_started === true",
+        "memory_ready === false"
+      ]
+    },
+    {
+      "id": "ready",
+      "name": "Ready for Operations",
+      "type": "normal",
+      "properties": {
+        "wasm_loaded": true,
+        "memory_ready": true,
+        "api_available": true,
+        "plugin_registry_ready": true,
+        "can_create_tables": true,
+        "supported_formats": ["arrow_ipc", "arrow_stream", "parquet", "feather"]
+      },
+      "invariants": [
+        "wasm_loaded === true",
+        "memory_ready === true", 
+        "api_available === true",
+        "plugin_registry_ready === true"
+      ]
+    },
+    {
+      "id": "processing_file",
+      "name": "Processing File Data",
+      "type": "normal",
+      "properties": {
+        "wasm_loaded": true,
+        "memory_ready": true,
+        "api_available": true,
+        "current_operation": "read|write",
+        "current_format": "arrow_ipc|parquet|feather",
+        "active_handles": ">=1"
+      },
+      "invariants": [
+        "api_available === true",
+        "current_operation !== null",
+        "current_format !== null",
+        "active_handles >= 1"
+      ]
+    },
+    {
+      "id": "plugin_operations",
+      "name": "Plugin Operations Active",
+      "type": "normal",
+      "properties": {
+        "wasm_loaded": true,
+        "memory_ready": true,
+        "api_available": true,
+        "plugin_registry_ready": true,
+        "active_plugins": ">=1",
+        "plugin_operation_active": true
+      },
+      "invariants": [
+        "api_available === true",
+        "plugin_registry_ready === true",
+        "active_plugins >= 1"
+      ]
+    },
+    {
+      "id": "format_error",
+      "name": "File Format Error",
+      "type": "error",
+      "properties": {
+        "error_occurred": true,
+        "error_type": "format_error",
+        "error_code": "string",
+        "error_message": "string",
+        "detected_format": "string|null",
+        "recovery_possible": true
+      },
+      "invariants": [
+        "error_occurred === true",
+        "error_type === 'format_error'",
+        "error_code !== null"
+      ]
+    },
+    {
+      "id": "plugin_error",
+      "name": "Plugin Error",
+      "type": "error", 
+      "properties": {
+        "error_occurred": true,
+        "error_type": "plugin_error",
+        "error_code": "string",
+        "error_message": "string",
+        "failed_plugin": "string",
+        "recovery_possible": true
+      },
+      "invariants": [
+        "error_occurred === true",
+        "error_type === 'plugin_error'",
+        "failed_plugin !== null"
+      ]
+    },
+    {
+      "id": "memory_error",
+      "name": "Memory Management Error",
+      "type": "error",
+      "properties": {
+        "error_occurred": true,
+        "error_type": "memory_error",
+        "error_code": "string",
+        "error_message": "string",
+        "memory_state": "string",
+        "recovery_possible": false
+      },
+      "invariants": [
+        "error_occurred === true",
+        "error_type === 'memory_error'",
+        "recovery_possible === false"
+      ]
+    },
+    {
+      "id": "disposed", 
+      "name": "Disposed",
+      "type": "final",
+      "properties": {
+        "wasm_loaded": false,
+        "memory_ready": false,
+        "api_available": false,
+        "plugin_registry_ready": false,
+        "disposed": true,
+        "all_handles_freed": true
+      },
+      "invariants": [
+        "disposed === true",
+        "api_available === false",
+        "all_handles_freed === true"
+      ]
+    }
+  ],
+  "transitions": [
+    {
+      "id": "initialize_system",
+      "from": "uninitialized",
+      "to": "initializing",
+      "trigger": "init|init_with_options",
+      "guard": "wasm_binary_available",
+      "action": "start_wasm_initialization",
+      "requirements": ["REQ-INIT-001"],
+      "test_data": {
+        "api_calls": ["init()", "init_with_options({enable_console_logs: true})"],
+        "expected_timing": "< 100ms",
+        "browser_compatibility": ["chrome", "firefox", "safari", "edge"]
+      }
+    },
+    {
+      "id": "initialization_complete",
+      "from": "initializing", 
+      "to": "ready",
+      "trigger": "initialization_success",
+      "guard": "memory_setup_successful && plugin_registry_initialized",
+      "action": "enable_full_api",
+      "requirements": ["REQ-INIT-002", "REQ-PLUGIN-001"],
+      "test_data": {
+        "expected_timing": "< 50ms",
+        "memory_threshold": "< 5MB",
+        "api_availability": ["all_core_functions", "all_format_functions", "all_plugin_functions"]
+      }
+    },
+    {
+      "id": "read_file_data",
+      "from": "ready",
+      "to": "processing_file",
+      "trigger": "read_table_from_bytes|read_table_from_array_buffer",
+      "guard": "api_available && data_valid",
+      "action": "detect_format_and_parse",
+      "requirements": ["REQ-FORMAT-001"],
+      "test_data": {
+        "valid_formats": ["arrow_ipc", "arrow_stream", "parquet", "feather_v1", "feather_v2"],
+        "file_sizes": ["1KB", "1MB", "10MB", "100MB"],
+        "expected_format_detection": "< 10ms"
+      }
+    },
+    {
+      "id": "write_file_data",
+      "from": "ready",
+      "to": "processing_file",
+      "trigger": "write_table_to_ipc|write_table_to_parquet|write_table_to_feather",
+      "guard": "api_available && handle_valid",
+      "action": "serialize_to_format",
+      "requirements": ["REQ-FORMAT-001"],
+      "test_data": {
+        "output_formats": ["arrow_ipc", "arrow_ipc_lz4", "parquet", "feather"],
+        "compression_options": ["none", "lz4"],
+        "expected_timing": "< 100ms per MB"
+      }
+    },
+    {
+      "id": "register_plugin",
+      "from": "ready",
+      "to": "plugin_operations",
+      "trigger": "register_plugin",
+      "guard": "plugin_registry_ready && plugin_id_valid",
+      "action": "create_and_register_plugin_instance",
+      "requirements": ["REQ-PLUGIN-001"],
+      "test_data": {
+        "valid_plugin_ids": ["geometry", "io.arrow.plugin.geo.v1", "demo", "io.arrow.plugin.demo.v1"],
+        "invalid_plugin_ids": ["", "invalid", "missing.plugin.v1"],
+        "expected_timing": "< 20ms"
+      }
+    },
+    {
+      "id": "file_processing_complete",
+      "from": "processing_file", 
+      "to": "ready",
+      "trigger": "operation_complete",
+      "guard": "no_errors",
+      "action": "return_result_and_cleanup",
+      "requirements": ["REQ-CORE-001"],
+      "test_data": {
+        "success_indicators": ["valid_handle_returned", "no_memory_leaks", "format_preserved"]
+      }
+    },
+    {
+      "id": "plugin_operation_complete",
+      "from": "plugin_operations",
+      "to": "ready", 
+      "trigger": "plugin_operation_complete",
+      "guard": "plugin_validation_successful",
+      "action": "finalize_plugin_operation",
+      "requirements": ["REQ-PLUGIN-001"],
+      "test_data": {
+        "success_indicators": ["plugin_registered", "plugin_validated", "plugin_operational"]
+      }
+    },
+    {
+      "id": "format_detection_failed",
+      "from": "processing_file",
+      "to": "format_error",
+      "trigger": "unknown_format|corrupted_data",
+      "guard": "format_detection_failed",
+      "action": "set_format_error_state",
+      "requirements": ["REQ-FORMAT-002"],
+      "test_data": {
+        "error_conditions": ["unknown_magic_bytes", "corrupted_header", "invalid_metadata", "unsupported_version"],
+        "error_messages": ["comprehensive_format_help", "detection_details", "recovery_suggestions"]
+      }
+    },
+    {
+      "id": "plugin_registration_failed",
+      "from": "plugin_operations",
+      "to": "plugin_error",
+      "trigger": "plugin_error|validation_failed",
+      "guard": "plugin_operation_failed",
+      "action": "set_plugin_error_state", 
+      "requirements": ["REQ-PLUGIN-002"],
+      "test_data": {
+        "error_conditions": ["invalid_plugin_id", "plugin_not_found", "validation_failed", "factory_error"],
+        "error_recovery": ["suggest_valid_plugins", "show_available_types"]
+      }
+    },
+    {
+      "id": "memory_corruption",
+      "from": "processing_file",
+      "to": "memory_error",
+      "trigger": "memory_corruption|invalid_handle|wasm_trap",
+      "guard": "critical_memory_error",
+      "action": "set_critical_error_state",
+      "requirements": ["REQ-MEM-002"],
+      "test_data": {
+        "error_conditions": ["invalid_table_handle", "memory_leak_detected", "buffer_overflow", "use_after_free"],
+        "recovery_impossible": true
+      }
+    },
+    {
+      "id": "recover_from_format_error",
+      "from": "format_error",
+      "to": "ready",
+      "trigger": "error_acknowledged",
+      "guard": "recovery_possible",
+      "action": "clear_error_state_and_reset",
+      "requirements": ["REQ-ERROR-001"],
+      "test_data": {
+        "recovery_steps": ["clear_error", "reset_state", "validate_ready"]
+      }
+    },
+    {
+      "id": "recover_from_plugin_error",
+      "from": "plugin_error",
+      "to": "ready",
+      "trigger": "error_acknowledged",
+      "guard": "recovery_possible",
+      "action": "clear_error_state_and_reset",
+      "requirements": ["REQ-ERROR-001"],
+      "test_data": {
+        "recovery_steps": ["clear_plugin_error", "reset_plugin_registry", "validate_ready"]
+      }
+    },
+    {
+      "id": "cleanup_and_dispose",
+      "from": "ready",
+      "to": "disposed",
+      "trigger": "dispose|cleanup",
+      "guard": "true",
+      "action": "cleanup_all_resources",
+      "requirements": ["REQ-MEM-001"],
+      "test_data": {
+        "cleanup_verification": ["all_handles_freed", "memory_released", "plugins_unregistered"]
+      }
+    },
+    {
+      "id": "force_dispose_from_error",
+      "from": "memory_error",
+      "to": "disposed",
+      "trigger": "dispose",
+      "guard": "true", 
+      "action": "emergency_cleanup",
+      "requirements": ["REQ-MEM-001"],
+      "test_data": {
+        "emergency_cleanup": ["force_free_handles", "reset_wasm_memory", "clear_all_state"]
+      }
+    }
+  ],
+  "metadata": {
+    "created": "2025-09-29",
+    "author": "Claude Code Enhanced MBD System",
+    "version_history": [
+      "1.0.0: Initial module lifecycle model",
+      "2.0.0: Enhanced with Parquet support, plugin system, comprehensive error handling"
+    ],
+    "requirements": [
+      "REQ-INIT-001: Module must initialize properly with optional configuration",
+      "REQ-INIT-002: Initialization must complete within timing constraints with full plugin support",
+      "REQ-CORE-001: Core API operations must be available after initialization",
+      "REQ-FORMAT-001: Support Arrow IPC, Stream, Parquet, and Feather formats with automatic detection",
+      "REQ-FORMAT-002: Comprehensive error handling for unsupported or corrupted formats",
+      "REQ-PLUGIN-001: Dynamic plugin registration and validation system",
+      "REQ-PLUGIN-002: Plugin error handling with recovery and helpful error messages",
+      "REQ-MEM-001: Memory management must prevent leaks and handle proper disposal",
+      "REQ-MEM-002: Critical memory errors must be detected and handled appropriately",
+      "REQ-ERROR-001: Recoverable errors must allow system recovery with clear feedback"
+    ],
+    "test_generation_notes": [
+      "Each state should have validation tests for all invariants",
+      "Each transition should have positive and negative test cases with comprehensive data",
+      "Error states require specific error condition testing with recovery validation",
+      "Performance requirements embedded in test_data sections with browser-specific metrics",
+      "Memory validation required for all transitions involving handle management",
+      "Plugin operations require factory system testing and validation",
+      "Format detection requires comprehensive file type testing including edge cases",
+      "Cross-browser compatibility testing required for all core transitions"
+    ],
+    "coverage_requirements": {
+      "state_coverage": "100%",
+      "transition_coverage": "100%", 
+      "error_path_coverage": "100%",
+      "performance_validation": "All timing constraints",
+      "browser_matrix": ["Chrome", "Firefox", "Safari", "Edge"]
+    }
+  }
+}

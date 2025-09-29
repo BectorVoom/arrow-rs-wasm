@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arrow WASM Performance Testing</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            margin: 2rem;
+            background-color: #f8f9fa;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #eee;
+        }
+        .performance-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        .perf-card {
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #007bff;
+        }
+        .perf-card h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        .metric-large {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #007bff;
+            margin: 0.5rem 0;
+        }
+        .metric-small {
+            font-size: 1.2rem;
+            color: #666;
+            margin: 0.25rem 0;
+        }
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        .status-success { background-color: #28a745; }
+        .status-warning { background-color: #ffc107; }
+        .status-error { background-color: #dc3545; }
+        .status-loading { background-color: #6c757d; animation: pulse 1.5s infinite; }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .controls {
+            text-align: center;
+            margin: 2rem 0;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 0.5rem;
+            transition: background-color 0.2s;
+        }
+        .btn:hover { background: #0056b3; }
+        .btn:disabled { background: #6c757d; cursor: not-allowed; }
+        .btn-success { background: #28a745; }
+        .btn-warning { background: #ffc107; color: #333; }
+        
+        .console-output {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 14px;
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 2rem;
+            border: 2px solid #4a5568;
+        }
+        .benchmark-progress {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 24px;
+            background: #e9ecef;
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 0.5rem 0;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #007bff, #28a745);
+            transition: width 0.3s ease;
+            width: 0%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        .result-item {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 1rem;
+            border-radius: 6px;
+            text-align: center;
+        }
+        .baseline-summary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            text-align: center;
+        }
+        .baseline-summary h2 {
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚡ Arrow WASM Performance Testing Suite</h1>
+            <p>Comprehensive performance benchmarking and baseline establishment</p>
+            <div id="browser-info"></div>
+        </div>
+
+        <div class="controls">
+            <button class="btn" id="run-full-suite" onclick="runFullPerformanceSuite()">
+                🚀 Run Full Performance Suite
+            </button>
+            <button class="btn" id="run-quick-test" onclick="runQuickPerformanceTest()">
+                ⚡ Quick Performance Test
+            </button>
+            <button class="btn btn-warning" id="run-stress-test" onclick="runStressTest()">
+                🔥 Stress Test
+            </button>
+            <button class="btn btn-success" id="generate-report" onclick="generatePerformanceReport()" disabled>
+                📊 Generate Report
+            </button>
+        </div>
+
+        <div id="benchmark-progress" class="benchmark-progress" style="display: none;">
+            <h3>🧪 Benchmark Progress</h3>
+            <div id="progress-text">Preparing performance tests...</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill">0%</div>
+            </div>
+            <div id="current-test"></div>
+        </div>
+
+        <div class="performance-grid" id="performance-metrics">
+            <div class="perf-card">
+                <h3><span class="status-indicator status-loading" id="init-status"></span>Module Initialization</h3>
+                <div class="metric-large" id="init-time">Pending...</div>
+                <div class="metric-small" id="init-details">Click run to benchmark</div>
+            </div>
+            
+            <div class="perf-card">
+                <h3><span class="status-indicator status-loading" id="memory-status"></span>Memory Usage</h3>
+                <div class="metric-large" id="memory-usage">Pending...</div>
+                <div class="metric-small" id="memory-details">Memory efficiency analysis</div>
+            </div>
+            
+            <div class="perf-card">
+                <h3><span class="status-indicator status-loading" id="api-status"></span>API Latency</h3>
+                <div class="metric-large" id="api-latency">Pending...</div>
+                <div class="metric-small" id="api-details">Average call latency</div>
+            </div>
+            
+            <div class="perf-card">
+                <h3><span class="status-indicator status-loading" id="throughput-status"></span>Throughput</h3>
+                <div class="metric-large" id="throughput">Pending...</div>
+                <div class="metric-small" id="throughput-details">Operations per second</div>
+            </div>
+            
+            <div class="perf-card">
+                <h3><span class="status-indicator status-loading" id="compression-status"></span>Compression</h3>
+                <div class="metric-large" id="compression">Pending...</div>
+                <div class="metric-small" id="compression-details">LZ4 support status</div>
+            </div>
+            
+            <div class="perf-card">
+                <h3><span class="status-indicator status-loading" id="overall-status"></span>Overall Score</h3>
+                <div class="metric-large" id="overall-score">Pending...</div>
+                <div class="metric-small" id="overall-details">Performance rating</div>
+            </div>
+        </div>
+
+        <div id="baseline-summary" class="baseline-summary" style="display: none;">
+            <h2>🎯 Performance Baseline Established</h2>
+            <p id="baseline-text">Baseline metrics have been established for regression testing and cross-browser comparison.</p>
+            <div id="baseline-metrics"></div>
+        </div>
+
+        <div class="console-output" id="console">
+            <div>🔄 Performance testing environment initialized</div>
+            <div>📊 Ready to run comprehensive benchmarks</div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Global state
+        let performanceSuite = null;
+        let currentResults = null;
+        let wasmModule = null;
+
+        // Console logging
+        function log(message, type = 'info') {
+            const timestamp = new Date().toISOString().split('T')[1].slice(0, -1);
+            const prefix = type === 'error' ? '❌' : type === 'success' ? '✅' : type === 'warn' ? '⚠️' : '📝';
+            const logEntry = `[${timestamp}] ${prefix} ${message}`;
+            
+            const consoleElement = document.getElementById('console');
+            consoleElement.innerHTML += `<div>${logEntry}</div>`;
+            consoleElement.scrollTop = consoleElement.scrollHeight;
+            
+            console.log(logEntry);
+        }
+
+        // Update status indicators
+        function updateStatus(elementId, status) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.className = `status-indicator status-${status}`;
+            }
+        }
+
+        // Update performance metric display
+        function updateMetric(metric, value, details, status = 'success') {
+            document.getElementById(`${metric}-status`).className = `status-indicator status-${status}`;
+            document.getElementById(metric).textContent = value;
+            if (details) {
+                document.getElementById(`${metric}-details`).textContent = details;
+            }
+        }
+
+        // Initialize browser info display
+        function displayBrowserInfo() {
+            const ua = navigator.userAgent;
+            const browserName = detectBrowserName(ua);
+            const browserVersion = detectBrowserVersion(ua);
+            
+            document.getElementById('browser-info').innerHTML = `
+                <strong>Browser:</strong> ${browserName} ${browserVersion} | 
+                <strong>Platform:</strong> ${navigator.platform} |
+                <strong>Cores:</strong> ${navigator.hardwareConcurrency || 'Unknown'}
+            `;
+        }
+
+        function detectBrowserName(ua) {
+            if (ua.includes('Chrome') && !ua.includes('Edg')) return 'Chrome';
+            if (ua.includes('Firefox')) return 'Firefox';
+            if (ua.includes('Safari') && !ua.includes('Chrome')) return 'Safari';
+            if (ua.includes('Edg')) return 'Edge';
+            return 'Unknown';
+        }
+
+        function detectBrowserVersion(ua) {
+            const patterns = {
+                Chrome: /Chrome\/([0-9.]+)/,
+                Firefox: /Firefox\/([0-9.]+)/,
+                Safari: /Version\/([0-9.]+)/,
+                Edge: /Edg\/([0-9.]+)/
+            };
+            
+            const browserName = detectBrowserName(ua);
+            const pattern = patterns[browserName];
+            
+            if (pattern) {
+                const match = ua.match(pattern);
+                return match ? match[1] : 'unknown';
+            }
+            
+            return 'unknown';
+        }
+
+        // Load WASM module
+        async function initializeWASM() {
+            try {
+                log('🚀 Loading WASM module for performance testing...');
+                wasmModule = await import('./pkg/arrow_wasm.js');
+                await wasmModule.default();
+                log('✅ WASM module loaded successfully', 'success');
+                return true;
+            } catch (error) {
+                log(`❌ WASM loading failed: ${error.message}`, 'error');
+                return false;
+            }
+        }
+
+        // Run full performance suite
+        window.runFullPerformanceSuite = async function() {
+            log('🚀 Starting comprehensive performance benchmark suite...', 'info');
+            
+            const progressDiv = document.getElementById('benchmark-progress');
+            progressDiv.style.display = 'block';
+            
+            const progressText = document.getElementById('progress-text');
+            const progressFill = document.getElementById('progress-fill');
+            const currentTest = document.getElementById('current-test');
+            
+            try {
+                // Load performance suite
+                const { default: BrowserPerformanceSuite } = await import('./performance/browser_performance_suite.js');
+                performanceSuite = new BrowserPerformanceSuite();
+                
+                // Initialize WASM
+                progressText.textContent = 'Initializing WASM module...';
+                currentTest.textContent = 'Loading WebAssembly module';
+                progressFill.style.width = '10%';
+                progressFill.textContent = '10%';
+                
+                const wasmLoaded = await initializeWASM();
+                if (!wasmLoaded) {
+                    throw new Error('WASM module failed to load');
+                }
+                
+                // Run benchmarks
+                const benchmarks = [
+                    { name: 'Module Initialization', progress: 20 },
+                    { name: 'Memory Usage Analysis', progress: 35 },
+                    { name: 'API Latency Testing', progress: 50 },
+                    { name: 'Compression Performance', progress: 65 },
+                    { name: 'Throughput Testing', progress: 80 },
+                    { name: 'Stress Testing', progress: 95 }
+                ];
+                
+                for (const benchmark of benchmarks) {
+                    progressText.textContent = `Running ${benchmark.name}...`;
+                    currentTest.textContent = benchmark.name;
+                    progressFill.style.width = `${benchmark.progress}%`;
+                    progressFill.textContent = `${benchmark.progress}%`;
+                    
+                    await new Promise(resolve => setTimeout(resolve, 500)); // Visual delay
+                }
+                
+                // Complete benchmarks
+                currentResults = await performanceSuite.runComprehensiveBenchmarks();
+                
+                progressText.textContent = 'Performance benchmarks completed!';
+                progressFill.style.width = '100%';
+                progressFill.textContent = '100%';
+                
+                // Update UI with results
+                updatePerformanceUI(currentResults);
+                
+                document.getElementById('generate-report').disabled = false;
+                log('✅ Full performance suite completed successfully', 'success');
+                
+            } catch (error) {
+                log(`❌ Performance suite failed: ${error.message}`, 'error');
+                progressText.textContent = 'Performance testing failed';
+                currentTest.textContent = `Error: ${error.message}`;
+            }
+        };
+
+        // Quick performance test
+        window.runQuickPerformanceTest = async function() {
+            log('⚡ Running quick performance test...', 'info');
+            
+            try {
+                const wasmLoaded = await initializeWASM();
+                if (!wasmLoaded) return;
+                
+                // Quick module init test
+                const startTime = performance.now();
+                const version = wasmModule.get_version();
+                const initTime = performance.now() - startTime;
+                
+                updateMetric('init-time', `${initTime.toFixed(2)}ms`, 'Quick initialization test');
+                
+                // LZ4 support check
+                const lz4Supported = wasmModule.is_lz4_supported();
+                updateMetric('compression', lz4Supported ? '✅ Supported' : '❌ Not supported', 'LZ4 compression availability');
+                
+                // Memory check
+                if (performance.memory) {
+                    const memUsed = (performance.memory.usedJSHeapSize / 1024 / 1024).toFixed(1);
+                    updateMetric('memory-usage', `${memUsed} MB`, 'Current heap usage');
+                } else {
+                    updateMetric('memory-usage', 'N/A', 'Memory API not available', 'warning');
+                }
+                
+                log('✅ Quick performance test completed', 'success');
+                
+            } catch (error) {
+                log(`❌ Quick test failed: ${error.message}`, 'error');
+            }
+        };
+
+        // Stress test
+        window.runStressTest = async function() {
+            log('🔥 Running stress test...', 'info');
+            
+            try {
+                const wasmLoaded = await initializeWASM();
+                if (!wasmLoaded) return;
+                
+                const iterations = 10000;
+                const startTime = performance.now();
+                
+                // Rapid API calls
+                for (let i = 0; i < iterations; i++) {
+                    wasmModule.get_version();
+                }
+                
+                const totalTime = performance.now() - startTime;
+                const opsPerSec = (iterations / totalTime) * 1000;
+                
+                updateMetric('throughput', `${Math.round(opsPerSec).toLocaleString()} ops/sec`, `${iterations} rapid API calls`);
+                
+                log(`✅ Stress test completed: ${Math.round(opsPerSec).toLocaleString()} operations/sec`, 'success');
+                
+            } catch (error) {
+                log(`❌ Stress test failed: ${error.message}`, 'error');
+            }
+        };
+
+        // Update performance UI with results
+        function updatePerformanceUI(results) {
+            if (!results || !results.baselines) return;
+            
+            const baselines = results.baselines;
+            
+            // Module initialization
+            if (baselines.moduleInit && baselines.moduleInit.statistics) {
+                const avgTime = baselines.moduleInit.statistics.average;
+                updateMetric('init-time', `${avgTime.toFixed(2)}ms`, 
+                    `Min: ${baselines.moduleInit.statistics.minimum.toFixed(2)}ms | Max: ${baselines.moduleInit.statistics.maximum.toFixed(2)}ms`);
+            }
+            
+            // Memory usage
+            if (baselines.memoryUsage && baselines.memoryUsage.analysis) {
+                const analysis = baselines.memoryUsage.analysis;
+                if (analysis.memoryIncrease !== undefined) {
+                    const increase = (analysis.memoryIncrease / 1024 / 1024).toFixed(1);
+                    updateMetric('memory-usage', `+${increase} MB`, 
+                        `Efficiency: ${analysis.efficiency}`, 
+                        analysis.efficiency === 'good' ? 'success' : 'warning');
+                }
+            }
+            
+            // API latency
+            if (baselines.apiLatency && Object.keys(baselines.apiLatency).length > 0) {
+                const apiKeys = Object.keys(baselines.apiLatency).filter(k => k !== 'error');
+                if (apiKeys.length > 0) {
+                    const avgLatency = apiKeys.reduce((sum, key) => 
+                        sum + (baselines.apiLatency[key].averageLatency || 0), 0) / apiKeys.length;
+                    updateMetric('api-latency', `${avgLatency.toFixed(4)}ms`, 
+                        `Average across ${apiKeys.length} functions`);
+                }
+            }
+            
+            // Throughput
+            if (baselines.throughput && baselines.throughput.operationsPerSecond) {
+                const ops = Math.round(baselines.throughput.operationsPerSecond);
+                updateMetric('throughput', `${ops.toLocaleString()} ops/sec`, 
+                    `${baselines.throughput.operations} operations in ${baselines.throughput.totalTime.toFixed(2)}ms`);
+            }
+            
+            // Compression
+            if (baselines.compressionPerformance) {
+                const supported = baselines.compressionPerformance.lz4Supported;
+                updateMetric('compression', supported ? '✅ Supported' : '❌ Not supported', 
+                    'LZ4 compression availability');
+            }
+            
+            // Overall score
+            if (results.summary && results.summary.overallPerformance) {
+                const score = results.summary.overallPerformance;
+                const status = score > 80 ? 'success' : score > 60 ? 'warning' : 'error';
+                updateMetric('overall-score', `${score}/100`, 
+                    score > 80 ? 'Excellent performance' : score > 60 ? 'Good performance' : 'Needs optimization', 
+                    status);
+            }
+            
+            // Show baseline summary
+            showBaselineSummary(results);
+        }
+
+        // Show baseline summary
+        function showBaselineSummary(results) {
+            const summaryDiv = document.getElementById('baseline-summary');
+            const metricsDiv = document.getElementById('baseline-metrics');
+            
+            if (results.summary) {
+                const summary = results.summary;
+                
+                metricsDiv.innerHTML = `
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                        <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 6px;">
+                            <strong>Browser:</strong><br>${summary.browser}
+                        </div>
+                        <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 6px;">
+                            <strong>Init Time:</strong><br>${summary.moduleInitTime ? summary.moduleInitTime.toFixed(2) + 'ms' : 'N/A'}
+                        </div>
+                        <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 6px;">
+                            <strong>Memory:</strong><br>${summary.memoryEfficient ? 'Efficient' : 'Check needed'}
+                        </div>
+                        <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 6px;">
+                            <strong>Throughput:</strong><br>${summary.throughput ? Math.round(summary.throughput).toLocaleString() + ' ops/sec' : 'N/A'}
+                        </div>
+                    </div>
+                `;
+                
+                summaryDiv.style.display = 'block';
+            }
+        }
+
+        // Generate performance report
+        window.generatePerformanceReport = function() {
+            if (!currentResults) {
+                log('⚠️ No performance results available to generate report', 'warn');
+                return;
+            }
+            
+            log('📊 Generating performance report...', 'info');
+            
+            // Create downloadable JSON report
+            const reportData = {
+                timestamp: new Date().toISOString(),
+                performanceResults: currentResults,
+                browser: {
+                    name: detectBrowserName(navigator.userAgent),
+                    version: detectBrowserVersion(navigator.userAgent),
+                    platform: navigator.platform
+                }
+            };
+            
+            const blob = new Blob([JSON.stringify(reportData, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `arrow_wasm_performance_baseline_${Date.now()}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            log('✅ Performance report downloaded', 'success');
+        };
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            displayBrowserInfo();
+            log('🌐 Performance testing suite initialized');
+            log('📊 Ready to run comprehensive performance benchmarks');
+        });
+    </script>
+</body>
+</html>

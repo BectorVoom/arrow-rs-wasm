@@ -1,0 +1,453 @@
+{
+  "model_id": "plugin_registration_flow",
+  "model_type": "data_flow",
+  "version": "1.0.0",
+  "description": "Plugin registration and validation flow model covering plugin discovery, registration, validation, and lifecycle management",
+  "requirements": ["REQ-PLUGIN-001", "REQ-PLUGIN-002", "REQ-PLUGIN-003", "REQ-PLUGIN-004"],
+  "workflows": [
+    {
+      "id": "plugin_discovery_workflow",
+      "name": "Plugin Type Discovery",
+      "description": "Discovery of available plugin types and factory systems",
+      "steps": [
+        {
+          "id": "enumerate_builtin_types",
+          "name": "Enumerate Built-in Plugin Types",
+          "action": "get_available_plugin_types",
+          "preconditions": ["module_initialized"],
+          "postconditions": ["builtin_types_available"],
+          "test_data": {
+            "expected_types": ["geometry", "demo"],
+            "type_validation": ["type_id_format", "factory_available"],
+            "expected_timing": "< 1ms"
+          }
+        },
+        {
+          "id": "discover_plugin_instances",
+          "name": "Discover Available Plugin Instances",
+          "action": "discover_available_plugins",
+          "preconditions": ["builtin_types_available"],
+          "postconditions": ["plugin_instances_enumerated"],
+          "test_data": {
+            "expected_instances": ["io.arrow.plugin.geo.v1", "io.arrow.plugin.demo.v1"],
+            "instance_metadata": ["id", "version", "description", "factory_type"],
+            "expected_timing": "< 5ms"
+          }
+        },
+        {
+          "id": "validate_plugin_id_format",
+          "name": "Validate Plugin ID Format",
+          "action": "validate_plugin_id_format",
+          "preconditions": ["plugin_id_provided"],
+          "postconditions": ["id_format_validated"],
+          "test_data": {
+            "valid_formats": [
+              "geometry",
+              "demo", 
+              "io.arrow.plugin.geo.v1",
+              "com.example.plugin.custom.v2"
+            ],
+            "invalid_formats": [
+              "",
+              "invalid space",
+              "too.many.dots.in.id.format.exceeding.limit",
+              "special@chars",
+              "123numeric"
+            ],
+            "format_rules": ["no_spaces", "valid_chars", "reasonable_length"]
+          }
+        }
+      ],
+      "error_paths": [
+        {
+          "condition": "no_builtin_plugins",
+          "error_type": "plugin_discovery_error",
+          "message": "No built-in plugin types available",
+          "recovery": "system_validation"
+        },
+        {
+          "condition": "invalid_plugin_id_format",
+          "error_type": "validation_error",
+          "message": "Plugin ID format validation failed",
+          "recovery": "format_correction_guidance"
+        }
+      ]
+    },
+    {
+      "id": "plugin_registration_workflow", 
+      "name": "Plugin Registration Process",
+      "description": "Complete plugin registration workflow including factory creation and validation",
+      "steps": [
+        {
+          "id": "validate_plugin_request",
+          "name": "Validate Plugin Registration Request",
+          "action": "validate_registration_parameters",
+          "preconditions": ["plugin_id_provided", "plugin_registry_ready"],
+          "postconditions": ["request_validated"],
+          "test_data": {
+            "validation_checks": [
+              "plugin_id_not_empty",
+              "plugin_id_format_valid", 
+              "plugin_not_already_registered",
+              "registry_not_full"
+            ],
+            "error_scenarios": [
+              "empty_plugin_id",
+              "duplicate_registration",
+              "registry_capacity_exceeded"
+            ]
+          }
+        },
+        {
+          "id": "extract_plugin_type",
+          "name": "Extract Plugin Type from ID",
+          "action": "extract_plugin_type",
+          "preconditions": ["request_validated"],
+          "postconditions": ["plugin_type_extracted"],
+          "test_data": {
+            "type_extraction": [
+              "geometry -> geometry",
+              "io.arrow.plugin.geo.v1 -> geometry", 
+              "demo -> demo",
+              "io.arrow.plugin.demo.v1 -> demo"
+            ],
+            "extraction_rules": ["first_component_or_type_field", "fallback_to_full_id"],
+            "expected_timing": "< 1ms"
+          }
+        },
+        {
+          "id": "get_plugin_factory",
+          "name": "Retrieve Plugin Factory",
+          "action": "get_factory_for_plugin_type",
+          "preconditions": ["plugin_type_extracted"],
+          "postconditions": ["factory_retrieved"],
+          "test_data": {
+            "factory_retrieval": [
+              "geometry_type -> GeometryPluginFactory",
+              "demo_type -> DemoPluginFactory"
+            ],
+            "factory_validation": ["factory_not_null", "factory_implements_trait"],
+            "error_conditions": ["unsupported_plugin_type", "factory_not_available"]
+          }
+        },
+        {
+          "id": "create_plugin_instance",
+          "name": "Create Plugin Instance",
+          "action": "factory_create_plugin_instance",
+          "preconditions": ["factory_retrieved"],
+          "postconditions": ["plugin_instance_created"],
+          "test_data": {
+            "creation_scenarios": [
+              "geometry_plugin_creation",
+              "demo_plugin_creation",
+              "custom_configuration_plugin"
+            ],
+            "instance_validation": [
+              "plugin_id_matches_request",
+              "plugin_implements_arrow_plugin_trait",
+              "plugin_metadata_valid"
+            ],
+            "expected_timing": "< 10ms"
+          }
+        },
+        {
+          "id": "validate_plugin_instance",
+          "name": "Validate Plugin Instance",
+          "action": "validate_plugin_compliance",
+          "preconditions": ["plugin_instance_created"],
+          "postconditions": ["plugin_validated"],
+          "test_data": {
+            "validation_checks": [
+              "plugin_id_method_returns_expected",
+              "validate_field_method_available",
+              "on_read_column_method_available",
+              "plugin_metadata_complete"
+            ],
+            "compliance_tests": [
+              "trait_method_signatures",
+              "error_handling_behavior",
+              "thread_safety_requirements"
+            ]
+          }
+        },
+        {
+          "id": "register_in_registry",
+          "name": "Register Plugin in Registry",
+          "action": "add_plugin_to_registry",
+          "preconditions": ["plugin_validated"],
+          "postconditions": ["plugin_registered", "registry_updated"],
+          "test_data": {
+            "registration_verification": [
+              "plugin_findable_by_id",
+              "plugin_metadata_accessible",
+              "plugin_ready_for_operations"
+            ],
+            "registry_state": [
+              "active_plugin_count_incremented",
+              "plugin_lifecycle_tracking_enabled"
+            ]
+          }
+        }
+      ],
+      "error_paths": [
+        {
+          "condition": "invalid_registration_request",
+          "error_type": "validation_error",
+          "message": "Plugin registration request validation failed",
+          "recovery": "parameter_correction"
+        },
+        {
+          "condition": "unsupported_plugin_type",
+          "error_type": "plugin_type_error",
+          "message": "Plugin type not supported",
+          "recovery": "list_supported_types"
+        },
+        {
+          "condition": "factory_creation_failed",
+          "error_type": "factory_error",
+          "message": "Failed to create plugin instance from factory",
+          "recovery": "factory_diagnostics"
+        },
+        {
+          "condition": "plugin_validation_failed",
+          "error_type": "plugin_compliance_error",
+          "message": "Plugin instance failed compliance validation",
+          "recovery": "validation_details_report"
+        },
+        {
+          "condition": "registry_operation_failed",
+          "error_type": "registry_error",
+          "message": "Failed to register plugin in registry",
+          "recovery": "registry_diagnostics_and_cleanup"
+        }
+      ]
+    },
+    {
+      "id": "plugin_validation_workflow",
+      "name": "Plugin Validation and Testing",
+      "description": "Comprehensive plugin validation including functional testing and compliance verification",
+      "steps": [
+        {
+          "id": "validate_plugin_metadata",
+          "name": "Validate Plugin Metadata",
+          "action": "check_plugin_metadata_completeness",
+          "preconditions": ["plugin_registered"],
+          "postconditions": ["metadata_validated"],
+          "test_data": {
+            "metadata_requirements": [
+              "plugin_id_present_and_matches",
+              "version_information_available",
+              "description_not_empty",
+              "supported_field_types_defined"
+            ],
+            "metadata_format_validation": [
+              "id_follows_naming_convention",
+              "version_follows_semver",
+              "description_within_length_limits"
+            ]
+          }
+        },
+        {
+          "id": "test_field_validation",
+          "name": "Test Field Validation Capabilities",
+          "action": "test_plugin_validate_field_method",
+          "preconditions": ["metadata_validated"],
+          "postconditions": ["field_validation_tested"],
+          "test_data": {
+            "test_fields": [
+              "supported_field_type -> Ok(())",
+              "unsupported_field_type -> Err(CoreError)",
+              "null_field -> Err(CoreError)",
+              "malformed_field -> Err(CoreError)"
+            ],
+            "validation_scenarios": [
+              "geometry_field_validation",
+              "binary_field_with_geometry_metadata", 
+              "standard_primitive_field_rejection"
+            ]
+          }
+        },
+        {
+          "id": "test_column_processing",
+          "name": "Test Column Processing Capabilities",
+          "action": "test_plugin_on_read_column_method",
+          "preconditions": ["field_validation_tested"],
+          "postconditions": ["column_processing_tested"],
+          "test_data": {
+            "processing_scenarios": [
+              "geometry_column_processing",
+              "binary_array_with_wkb_data",
+              "column_metadata_extraction",
+              "invalid_data_error_handling"
+            ],
+            "performance_requirements": [
+              "processing_time < 50ms per 1K rows",
+              "memory_overhead < 10% of original data"
+            ]
+          }
+        },
+        {
+          "id": "test_error_handling",
+          "name": "Test Plugin Error Handling",
+          "action": "test_plugin_error_scenarios",
+          "preconditions": ["column_processing_tested"],
+          "postconditions": ["error_handling_validated"],
+          "test_data": {
+            "error_scenarios": [
+              "invalid_input_data",
+              "memory_allocation_failure",
+              "processing_timeout",
+              "unexpected_field_format"
+            ],
+            "error_response_validation": [
+              "appropriate_error_type_returned",
+              "error_message_helpful_and_specific",
+              "no_memory_leaks_on_error",
+              "plugin_state_remains_stable"
+            ]
+          }
+        }
+      ],
+      "error_paths": [
+        {
+          "condition": "metadata_validation_failed",
+          "error_type": "plugin_compliance_error",
+          "message": "Plugin metadata validation failed",
+          "recovery": "metadata_correction_guidance"
+        },
+        {
+          "condition": "field_validation_test_failed",
+          "error_type": "plugin_functionality_error",
+          "message": "Plugin field validation capabilities failed testing",
+          "recovery": "functionality_diagnostics"
+        },
+        {
+          "condition": "column_processing_test_failed",
+          "error_type": "plugin_functionality_error",
+          "message": "Plugin column processing capabilities failed testing",
+          "recovery": "processing_diagnostics_and_debug"
+        },
+        {
+          "condition": "error_handling_inadequate",
+          "error_type": "plugin_robustness_error",
+          "message": "Plugin error handling does not meet requirements",
+          "recovery": "error_handling_improvement_suggestions"
+        }
+      ]
+    },
+    {
+      "id": "plugin_lifecycle_workflow",
+      "name": "Plugin Lifecycle Management",
+      "description": "Plugin lifecycle management including deregistration and cleanup",
+      "steps": [
+        {
+          "id": "monitor_plugin_usage",
+          "name": "Monitor Plugin Usage",
+          "action": "track_plugin_operation_metrics",
+          "preconditions": ["plugin_operational"],
+          "postconditions": ["usage_metrics_available"],
+          "test_data": {
+            "metrics_tracked": [
+              "field_validations_performed",
+              "column_processing_operations",
+              "error_occurrences",
+              "average_processing_time"
+            ],
+            "monitoring_frequency": "per_operation",
+            "metrics_retention": "session_lifetime"
+          }
+        },
+        {
+          "id": "validate_plugin_health",
+          "name": "Validate Plugin Health",
+          "action": "check_plugin_operational_status",
+          "preconditions": ["usage_metrics_available"],
+          "postconditions": ["health_status_determined"],
+          "test_data": {
+            "health_indicators": [
+              "error_rate < 5%",
+              "average_response_time_acceptable", 
+              "memory_usage_stable",
+              "no_critical_errors_recent"
+            ],
+            "health_check_frequency": "periodic_or_on_demand",
+            "unhealthy_plugin_handling": "warning_then_deactivation"
+          }
+        },
+        {
+          "id": "deregister_plugin",
+          "name": "Deregister Plugin",
+          "action": "remove_plugin_from_registry",
+          "preconditions": ["plugin_registered", "deregistration_requested"],
+          "postconditions": ["plugin_deregistered", "resources_cleaned"],
+          "test_data": {
+            "deregistration_scenarios": [
+              "user_requested_removal",
+              "plugin_health_failure",
+              "system_shutdown_cleanup",
+              "plugin_replacement"
+            ],
+            "cleanup_verification": [
+              "plugin_not_findable_in_registry",
+              "memory_resources_released",
+              "no_dangling_references",
+              "metrics_finalized"
+            ]
+          }
+        }
+      ],
+      "error_paths": [
+        {
+          "condition": "monitoring_system_failure",
+          "error_type": "monitoring_error",
+          "message": "Plugin monitoring system failure",
+          "recovery": "monitoring_system_restart"
+        },
+        {
+          "condition": "plugin_health_critical",
+          "error_type": "plugin_health_error",
+          "message": "Plugin health status critical",
+          "recovery": "automatic_deregistration_and_cleanup"
+        },
+        {
+          "condition": "deregistration_failed",
+          "error_type": "registry_error",
+          "message": "Failed to deregister plugin",
+          "recovery": "force_cleanup_and_registry_repair"
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "created": "2025-09-29",
+    "author": "Claude Code MBD System",
+    "requirements": [
+      "REQ-PLUGIN-001: Dynamic plugin registration system with factory pattern support",
+      "REQ-PLUGIN-002: Plugin validation and compliance checking system", 
+      "REQ-PLUGIN-003: Plugin lifecycle management including monitoring and deregistration",
+      "REQ-PLUGIN-004: Comprehensive error handling and recovery for plugin operations"
+    ],
+    "test_generation_notes": [
+      "Each workflow step should generate positive and negative test cases",
+      "Plugin registration must be tested with valid and invalid plugin types",
+      "Factory pattern testing requires verification of plugin instance creation",
+      "Validation workflow must test all compliance requirements",
+      "Error handling must be comprehensive with specific recovery procedures",
+      "Performance requirements must be validated for plugin operations",
+      "Memory management testing required for plugin lifecycle"
+    ],
+    "coverage_requirements": {
+      "workflow_step_coverage": "100%",
+      "error_path_coverage": "100%",
+      "plugin_type_coverage": "All built-in plugin types",
+      "compliance_validation": "All ArrowPlugin trait methods",
+      "performance_validation": "All timing and memory constraints"
+    },
+    "integration_notes": [
+      "This model integrates with module_lifecycle.json for initialization dependencies",
+      "Links to table_lifecycle.json for plugin field validation during table operations",
+      "Connects to error handling models for comprehensive error management",
+      "Performance metrics feed into overall system monitoring"
+    ]
+  }
+}

@@ -1,0 +1,245 @@
+{
+  "model_id": "module_lifecycle_v1_enhanced",
+  "model_type": "state_machine",
+  "version": "1.1.0",
+  "description": "Enhanced state machine model for WASM Arrow module lifecycle with comprehensive error handling and recovery paths",
+  "states": [
+    {
+      "id": "uninitialized",
+      "name": "Uninitialized",
+      "type": "initial",
+      "properties": {
+        "can_call_apis": false,
+        "memory_allocated": false,
+        "registry_active": false,
+        "wasm_loaded": false
+      },
+      "invariants": [
+        "isModuleInitialized() === false",
+        "isModuleInitializing() === false",
+        "getModuleState() === 'uninitialized'",
+        "API calls should throw 'Module not initialized' error"
+      ]
+    },
+    {
+      "id": "initializing",
+      "name": "Initializing",
+      "type": "normal",
+      "properties": {
+        "can_call_apis": false,
+        "memory_allocated": true,
+        "registry_active": true,
+        "wasm_loaded": true,
+        "initialization_in_progress": true
+      },
+      "invariants": [
+        "isModuleInitialized() === false",
+        "isModuleInitializing() === true",
+        "getModuleState() === 'initializing'",
+        "Memory tracker is configured",
+        "Table registry is configured",
+        "Concurrent init calls should be rejected"
+      ]
+    },
+    {
+      "id": "ready",
+      "name": "Ready",
+      "type": "normal",
+      "properties": {
+        "can_call_apis": true,
+        "memory_allocated": true,
+        "registry_active": true,
+        "debug_logging_enabled": "configurable",
+        "api_callable": true
+      },
+      "invariants": [
+        "isModuleInitialized() === true",
+        "isModuleInitializing() === false",
+        "getModuleState() === 'ready'",
+        "getMemoryUsage() returns valid stats",
+        "All API calls should work normally",
+        "Memory limits are enforced",
+        "Duplicate init calls should be rejected"
+      ]
+    },
+    {
+      "id": "error",
+      "name": "Error",
+      "type": "error",
+      "properties": {
+        "can_call_apis": false,
+        "error_occurred": true,
+        "partial_state_preserved": true
+      },
+      "invariants": [
+        "getModuleState().startsWith('error')",
+        "isModuleInitialized() === false",
+        "Error details are available",
+        "Dispose should still work"
+      ]
+    },
+    {
+      "id": "disposed",
+      "name": "Disposed",
+      "type": "final",
+      "properties": {
+        "can_call_apis": false,
+        "memory_allocated": false,
+        "registry_active": false,
+        "cleanup_complete": true
+      },
+      "invariants": [
+        "isModuleInitialized() === false",
+        "getModuleState() === 'disposed'",
+        "All tables have been released",
+        "Memory tracker is reset",
+        "Reinit should be possible"
+      ]
+    }
+  ],
+  "transitions": [
+    {
+      "id": "init_start",
+      "from": "uninitialized",
+      "to": "initializing",
+      "trigger": "initWasmModule",
+      "guard": "!isModuleInitialized() && !isModuleInitializing()",
+      "action": "set_panic_hook, load_wasm, set_state_initializing",
+      "requirements": ["REQ-INIT-001", "REQ-INIT-002"]
+    },
+    {
+      "id": "init_success",
+      "from": "initializing",
+      "to": "ready",
+      "trigger": "initialization_complete",
+      "guard": "memory_configured && registry_setup && no_errors",
+      "action": "configure_memory_limits, configure_table_registry, set_state_ready",
+      "requirements": ["REQ-INIT-003", "REQ-MEM-001"]
+    },
+    {
+      "id": "init_failure",
+      "from": "initializing",
+      "to": "error",
+      "trigger": "initialization_error",
+      "guard": "error_occurred",
+      "action": "log_error, cleanup_partial_state, set_state_error",
+      "requirements": ["REQ-ERR-001"]
+    },
+    {
+      "id": "double_init_error",
+      "from": "ready",
+      "to": "error",
+      "trigger": "initWasmModule",
+      "guard": "isModuleInitialized() === true",
+      "action": "throw_already_initialized_error",
+      "requirements": ["REQ-ERR-002"]
+    },
+    {
+      "id": "concurrent_init_error",
+      "from": "initializing",
+      "to": "error",
+      "trigger": "initWasmModule",
+      "guard": "isModuleInitializing() === true",
+      "action": "throw_init_in_progress_error",
+      "requirements": ["REQ-ERR-003"]
+    },
+    {
+      "id": "dispose_from_ready",
+      "from": "ready",
+      "to": "disposed",
+      "trigger": "disposeWasmModule",
+      "guard": "isModuleInitialized() === true",
+      "action": "release_all_tables, reset_memory_tracker, clear_registry, set_state_disposed",
+      "requirements": ["REQ-DISPOSE-001", "REQ-MEM-002"]
+    },
+    {
+      "id": "dispose_from_error",
+      "from": "error",
+      "to": "disposed",
+      "trigger": "disposeWasmModule",
+      "guard": "true",
+      "action": "force_cleanup_all_resources, set_state_disposed",
+      "requirements": ["REQ-DISPOSE-002"]
+    },
+    {
+      "id": "dispose_from_initializing",
+      "from": "initializing",
+      "to": "disposed",
+      "trigger": "disposeWasmModule",
+      "guard": "true",
+      "action": "cleanup_partial_initialization, set_state_disposed",
+      "requirements": ["REQ-DISPOSE-003"]
+    },
+    {
+      "id": "runtime_error",
+      "from": "ready",
+      "to": "error",
+      "trigger": "api_runtime_error",
+      "guard": "critical_error_occurred",
+      "action": "log_error, preserve_recoverable_state, set_state_error",
+      "requirements": ["REQ-ERR-004"]
+    },
+    {
+      "id": "memory_limit_error",
+      "from": "ready",
+      "to": "error",
+      "trigger": "memory_limit_exceeded",
+      "guard": "memory_usage > memory_limit",
+      "action": "emergency_cleanup, force_gc, set_state_error",
+      "requirements": ["REQ-MEM-003", "REQ-ERR-005"]
+    },
+    {
+      "id": "api_call_uninitialized",
+      "from": "uninitialized",
+      "to": "error",
+      "trigger": "api_call",
+      "guard": "!isModuleInitialized()",
+      "action": "throw_not_initialized_error",
+      "requirements": ["REQ-ERR-006"]
+    },
+    {
+      "id": "api_call_disposed",
+      "from": "disposed",
+      "to": "error",
+      "trigger": "api_call",
+      "guard": "getModuleState() === 'disposed'",
+      "action": "throw_disposed_error",
+      "requirements": ["REQ-ERR-007"]
+    },
+    {
+      "id": "reinit_after_disposal",
+      "from": "disposed",
+      "to": "initializing",
+      "trigger": "initWasmModule",
+      "guard": "getModuleState() === 'disposed'",
+      "action": "reset_global_state, restart_initialization",
+      "requirements": ["REQ-INIT-004"]
+    },
+    {
+      "id": "error_recovery_dispose",
+      "from": "error",
+      "to": "disposed",
+      "trigger": "disposeWasmModule",
+      "guard": "true",
+      "action": "force_cleanup_from_error_state",
+      "requirements": ["REQ-ERR-008"]
+    }
+  ],
+  "metadata": {
+    "created": "2025-09-28",
+    "author": "Claude Code MBD System",
+    "requirements": [
+      "REQ-001: Module must initialize with valid options",
+      "REQ-002: Panic hook must be set for debugging",
+      "REQ-003: Memory limits must be configurable and enforced", 
+      "REQ-004: Table registry must support configurable limits",
+      "REQ-005: All APIs must work after successful initialization",
+      "REQ-006: Module disposal must clean up all resources"
+    ],
+    "test_coverage_targets": {
+      "state_coverage": "100%",
+      "transition_coverage": "100%",
+      "path_coverage": "90%"
+    }
+  }
+}

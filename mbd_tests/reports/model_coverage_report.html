@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Model Coverage Report</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .header { background: #f8f9fa; padding: 20px; border-radius: 5px; }
+        .status { color: #28a745; font-weight: bold; font-size: 1.2em; }
+        .metric { display: inline-block; margin: 10px 20px; text-align: center; }
+        .metric-value { font-size: 2em; font-weight: bold; }
+        .metric-label { color: #666; }
+        .model-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        .model-table th, .model-table td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        .model-table th { background: #f8f9fa; }
+        .coverage-bar { width: 100px; height: 20px; background: #e9ecef; border-radius: 10px; overflow: hidden; }
+        .coverage-fill { height: 100%; background: linear-gradient(90deg, #dc3545 0%, #ffc107 50%, #28a745 100%); }
+        .gaps { background: #fff3cd; padding: 15px; border-radius: 5px; margin: 20px 0; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Model Coverage Analysis Report</h1>
+        <p>Generated: 2025-09-28T11:25:35.923Z</p>
+        <p class="status">Status: PASSED</p>
+    </div>
+    
+    <div class="metrics">
+        <div class="metric">
+            <div class="metric-value">100.0%</div>
+            <div class="metric-label">Mandatory Coverage</div>
+        </div>
+        <div class="metric">
+            <div class="metric-value">171</div>
+            <div class="metric-label">Mandatory Covered</div>
+        </div>
+        <div class="metric">
+            <div class="metric-value">171</div>
+            <div class="metric-label">Mandatory Total</div>
+        </div>
+        <div class="metric">
+            <div class="metric-value">20</div>
+            <div class="metric-label">Models Analyzed</div>
+        </div>
+    </div>
+    
+    <h2>Coverage by Model</h2>
+    <table class="model-table">
+        <tr>
+            <th>Model</th>
+            <th>Type</th>
+            <th>Mandatory Coverage</th>
+            <th>States</th>
+            <th>Transitions</th>
+            <th>Gaps</th>
+        </tr>
+        
+        <tr>
+            <td>compute_operations_flow</td>
+            <td>data_flow</td>
+            <td>
+                <div class="coverage-bar">
+                    <div class="coverage-fill" style="width: 100%"></div>
+                </div>
+                100.0%
+            </td>
+            <td>0/0</td>
+            <td>0/0</td>
+            <td>0</td>
+        </tr>
+        
+        <tr>
+            <td>data_conversion_flow</td>
+            <td>statechart</td>
+            <td>
+                <div class="coverage-bar">
+                    <div class="coverage-fill" style="width: 100%"></div>
+                </div>
+                100.0%
+            </td>
+            <td>19/19</td>
+            <td>21/21</td>
+            <td>0</td>
+        </tr>
+        
+        <tr>
+            <td>row_interface_flow</td>
+            <td>data_flow</td>
+            <td>
+                <div class="coverage-bar">
+                    <div class="coverage-fill" style="width: 100%"></div>
+                </div>
+                100.0%
+            </td>
+            <td>0/0</td>
+            <td>0/0</td>
+            <td>0</td>
+        </tr>
+        
+        <tr>
+            <td>api_interactions_v1</td>
+            <td>statechart</td>
+            <td>
+                <div class="coverage-bar">
+                    <div class="coverage-fill" style="width: 100%"></div>
+                </div>
+                100.0%
+            </td>
+            <td>6/6</td>
+            <td>14/14</td>
+            <td>0</td>
+        </tr>
+        
+        <tr>
+            <td>memory_management_v1</td>
+            <td>state_machine</td>
+            <td>
+                <div class="coverage-bar">
+                    <div class="coverage-fill" style="width: 100%"></div>
+                </div>
+                100.0%
+            </td>
+            <td>5/5</td>
+            <td>13/13</td>
+            <td>0</td>
+        </tr>
+        
+        <tr>
+            <td>module_lifecycle_v1_enhanced</td>
+            <td>state_machine</td>
+            <td>
+                <div class="coverage-bar">
+                    <div class="coverage-fill" style="width: 100%"></div>
+                </div>
+                100.0%
+            </td>
+            <td>5/5</td>
+            <td>14/14</td>
+            <td>0</td>
+        </tr>
+        
+        <tr>
+            <td>array_builder_lifecycle</td>
+            <td>state_machine</td>
+            <td>
+                <div class="coverage-bar">
+                    <div class="coverage-fill" style="width: 100%"></div>
+                </div>
+                100.0%
+            </td>
+            <td>6/6</td>
+            <td>16/16</td>
+            <td>0</td>
+        </tr>
+        
+        <tr>
+            <td>column_lifecycle</td>
+            <td>state_machine</td>
+            <td>
+                <div class="coverage-bar">
+                    <div class="coverage-fill" style="width: 100%"></div>
+                </div>
+                100.0%
+            </td>
+            <td>8/8</td>
+            <td>16/16</td>
+            <td>0</td>
+        </tr>
+        
+        <tr>
+            <td>memory_management</td>
+            <td>state_machine</td>
+            <td>
+                <div class="coverage-bar">
+                    <div class="coverage-fill" style="width: 100%"></div>
+                </div>
+                100.0%
+            </td>
+            <td>7/7</td>
+            <td>15/15</td>
+            <td>0</td>
+        </tr>
+        
+        <tr>
+            <td>module_lifecycle</td>
+            <td>state_machine</td>
+            <td>
+                <div class="coverage-bar">
+                    <div class="coverage-fill" style="width: 100%"></div>
+                </div>
+                100.0%
+            </td>
+            <td>7/7</td>
+            <td>14/14</td>
+            <td>0</td>
+        </tr>
+        
+        <tr>
+            <td>table_lifecycle</td>
+            <td>state_machine</td>
+            <td>
+                <div class="coverage-bar">
+                    <div class="coverage-fill" style="width: 100%"></div>
+                </div>
+                100.0%
+            </td>
+            <td>9/9</td>
+            <td>16/16</td>
+            <td>0</td>
+        </tr>
+        
+        <tr>
+            <td>table_lifecycle_v1</td>
+            <td>state_machine</td>
+            <td>
+                <div class="coverage-bar">
+                    <div class="coverage-fill" style="width: 100%"></div>
+                </div>
+                100.0%
+            </td>
+            <td>5/5</td>
+            <td>12/12</td>
+            <td>0</td>
+        </tr>
+        
+        <tr>
+            <td>error_handling_flow</td>
+            <td>statechart</td>
+            <td>
+                <div class="coverage-bar">
+                    <div class="coverage-fill" style="width: 100%"></div>
+                </div>
+                100.0%
+            </td>
+            <td>13/13</td>
+            <td>20/20</td>
+            <td>0</td>
+        </tr>
+        
+        <tr>
+            <td>error_states_v1</td>
+            <td>error_model</td>
+            <td>
+                <div class="coverage-bar">
+                    <div class="coverage-fill" style="width: 100%"></div>
+                </div>
+                100.0%
+            </td>
+            <td>0/0</td>
+            <td>0/0</td>
+            <td>0</td>
+        </tr>
+        
+        <tr>
+            <td>recovery_paths_v1</td>
+            <td>error_recovery</td>
+            <td>
+                <div class="coverage-bar">
+                    <div class="coverage-fill" style="width: 100%"></div>
+                </div>
+                100.0%
+            </td>
+            <td>0/0</td>
+            <td>0/0</td>
+            <td>0</td>
+        </tr>
+        
+        <tr>
+            <td>api_surface_v1</td>
+            <td>component</td>
+            <td>
+                <div class="coverage-bar">
+                    <div class="coverage-fill" style="width: 100%"></div>
+                </div>
+                100.0%
+            </td>
+            <td>0/0</td>
+            <td>0/0</td>
+            <td>0</td>
+        </tr>
+        
+        <tr>
+            <td>api_surface_model</td>
+            <td>component</td>
+            <td>
+                <div class="coverage-bar">
+                    <div class="coverage-fill" style="width: 100%"></div>
+                </div>
+                100.0%
+            </td>
+            <td>0/0</td>
+            <td>0/0</td>
+            <td>0</td>
+        </tr>
+        
+        <tr>
+            <td>module_dependencies</td>
+            <td>component</td>
+            <td>
+                <div class="coverage-bar">
+                    <div class="coverage-fill" style="width: 100%"></div>
+                </div>
+                100.0%
+            </td>
+            <td>0/0</td>
+            <td>0/0</td>
+            <td>0</td>
+        </tr>
+        
+        <tr>
+            <td>component_architecture_v1</td>
+            <td>component</td>
+            <td>
+                <div class="coverage-bar">
+                    <div class="coverage-fill" style="width: 100%"></div>
+                </div>
+                100.0%
+            </td>
+            <td>0/0</td>
+            <td>0/0</td>
+            <td>0</td>
+        </tr>
+        
+        <tr>
+            <td>type_system_flow</td>
+            <td>data_flow</td>
+            <td>
+                <div class="coverage-bar">
+                    <div class="coverage-fill" style="width: 100%"></div>
+                </div>
+                100.0%
+            </td>
+            <td>0/0</td>
+            <td>0/0</td>
+            <td>0</td>
+        </tr>
+        
+    </table>
+    
+    
+    
+</body>
+</html>

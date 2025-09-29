@@ -1,0 +1,1021 @@
+{
+  "model_id": "array_builder_lifecycle",
+  "model_type": "state_machine",
+  "generated_at": "2025-09-28T11:18:56.516Z",
+  "test_cases": [
+    {
+      "test_id": "array_builder_lifecycle_state_uninitialized_validation",
+      "test_name": "Validate Uninitialized state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "uninitialized",
+      "requirements": [
+        "REQ-BUILDER-001",
+        "REQ-BUILDER-002",
+        "REQ-BUILDER-003",
+        "REQ-MEM-003"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Uninitialized state",
+          "expected": "System reaches Uninitialized state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"builder_handle\":null,\"data_type\":null,\"capacity\":0,\"values_appended\":0,\"can_append\":false}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for array_builder_lifecycle_state_uninitialized_validation\n// Model: array_builder_lifecycle, Element: uninitialized\n\ndescribe('array_builder_lifecycle_state_uninitialized_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Uninitialized state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "array_builder_lifecycle_state_empty_validation",
+      "test_name": "Validate Empty Builder state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "empty",
+      "requirements": [
+        "REQ-BUILDER-001",
+        "REQ-BUILDER-002",
+        "REQ-BUILDER-003",
+        "REQ-MEM-003"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Empty Builder state",
+          "expected": "System reaches Empty Builder state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"builder_handle\":\"number\",\"data_type\":\"DataType\",\"capacity\":\">0\",\"values_appended\":0,\"can_append\":true,\"builder_initialized\":true}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for array_builder_lifecycle_state_empty_validation\n// Model: array_builder_lifecycle, Element: empty\n\ndescribe('array_builder_lifecycle_state_empty_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Empty Builder state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "array_builder_lifecycle_state_building_validation",
+      "test_name": "Validate Building with Values state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "building",
+      "requirements": [
+        "REQ-BUILDER-001",
+        "REQ-BUILDER-002",
+        "REQ-BUILDER-003",
+        "REQ-MEM-003"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Building with Values state",
+          "expected": "System reaches Building with Values state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"builder_handle\":\"number\",\"data_type\":\"DataType\",\"capacity\":\">0\",\"values_appended\":\">0\",\"can_append\":true,\"has_data\":true}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for array_builder_lifecycle_state_building_validation\n// Model: array_builder_lifecycle, Element: building\n\ndescribe('array_builder_lifecycle_state_building_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Building with Values state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "array_builder_lifecycle_state_finished_validation",
+      "test_name": "Validate Finished Builder state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "finished",
+      "requirements": [
+        "REQ-BUILDER-001",
+        "REQ-BUILDER-002",
+        "REQ-BUILDER-003",
+        "REQ-MEM-003"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Finished Builder state",
+          "expected": "System reaches Finished Builder state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"builder_handle\":\"number\",\"data_type\":\"DataType\",\"values_appended\":\">=0\",\"can_append\":false,\"column_created\":true,\"result_column\":\"Column\"}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for array_builder_lifecycle_state_finished_validation\n// Model: array_builder_lifecycle, Element: finished\n\ndescribe('array_builder_lifecycle_state_finished_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Finished Builder state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "array_builder_lifecycle_state_cleared_validation",
+      "test_name": "Validate Cleared Builder state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "cleared",
+      "requirements": [
+        "REQ-BUILDER-001",
+        "REQ-BUILDER-002",
+        "REQ-BUILDER-003",
+        "REQ-MEM-003"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Cleared Builder state",
+          "expected": "System reaches Cleared Builder state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"builder_handle\":\"number\",\"data_type\":\"DataType\",\"capacity\":\">0\",\"values_appended\":0,\"can_append\":true,\"builder_reset\":true}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for array_builder_lifecycle_state_cleared_validation\n// Model: array_builder_lifecycle, Element: cleared\n\ndescribe('array_builder_lifecycle_state_cleared_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Cleared Builder state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "array_builder_lifecycle_state_error_validation",
+      "test_name": "Validate Error State state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "error",
+      "requirements": [
+        "REQ-BUILDER-001",
+        "REQ-BUILDER-002",
+        "REQ-BUILDER-003",
+        "REQ-MEM-003"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Error State state",
+          "expected": "System reaches Error State state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"error_occurred\":true,\"error_code\":\"string\",\"error_message\":\"string\",\"builder_handle\":\"number or null\",\"recovery_possible\":\"boolean\"}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for array_builder_lifecycle_state_error_validation\n// Model: array_builder_lifecycle, Element: error\n\ndescribe('array_builder_lifecycle_state_error_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Error State state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "array_builder_lifecycle_transition_initialize_builder",
+      "test_name": "Test transition: Uninitialized → Empty Builder",
+      "test_type": "transition_test",
+      "model_element": "initialize_builder",
+      "requirements": [
+        "REQ-BUILDER-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Uninitialized state",
+          "expected": "System state is uninitialized"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: data_type_valid && capacity_valid",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: ArrayBuilder.new",
+          "expected": "Event ArrayBuilder.new is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: create_builder_instance",
+          "expected": "Action create_builder_instance completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Empty Builder state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "valid_types": [
+          "DataType.newInt32()",
+          "DataType.newFloat64()",
+          "DataType.newUtf8()",
+          "DataType.newBool()"
+        ],
+        "valid_capacities": [
+          "256 (default)",
+          "100",
+          "1000",
+          "null (uses default)"
+        ],
+        "invalid_inputs": [
+          "unsupported_data_type",
+          "negative_capacity"
+        ]
+      },
+      "browser_test_code": "\n// Generated test for array_builder_lifecycle_transition_initialize_builder\n// Model: array_builder_lifecycle, Element: initialize_builder\n\ndescribe('array_builder_lifecycle_transition_initialize_builder', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: uninitialized\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "array_builder_lifecycle_transition_append_value",
+      "test_name": "Test transition: Empty Builder → Building with Values",
+      "test_type": "transition_test",
+      "model_element": "append_value",
+      "requirements": [
+        "REQ-BUILDER-002"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Empty Builder state",
+          "expected": "System state is empty"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: value_type_compatible",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: append",
+          "expected": "Event append is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: store_value_in_builder",
+          "expected": "Action store_value_in_builder completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Building with Values state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "valid_values": [
+          "42 for Int32",
+          "3.14 for Float64",
+          "'hello' for Utf8",
+          "true for Boolean"
+        ],
+        "null_values": [
+          "null",
+          "undefined"
+        ],
+        "type_conversions": [
+          "string_to_number_coercion",
+          "number_to_string_coercion"
+        ]
+      },
+      "browser_test_code": "\n// Generated test for array_builder_lifecycle_transition_append_value\n// Model: array_builder_lifecycle, Element: append_value\n\ndescribe('array_builder_lifecycle_transition_append_value', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: empty\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "array_builder_lifecycle_transition_append_additional_value",
+      "test_name": "Test transition: Building with Values → Building with Values",
+      "test_type": "transition_test",
+      "model_element": "append_additional_value",
+      "requirements": [
+        "REQ-BUILDER-002"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Building with Values state",
+          "expected": "System state is building"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: value_type_compatible",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: append",
+          "expected": "Event append is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: store_additional_value",
+          "expected": "Action store_additional_value completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Building with Values state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "multiple_appends": "sequential_value_storage",
+        "capacity_expansion": "automatic_if_needed"
+      },
+      "browser_test_code": "\n// Generated test for array_builder_lifecycle_transition_append_additional_value\n// Model: array_builder_lifecycle, Element: append_additional_value\n\ndescribe('array_builder_lifecycle_transition_append_additional_value', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: building\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "array_builder_lifecycle_transition_append_null_to_empty",
+      "test_name": "Test transition: Empty Builder → Building with Values",
+      "test_type": "transition_test",
+      "model_element": "append_null_to_empty",
+      "requirements": [
+        "REQ-BUILDER-002"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Empty Builder state",
+          "expected": "System state is empty"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: true",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: appendNull",
+          "expected": "Event appendNull is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: store_null_value",
+          "expected": "Action store_null_value completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Building with Values state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "null_representation": "proper_null_marking"
+      },
+      "browser_test_code": "\n// Generated test for array_builder_lifecycle_transition_append_null_to_empty\n// Model: array_builder_lifecycle, Element: append_null_to_empty\n\ndescribe('array_builder_lifecycle_transition_append_null_to_empty', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: empty\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "array_builder_lifecycle_transition_append_null_to_building",
+      "test_name": "Test transition: Building with Values → Building with Values",
+      "test_type": "transition_test",
+      "model_element": "append_null_to_building",
+      "requirements": [
+        "REQ-BUILDER-002"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Building with Values state",
+          "expected": "System state is building"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: true",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: appendNull",
+          "expected": "Event appendNull is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: store_additional_null",
+          "expected": "Action store_additional_null completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Building with Values state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {},
+      "browser_test_code": "\n// Generated test for array_builder_lifecycle_transition_append_null_to_building\n// Model: array_builder_lifecycle, Element: append_null_to_building\n\ndescribe('array_builder_lifecycle_transition_append_null_to_building', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: building\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "array_builder_lifecycle_transition_append_values_to_empty",
+      "test_name": "Test transition: Empty Builder → Building with Values",
+      "test_type": "transition_test",
+      "model_element": "append_values_to_empty",
+      "requirements": [
+        "REQ-BUILDER-002"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Empty Builder state",
+          "expected": "System state is empty"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: values_array_valid",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: appendValues",
+          "expected": "Event appendValues is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: store_multiple_values",
+          "expected": "Action store_multiple_values completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Building with Values state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "valid_arrays": [
+          "[1, 2, 3, null, 5]",
+          "['a', 'b', null, 'c']",
+          "[true, false, null]"
+        ],
+        "empty_array": "[]",
+        "batch_efficiency": "optimized_bulk_append"
+      },
+      "browser_test_code": "\n// Generated test for array_builder_lifecycle_transition_append_values_to_empty\n// Model: array_builder_lifecycle, Element: append_values_to_empty\n\ndescribe('array_builder_lifecycle_transition_append_values_to_empty', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: empty\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "array_builder_lifecycle_transition_append_values_to_building",
+      "test_name": "Test transition: Building with Values → Building with Values",
+      "test_type": "transition_test",
+      "model_element": "append_values_to_building",
+      "requirements": [
+        "REQ-BUILDER-002"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Building with Values state",
+          "expected": "System state is building"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: values_array_valid",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: appendValues",
+          "expected": "Event appendValues is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: store_additional_multiple_values",
+          "expected": "Action store_additional_multiple_values completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Building with Values state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {},
+      "browser_test_code": "\n// Generated test for array_builder_lifecycle_transition_append_values_to_building\n// Model: array_builder_lifecycle, Element: append_values_to_building\n\ndescribe('array_builder_lifecycle_transition_append_values_to_building', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: building\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "array_builder_lifecycle_transition_finish_from_empty",
+      "test_name": "Test transition: Empty Builder → Finished Builder",
+      "test_type": "transition_test",
+      "model_element": "finish_from_empty",
+      "requirements": [
+        "REQ-BUILDER-003"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Empty Builder state",
+          "expected": "System state is empty"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: true",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: finish",
+          "expected": "Event finish is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: create_empty_column",
+          "expected": "Action create_empty_column completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Finished Builder state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "empty_column_properties": [
+          "length === 0",
+          "schema_matches_builder_type",
+          "valid_column_handle"
+        ]
+      },
+      "browser_test_code": "\n// Generated test for array_builder_lifecycle_transition_finish_from_empty\n// Model: array_builder_lifecycle, Element: finish_from_empty\n\ndescribe('array_builder_lifecycle_transition_finish_from_empty', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: empty\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "array_builder_lifecycle_transition_finish_from_building",
+      "test_name": "Test transition: Building with Values → Finished Builder",
+      "test_type": "transition_test",
+      "model_element": "finish_from_building",
+      "requirements": [
+        "REQ-BUILDER-003"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Building with Values state",
+          "expected": "System state is building"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: true",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: finish",
+          "expected": "Event finish is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: create_populated_column",
+          "expected": "Action create_populated_column completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Finished Builder state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "column_properties": [
+          "length === values_appended",
+          "data_integrity_preserved",
+          "null_values_properly_represented",
+          "column_registered_in_table_registry"
+        ],
+        "performance": "< 10ms for 1k values"
+      },
+      "browser_test_code": "\n// Generated test for array_builder_lifecycle_transition_finish_from_building\n// Model: array_builder_lifecycle, Element: finish_from_building\n\ndescribe('array_builder_lifecycle_transition_finish_from_building', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: building\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "array_builder_lifecycle_transition_clear_from_building",
+      "test_name": "Test transition: Building with Values → Cleared Builder",
+      "test_type": "transition_test",
+      "model_element": "clear_from_building",
+      "requirements": [
+        "REQ-BUILDER-002"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Building with Values state",
+          "expected": "System state is building"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: true",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: clear",
+          "expected": "Event clear is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: reset_builder_state",
+          "expected": "Action reset_builder_state completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Cleared Builder state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "state_reset": [
+          "values_appended = 0",
+          "internal_storage_cleared",
+          "can_append_again"
+        ]
+      },
+      "browser_test_code": "\n// Generated test for array_builder_lifecycle_transition_clear_from_building\n// Model: array_builder_lifecycle, Element: clear_from_building\n\ndescribe('array_builder_lifecycle_transition_clear_from_building', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: building\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "array_builder_lifecycle_transition_clear_from_empty",
+      "test_name": "Test transition: Empty Builder → Cleared Builder",
+      "test_type": "transition_test",
+      "model_element": "clear_from_empty",
+      "requirements": [
+        "REQ-BUILDER-002"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Empty Builder state",
+          "expected": "System state is empty"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: true",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: clear",
+          "expected": "Event clear is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: reset_empty_builder",
+          "expected": "Action reset_empty_builder completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Cleared Builder state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {},
+      "browser_test_code": "\n// Generated test for array_builder_lifecycle_transition_clear_from_empty\n// Model: array_builder_lifecycle, Element: clear_from_empty\n\ndescribe('array_builder_lifecycle_transition_clear_from_empty', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: empty\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "array_builder_lifecycle_transition_append_after_clear",
+      "test_name": "Test transition: Cleared Builder → Building with Values",
+      "test_type": "transition_test",
+      "model_element": "append_after_clear",
+      "requirements": [
+        "REQ-BUILDER-002"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Cleared Builder state",
+          "expected": "System state is cleared"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: value_type_compatible",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: append",
+          "expected": "Event append is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: store_value_after_clear",
+          "expected": "Action store_value_after_clear completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Building with Values state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "reuse_verification": "builder_works_normally_after_clear"
+      },
+      "browser_test_code": "\n// Generated test for array_builder_lifecycle_transition_append_after_clear\n// Model: array_builder_lifecycle, Element: append_after_clear\n\ndescribe('array_builder_lifecycle_transition_append_after_clear', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: cleared\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "array_builder_lifecycle_transition_finish_after_clear",
+      "test_name": "Test transition: Cleared Builder → Finished Builder",
+      "test_type": "transition_test",
+      "model_element": "finish_after_clear",
+      "requirements": [
+        "REQ-BUILDER-003"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Cleared Builder state",
+          "expected": "System state is cleared"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: true",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: finish",
+          "expected": "Event finish is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: create_empty_column_after_clear",
+          "expected": "Action create_empty_column_after_clear completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Finished Builder state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {},
+      "browser_test_code": "\n// Generated test for array_builder_lifecycle_transition_finish_after_clear\n// Model: array_builder_lifecycle, Element: finish_after_clear\n\ndescribe('array_builder_lifecycle_transition_finish_after_clear', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: cleared\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "array_builder_lifecycle_transition_type_mismatch_error",
+      "test_name": "Test transition: Empty Builder → Error State",
+      "test_type": "transition_test",
+      "model_element": "type_mismatch_error",
+      "requirements": [
+        "REQ-ERROR-004"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Empty Builder state",
+          "expected": "System state is empty"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: value_type_incompatible",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: append",
+          "expected": "Event append is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: set_type_error",
+          "expected": "Action set_type_error completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Error State state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "error_scenarios": [
+          "string_to_int32_incompatible",
+          "object_to_primitive_incompatible",
+          "complex_type_unsupported"
+        ]
+      },
+      "browser_test_code": "\n// Generated test for array_builder_lifecycle_transition_type_mismatch_error\n// Model: array_builder_lifecycle, Element: type_mismatch_error\n\ndescribe('array_builder_lifecycle_transition_type_mismatch_error', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: empty\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "array_builder_lifecycle_transition_invalid_array_error",
+      "test_name": "Test transition: Empty Builder → Error State",
+      "test_type": "transition_test",
+      "model_element": "invalid_array_error",
+      "requirements": [
+        "REQ-ERROR-004"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Empty Builder state",
+          "expected": "System state is empty"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: values_array_invalid",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: appendValues",
+          "expected": "Event appendValues is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: set_array_error",
+          "expected": "Action set_array_error completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Error State state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "error_scenarios": [
+          "non_array_input",
+          "mixed_incompatible_types"
+        ]
+      },
+      "browser_test_code": "\n// Generated test for array_builder_lifecycle_transition_invalid_array_error\n// Model: array_builder_lifecycle, Element: invalid_array_error\n\ndescribe('array_builder_lifecycle_transition_invalid_array_error', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: empty\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "array_builder_lifecycle_transition_finish_after_error",
+      "test_name": "Test transition: Error State → Error State",
+      "test_type": "transition_test",
+      "model_element": "finish_after_error",
+      "requirements": [
+        "REQ-ERROR-004"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Error State state",
+          "expected": "System state is error"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: error_state_active",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: finish",
+          "expected": "Event finish is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: return_error_result",
+          "expected": "Action return_error_result completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Error State state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "error_persistence": "finish_fails_when_in_error_state"
+      },
+      "browser_test_code": "\n// Generated test for array_builder_lifecycle_transition_finish_after_error\n// Model: array_builder_lifecycle, Element: finish_after_error\n\ndescribe('array_builder_lifecycle_transition_finish_after_error', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: error\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    }
+  ]
+}

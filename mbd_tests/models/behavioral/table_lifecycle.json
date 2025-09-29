@@ -1,0 +1,225 @@
+{
+  "model_id": "table_lifecycle_v1",
+  "model_type": "state_machine",
+  "version": "1.0.0",
+  "description": "State machine model for table creation, manipulation, and disposal lifecycle in WASM Arrow library",
+  "states": [
+    {
+      "id": "non_existent",
+      "name": "Non-existent",
+      "type": "initial",
+      "properties": {
+        "handle_allocated": false,
+        "memory_consumed": 0,
+        "accessible": false
+      },
+      "invariants": [
+        "Table handle does not exist in registry",
+        "is_valid_table_handle returns false",
+        "No memory allocated for this table"
+      ]
+    },
+    {
+      "id": "loading",
+      "name": "Loading",
+      "type": "normal",
+      "properties": {
+        "handle_allocated": false,
+        "memory_consumed": 0,
+        "accessible": false,
+        "parsing_in_progress": true
+      },
+      "invariants": [
+        "Buffer is being parsed",
+        "Format detection is complete",
+        "Memory allocation not yet committed"
+      ]
+    },
+    {
+      "id": "active",
+      "name": "Active",
+      "type": "normal",
+      "properties": {
+        "handle_allocated": true,
+        "memory_consumed": "> 0",
+        "accessible": true,
+        "can_read": true,
+        "can_manipulate": true
+      },
+      "invariants": [
+        "Table handle exists in registry",
+        "is_valid_table_handle returns true",
+        "get_table_info returns valid information",
+        "get_schema returns valid schema",
+        "Memory is allocated and tracked",
+        "All table operations should work"
+      ]
+    },
+    {
+      "id": "derived",
+      "name": "Derived",
+      "type": "normal",
+      "properties": {
+        "handle_allocated": true,
+        "memory_consumed": "> 0",
+        "accessible": true,
+        "can_read": true,
+        "can_manipulate": true,
+        "derived_from_parent": true
+      },
+      "invariants": [
+        "Table was created from another table operation",
+        "Has independent handle and memory allocation",
+        "Can be manipulated independently of parent",
+        "Parent table can be disposed independently"
+      ]
+    },
+    {
+      "id": "disposed",
+      "name": "Disposed",
+      "type": "final",
+      "properties": {
+        "handle_allocated": false,
+        "memory_consumed": 0,
+        "accessible": false
+      },
+      "invariants": [
+        "Table handle no longer exists in registry",
+        "is_valid_table_handle returns false",
+        "Memory has been released",
+        "All operations on handle return INVALID_HANDLE error"
+      ]
+    }
+  ],
+  "transitions": [
+    {
+      "id": "start_table_creation",
+      "from": "non_existent",
+      "to": "loading",
+      "trigger": "read_table_from_buffer",
+      "guard": "module_is_initialized AND buffer_is_valid",
+      "action": "detect_format, start_parsing",
+      "requirements": ["REQ-101", "REQ-102"]
+    },
+    {
+      "id": "complete_table_creation",
+      "from": "loading",
+      "to": "active",
+      "trigger": "parsing_complete",
+      "guard": "parsing_successful AND memory_available",
+      "action": "allocate_handle, register_table, track_memory",
+      "requirements": ["REQ-103", "REQ-104"]
+    },
+    {
+      "id": "create_slice",
+      "from": "active",
+      "to": "derived",
+      "trigger": "slice_table",
+      "guard": "valid_slice_parameters AND memory_available",
+      "action": "create_sliced_batch, allocate_new_handle, register_derived_table",
+      "requirements": ["REQ-105"]
+    },
+    {
+      "id": "create_filtered",
+      "from": "active",
+      "to": "derived",
+      "trigger": "filter_table",
+      "guard": "valid_filter_mask AND memory_available",
+      "action": "apply_filter, allocate_new_handle, register_derived_table",
+      "requirements": ["REQ-106"]
+    },
+    {
+      "id": "create_projection",
+      "from": "active",
+      "to": "derived",
+      "trigger": "select_columns",
+      "guard": "valid_column_selection AND memory_available",
+      "action": "project_columns, allocate_new_handle, register_derived_table",
+      "requirements": ["REQ-107"]
+    },
+    {
+      "id": "create_projection_by_name",
+      "from": "active",
+      "to": "derived",
+      "trigger": "select_columns_by_name",
+      "guard": "valid_column_names AND memory_available",
+      "action": "resolve_names_to_indices, project_columns, allocate_new_handle",
+      "requirements": ["REQ-108"]
+    },
+    {
+      "id": "derived_slice",
+      "from": "derived",
+      "to": "derived",
+      "trigger": "slice_table",
+      "guard": "valid_slice_parameters AND memory_available",
+      "action": "create_sliced_batch, allocate_new_handle, register_derived_table",
+      "requirements": ["REQ-105"]
+    },
+    {
+      "id": "derived_filter",
+      "from": "derived",
+      "to": "derived",
+      "trigger": "filter_table",
+      "guard": "valid_filter_mask AND memory_available",
+      "action": "apply_filter, allocate_new_handle, register_derived_table",
+      "requirements": ["REQ-106"]
+    },
+    {
+      "id": "derived_projection",
+      "from": "derived",
+      "to": "derived",
+      "trigger": "select_columns",
+      "guard": "valid_column_selection AND memory_available",
+      "action": "project_columns, allocate_new_handle, register_derived_table",
+      "requirements": ["REQ-107"]
+    },
+    {
+      "id": "dispose_active",
+      "from": "active",
+      "to": "disposed",
+      "trigger": "release_table",
+      "guard": "none",
+      "action": "remove_from_registry, release_memory, invalidate_handle",
+      "requirements": ["REQ-109"]
+    },
+    {
+      "id": "dispose_derived",
+      "from": "derived",
+      "to": "disposed",
+      "trigger": "release_table",
+      "guard": "none",
+      "action": "remove_from_registry, release_memory, invalidate_handle",
+      "requirements": ["REQ-109"]
+    },
+    {
+      "id": "fail_during_loading",
+      "from": "loading",
+      "to": "disposed",
+      "trigger": "parsing_failed",
+      "guard": "none",
+      "action": "cleanup_partial_allocation, report_error",
+      "requirements": ["REQ-110"]
+    }
+  ],
+  "metadata": {
+    "created": "2025-09-28",
+    "author": "Claude Code MBD System",
+    "requirements": [
+      "REQ-101: Table creation must validate module initialization",
+      "REQ-102: Table creation must validate input buffer format",
+      "REQ-103: Table creation must successfully parse supported formats",
+      "REQ-104: Table creation must allocate and track memory properly",
+      "REQ-105: Table slicing must create independent derived tables",
+      "REQ-106: Table filtering must apply boolean masks correctly",
+      "REQ-107: Table projection must select specified columns",
+      "REQ-108: Column selection by name must resolve to correct indices",
+      "REQ-109: Table disposal must release all associated resources",
+      "REQ-110: Failed table creation must clean up partial allocations"
+    ],
+    "test_coverage_targets": {
+      "state_coverage": "100%",
+      "transition_coverage": "100%",
+      "path_coverage": "95%"
+    }
+  }
+}

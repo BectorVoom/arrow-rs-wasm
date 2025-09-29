@@ -1,739 +1,462 @@
-# WASM-Arrow Library API Definition Document
+# 1. Purpose and scope
 
-## 1. Executive Summary
+**Purpose.** Provide a Rust → WebAssembly core plus a small, type-safe JavaScript/TypeScript façade that together enable:
 
-This document defines the Application Programming Interface (API) for the **wasm-arrow** library, which enables reading, writing, and various operations on Apache Arrow format files in WebAssembly environments. The library provides a zero-copy, type-safe interface between Rust/WebAssembly and JavaScript/TypeScript, with support for modular design and extensible plugin architecture.
+* zero-copy transfer of Arrow buffers between WASM and host (high-level, user-friendly API; WASM owns memory),
+* reading Arrow/Feather/Parquet files (including those whose IPC blocks use LZ4 internal compression),
+* creating Arrow/Feather/Parquet files with configurable IPC write options (including LZ4),
+* a plugin extensibility model (plugins implement additional column types or behaviours such as geometry),
+* clean separation of core and plugins so core remains minimal and tree-shakeable.
 
-## 2. Architecture Overview
+**Out of scope.** Native C bindings, exposing raw pointers to JavaScript, runtime code generators, and embedding third-party plugin code in the core crate. The core must avoid exporting C-style data structures to userland.
 
-### 2.1 Core Principles
+---
 
-1. **Modular Design**: The library shall be organized into distinct modules for different functionalities
-2. **Plugin Architecture**: Extensible system allowing future additions, particularly for geometry column support
-3. **Zero-Copy Data Transfer**: Data moves between WASM and JavaScript without duplication
-4. **WASM-Side Memory Management**: All memory allocation and deallocation handled within WebAssembly
-5. **Type Safety**: Full TypeScript type definitions ensuring compile-time safety
+# 2. High-level goals & constraints
 
-### 2.2 Module Structure
+1. **Modular design** — the project is divided into crates/modules so users can import only what they need (easy tree-shaking on the JS side).
+2. **Plugin-first architecture** — core provides only a plugin registration/validation API; all optional features (e.g., geometry type support) are delivered as separate plugin crates.
+3. **Zero-copy WASM ↔ JS semantics** — the WASM module is the authoritative owner of raw Arrow memory. The JavaScript/TypeScript interface never requires users to manipulate raw memory. High-level objects (handles) are passed between JS and WASM; operations are performed by calling exported methods in WASM. JS receives copies only when explicitly requested.
+4. **JS/TS style rules** — API examples and generated TypeScript must NOT use `this`, `any`, `is` (type-predicate syntax), `try`, or `catch` in public-facing examples or types. Errors are surfaced as explicit `Result`-like return values or rejected Promises. (See error section.)
+5. **File formats** — support reading/writing Arrow IPC, Feather, and Parquet files where IPC frames may be LZ4-compressed. Writing must allow `arrow_ipc::writer::IpcWriteOptions` configuration to enable LZ4 internal compression.
+6. **Avoid C bindings** — do not expose `extern "C"` style structs or bind directly to C ABI for exported APIs; use `wasm-bindgen` for interop.
+7. **Type safety** — TypeScript façade must be strongly typed (no `any`), exposing explicit interfaces and result types.
+8. **Testing** — browser tests are model-based (property-based + model-based test harness) in addition to unit and integration tests.
+9. **Documentation** — include README, user manual examples, plugin author guide, and API reference.
+
+References used while writing this specification are listed at the end.
+
+---
+
+# 3. Project layout (directory and crate layout)
 
 ```
-wasm-arrow/
-├── core/           # Core functionality for Arrow operations
-├── io/             # File reading and writing operations
-├── table/          # Table manipulation and operations
-├── schema/         # Schema definition and management
-├── compute/        # Computational operations on arrays
-├── plugin/         # Plugin system interface
-└── types/          # Type definitions and conversions
+/crates
+  /core                    # Rust core crate (wasm-compatible)
+    src/
+      lib.rs
+      fs.rs                # thin wrappers for reading/writing Arrow files
+      ipc.rs               # Arrow IPC read/write helpers and LZ4 handling
+      mem.rs               # WASM memory manager and TableHandle lifecycle
+      plugin.rs            # Plugin trait and plugin manager
+      errors.rs            # Error types
+    Cargo.toml
+  /plugins                 # workspace folder for plugin crates
+    /plugin-geo            # example plugin for geometry column types
+      src/lib.rs
+      Cargo.toml
+  /docs
+    design.md
+    user_manual.md
+    plugin_author_guide.md
+  /examples
+    /node                 # Node examples (TypeScript)
+    /browser              # Browser examples (TypeScript)
+  /pkg                    # wasm-pack / bundling outputs
+  /mbd_tests
+    unit_tests.rs
+    integration_tests.rs
+    model_based_tests.rs
+  /.serena
+    /memories
+     progress_report.md
+Cargo.toml
+README.md
 ```
 
-## 3. Core Module API
+---
 
-### 3.1 Initialization
+# 4. Rust core: modules and public types
 
-The core module provides fundamental initialization and lifecycle management for the library.
+## 4.1 Core responsibilities
 
-#### 3.1.1 `initialize()`
+* Provide **safe** Rust APIs to read and write Arrow/Feather/Parquet using `arrow` crates and `arrow-ipc` with LZ4.
+* Manage WASM memory and lifecycle of Table handles; expose stable handle numeric types to JS.
+* Expose minimal plugin registration/validation API.
+* Provide deterministic and minimal glue functions for `wasm-bindgen`.
 
-**Description**: Initializes the WASM module and sets up the memory allocator.
+## 4.2 Key public Rust types (summaries and example signatures)
 
-**TypeScript Signature**:
-```typescript
-function initialize(): Promise<void>
-```
-
-**Returns**: A Promise that resolves when initialization is complete.
-
-**Business Logic**:
-- Sets up the WASM linear memory
-- Initializes the panic hook for error handling
-- Prepares the plugin registry
-
-#### 3.1.2 `getVersion()`
-
-**Description**: Returns the library version information.
-
-**TypeScript Signature**:
-```typescript
-function getVersion(): VersionInfo
-
-interface VersionInfo {
-  major: number;
-  minor: number;
-  patch: number;
-  arrow_version: string;
-}
-```
-
-## 4. Table Module API
-
-### 4.1 Table Creation and Loading
-
-#### 4.1.1 `tableFromIPC()`
-
-**Description**: Creates a Table instance from IPC-formatted Arrow data.
-
-**TypeScript Signature**:
-```typescript
-function tableFromIPC(buffer: ArrayBuffer): Table
-```
-
-**Parameters**:
-- `buffer`: ArrayBuffer containing Arrow IPC format data
-
-**Returns**: A Table instance
-
-**Business Logic**:
-1. Validates the buffer contains valid Arrow IPC format
-2. Parses the schema from the IPC metadata
-3. Creates internal column arrays without copying data
-4. Returns a Table handle referencing WASM memory
-
-**Implementation Requirements**:
-- Data remains in WASM linear memory
-- JavaScript receives only a handle/pointer
-- Zero-copy operation
-
-#### 4.1.2 `tableFromJSON()`
-
-**Description**: Creates a Table from JSON data with schema inference.
-
-**TypeScript Signature**:
-```typescript
-function tableFromJSON(
-  data: Record<string, unknown>[],
-  schema?: Schema
-): Table
-```
-
-**Parameters**:
-- `data`: Array of objects representing rows
-- `schema`: Optional schema specification
-
-**Business Logic**:
-1. If schema not provided, infers from data
-2. Validates data against schema
-3. Converts JavaScript values to Arrow arrays
-4. Constructs Table in WASM memory
-
-### 4.2 Table Operations
-
-#### 4.2.1 `Table` Class
-
-**TypeScript Interface**:
-```typescript
-interface Table {
-  readonly numRows: number;
-  readonly numColumns: number;
-  readonly schema: Schema;
-
-  getColumn(name: string): Column;
-  getColumnAt(index: number): Column;
-  slice(offset: number, length: number): Table;
-  select(columns: string[]): Table;
-  filter(predicate: (row: Row) => boolean): Table;
-  toArray(): Record<string, unknown>[];
-  toIPC(options?: WriteOptions): ArrayBuffer;
-  dispose(): void;
-}
-```
-
-**Key Methods**:
-
-##### `getColumn(name: string): Column`
-- Returns a Column reference by name
-- Throws if column doesn't exist
-- Column data remains in WASM memory
-
-##### `slice(offset: number, length: number): Table`
-- Creates a zero-copy slice of the table
-- Original data unchanged
-- Returns new Table handle
-
-##### `filter(predicate: (row: Row) => boolean): Table`
-- Filters rows based on predicate
-- Creates new Table with filtered data
-- Predicate executed in JavaScript
-
-##### `toIPC(options?: WriteOptions): ArrayBuffer`
-- Serializes Table to Arrow IPC format
-- Uses IpcWriteOptions configuration
-- Returns ArrayBuffer with IPC data
-
-##### `dispose(): void`
-- Explicitly releases WASM memory
-- Must be called to prevent memory leaks
-- Invalidates the Table handle
-
-### 4.3 Row Interface
-
-**TypeScript Interface**:
-```typescript
-interface Row {
-  get(column: string): unknown;
-  getAt(index: number): unknown;
-  toObject(): Record<string, unknown>;
-}
-```
-
-**Implementation Note**: Row is a virtual interface - data is accessed directly from columnar storage without materializing full rows.
-
-## 5. Schema Module API
-
-### 5.1 Schema Definition
-
-#### 5.1.1 `Schema` Interface
-
-**TypeScript Interface**:
-```typescript
-interface Schema {
-  readonly fields: Field[];
-  readonly metadata: Map<string, string>;
-
-  getField(name: string): Field;
-  getFieldIndex(name: string): number;
-  equals(other: Schema): boolean;
-  toJSON(): SchemaJSON;
-}
-```
-
-#### 5.1.2 `Field` Interface
-
-**TypeScript Interface**:
-```typescript
-interface Field {
-  readonly name: string;
-  readonly dataType: DataType;
-  readonly nullable: boolean;
-  readonly metadata: Map<string, string>;
-}
-```
-
-### 5.2 Data Types
-
-**TypeScript Type Definitions**:
-```typescript
-type DataType =
-  | { type: "null" }
-  | { type: "bool" }
-  | { type: "int8" }
-  | { type: "int16" }
-  | { type: "int32" }
-  | { type: "int64" }
-  | { type: "uint8" }
-  | { type: "uint16" }
-  | { type: "uint32" }
-  | { type: "uint64" }
-  | { type: "float32" }
-  | { type: "float64" }
-  | { type: "utf8" }
-  | { type: "binary" }
-  | { type: "date32" }
-  | { type: "date64" }
-  | { type: "timestamp"; unit: TimeUnit; timezone?: string }
-  | { type: "list"; elementType: DataType }
-  | { type: "struct"; fields: Field[] }
-  | { type: "dictionary"; indexType: DataType; valueType: DataType }
-  | { type: "decimal128"; precision: number; scale: number }
-  | { type: "decimal256"; precision: number; scale: number };
-
-type TimeUnit = "second" | "millisecond" | "microsecond" | "nanosecond";
-```
-
-## 6. IO Module API
-
-### 6.1 File Operations
-
-#### 6.1.1 `readFile()`
-
-**Description**: Reads an Arrow file from provided data.
-
-**TypeScript Signature**:
-```typescript
-function readFile(data: ArrayBuffer): Promise<Table>
-```
-
-**Business Logic**:
-1. Validates Arrow file format (magic bytes)
-2. Parses file footer for metadata
-3. Loads record batches into memory
-4. Constructs Table from batches
-
-#### 6.1.2 `writeFile()`
-
-**Description**: Writes a Table to Arrow file format.
-
-**TypeScript Signature**:
-```typescript
-function writeFile(table: Table, options?: WriteOptions): Promise<ArrayBuffer>
-```
-
-### 6.2 Write Options
-
-#### 6.2.1 `WriteOptions` Interface
-
-**TypeScript Interface**:
-```typescript
-interface WriteOptions {
-  compression?: CompressionType;
-  alignment?: number;
-  metadataVersion?: MetadataVersion;
-  dictionaryHandling?: DictionaryHandling;
-  metadata?: Record<string, string>;
-}
-
-type CompressionType = "none" | "lz4" | "zstd";
-type MetadataVersion = "V4" | "V5";
-type DictionaryHandling = "replace" | "delta";
-```
-
-**Implementation Requirements**:
-- Maps directly to Rust's `IpcWriteOptions`
-- Default alignment: 8 bytes
-- Default version: V5
-- Default compression: none
-
-## 7. Column Module API
-
-### 7.1 Column Interface
-
-**TypeScript Interface**:
-```typescript
-interface Column {
-  readonly name: string;
-  readonly dataType: DataType;
-  readonly length: number;
-  readonly nullCount: number;
-
-  get(index: number): unknown;
-  getValue(index: number): unknown;
-  isNull(index: number): boolean;
-  isValid(index: number): boolean;
-  slice(offset: number, length: number): Column;
-  toArray(): unknown[];
-  statistics(): ColumnStatistics;
-}
-
-interface ColumnStatistics {
-  min?: unknown;
-  max?: unknown;
-  nullCount: number;
-  distinctCount?: number;
-}
-```
-
-### 7.2 Array Builders
-
-**TypeScript Interface**:
-```typescript
-interface ArrayBuilder<T> {
-  append(value: T): void;
-  appendNull(): void;
-  appendValues(values: T[]): void;
-  finish(): Column;
-  clear(): void;
-}
-
-function createBuilder(dataType: DataType, capacity?: number): ArrayBuilder<unknown>;
-```
-
-## 8. Compute Module API
-
-### 8.1 Aggregation Functions
-
-**TypeScript Signatures**:
-```typescript
-function sum(column: Column): number;
-function mean(column: Column): number;
-function min(column: Column): unknown;
-function max(column: Column): unknown;
-function count(column: Column): number;
-function countDistinct(column: Column): number;
-```
-
-### 8.2 Transformation Functions
-
-**TypeScript Signatures**:
-```typescript
-function cast(column: Column, targetType: DataType): Column;
-function take(column: Column, indices: number[]): Column;
-function filter(column: Column, mask: boolean[]): Column;
-function sort(column: Column, descending?: boolean): Column;
-```
-
-## 9. Plugin System API
-
-### 9.1 Plugin Interface
-
-**TypeScript Interface**:
-```typescript
-interface Plugin {
-  readonly name: string;
-  readonly version: string;
-  readonly supportedTypes: DataType[];
-
-  initialize(): Promise<void>;
-  processColumn(column: Column): Column;
-  dispose(): void;
-}
-```
-
-### 9.2 Plugin Registration
-
-**TypeScript Signatures**:
-```typescript
-function registerPlugin(plugin: Plugin): void;
-function unregisterPlugin(name: string): void;
-function getPlugin(name: string): Plugin | undefined;
-function listPlugins(): string[];
-```
-
-### 9.3 Geometry Plugin (Future)
-
-**Planned Interface**:
-```typescript
-interface GeometryPlugin extends Plugin {
-  readonly name: "geometry";
-
-  parseWKT(column: Column): GeometryColumn;
-  parseWKB(column: Column): GeometryColumn;
-  toGeoJSON(column: GeometryColumn): string;
-}
-
-interface GeometryColumn extends Column {
-  readonly geometryType: GeometryType;
-  readonly srid?: number;
-
-  area(): Column;
-  length(): Column;
-  centroid(): GeometryColumn;
-  buffer(distance: number): GeometryColumn;
-}
-```
-
-## 10. Memory Management
-
-### 10.1 Ownership Model
-
-All data structures follow a clear ownership model:
-
-1. **Tables own their data**: When a Table is created, it owns the underlying Arrow data
-2. **Columns are references**: Columns reference data owned by Tables
-3. **Slices are zero-copy**: Slicing operations create new references, not copies
-4. **Explicit disposal**: Tables must be explicitly disposed to free WASM memory
-
-### 10.2 Memory Handle System
-
-**Internal Structure** (not exposed to JavaScript):
 ```rust
-pub struct TableHandle {
-    ptr: *mut Table,
-    id: u32,
+/// Opaque handle id returned to JS/TS. Small integer type for stable mapping.
+pub type TableHandle = u32;
+
+/// Schema description returned to JS (serde-serializable for debug)
+#[derive(Serialize, Deserialize)]
+pub struct SchemaSummary {
+    pub columns: Vec<ColumnSummary>,
 }
 
-pub struct ColumnHandle {
-    table_id: u32,
-    column_index: usize,
-}
-```
-
-JavaScript receives opaque numeric handles that map to WASM memory pointers.
-
-## 11. Error Handling
-
-### 11.1 Error Types
-
-**TypeScript Definitions**:
-```typescript
-class ArrowError extends Error {
-  readonly code: ErrorCode;
-  readonly details?: string;
+#[derive(Serialize, Deserialize)]
+pub struct ColumnSummary {
+    pub name: String,
+    pub arrow_type: String, // e.g. "Int64", "Utf8", "LargeBinary", "Geometry<...>"
+    pub nullable: bool,
 }
 
-enum ErrorCode {
-  InvalidFormat = "INVALID_FORMAT",
-  SchemaMismatch = "SCHEMA_MISMATCH",
-  OutOfBounds = "OUT_OF_BOUNDS",
-  TypeMismatch = "TYPE_MISMATCH",
-  MemoryError = "MEMORY_ERROR",
-  IOError = "IO_ERROR",
-  NotImplemented = "NOT_IMPLEMENTED",
+/// Core error enum used across WASM boundary (string-friendly).
+#[derive(thiserror::Error, Debug, Serialize, Deserialize)]
+pub enum CoreError {
+    #[error("IO error: {0}")]
+    Io(String),
+    #[error("IPC error: {0}")]
+    Ipc(String),
+    #[error("Plugin error: {0}")]
+    Plugin(String),
+    #[error("Invalid handle: {0}")]
+    InvalidHandle(u32),
+    #[error("Other: {0}")]
+    Other(String),
 }
 ```
 
-### 11.2 Error Handling Pattern
+## 4.3 Memory manager & lifecycle
 
-Since `try/catch` is prohibited, errors are handled through:
+`core::mem` exposes functions (via `wasm-bindgen`) that allocate and free `Table` objects inside WASM and return `TableHandle` integers to JS.
 
-1. **Result types** for operations that can fail:
-```typescript
-type Result<T> = { ok: true; value: T } | { ok: false; error: ArrowError };
+Example Rust APIs (internal; exported via wasm-bindgen):
+
+```rust
+/// Create a Table from an in-memory IPC stream (zero-copy where possible).
+/// Returns Result<TableHandle, CoreError>
+pub fn create_table_from_ipc(ipc_data_ptr: *const u8, ipc_data_len: usize) -> Result<TableHandle, CoreError>;
+
+/// Free the Table represented by handle.
+pub fn free_table(handle: TableHandle) -> Result<(), CoreError>;
+
+/// Return a JSON `SchemaSummary` string for the table.
+pub fn table_schema_summary(handle: TableHandle) -> Result<String, CoreError>;
 ```
 
-2. **Error callbacks**:
-```typescript
-function onError(handler: (error: ArrowError) => void): void;
+> Implementation note: `ipc_data_ptr` is only used inside WASM; callers should pass the memory pointer via wasm-bindgen helpers. JS façade will not require users to call raw pointer helpers.
+
+## 4.4 File I/O (core::fs)
+
+APIs to read files from a byte buffer and to write to byte buffers.
+
+```rust
+/// Read Arrow/Feather/Parquet file bytes and returns a managed TableHandle.
+pub fn read_table_from_bytes(bytes_ptr: *const u8, bytes_len: usize) -> Result<TableHandle, CoreError>;
+
+/// Write a Table to an in-memory Arrow IPC file using provided IpcWriteOptions.
+/// Returns a Vec<u8> owned by WASM (JS will receive it via a copy-on-request API).
+pub fn write_table_to_ipc(handle: TableHandle, options: IpcWriteOptions) -> Result<Vec<u8>, CoreError>;
 ```
 
-## 12. JavaScript/TypeScript Constraints
+`IpcWriteOptions` is the Arrow IPC writer options (re-export or wrapper) configured to support LZ4 internal compression via the `arrow-ipc` crate with `lz4` feature.
 
-### 12.1 Prohibited Constructs
+## 4.5 IPC and LZ4 support (core::ipc)
 
-The following JavaScript/TypeScript constructs are **NOT** used:
-- `this` keyword
-- `any` type
-- `is` type guards
-- `try/catch` blocks
+Provide explicit factory and helper functions that construct the right `IpcWriteOptions` to enable LZ4 internal compression and any other relevant options:
 
-### 12.2 Alternative Patterns
+```rust
+pub fn default_lz4_ipc_options() -> IpcWriteOptions;
+pub fn enable_lz4_on_options(opts: &mut IpcWriteOptions, lz4: bool);
+```
 
-#### Instead of `this`:
-```typescript
-// BAD
-class Table {
-  getData() { return this.data; }
+---
+
+# 5. Plugin architecture
+
+## 5.1 Design goals
+
+* Plugins are separate crates (e.g., `plugin-geo`) that implement known traits and a registration function.
+* The core exposes a **minimal** plugin manager that can load plugin metadata and validate it at registration time (matching expected symbol names exported via wasm-bindgen).
+* Plugins implement domain-specific conversions (e.g., geometry serialization into Arrow Binary with known metadata).
+
+## 5.2 Rust trait: `ArrowPlugin`
+
+```rust
+pub trait ArrowPlugin: Sync + Send {
+    /// A stable plugin ID, e.g., "io.arrow.plugin.geo.v1"
+    fn plugin_id(&self) -> &'static str;
+
+    /// Validate a SchemaSummary or Arrow Field; return Ok(()) if supported.
+    fn validate_field(&self, field: &arrow::datatypes::Field) -> Result<(), CoreError>;
+
+    /// Optional conversion helper invoked when reading/writing.
+    /// Not allowed to access JS memory directly; must operate within WASM.
+    fn on_read_column(&self, field: &arrow::datatypes::Field, array: &dyn ArrayRef) -> Result<(), CoreError>;
+}
+```
+
+## 5.3 Registration and minimal core validation
+
+Core exposes these functions to JS:
+
+```rust
+/// Register a plugin by its exported registration name.
+/// The core will only store plugin metadata and a boxed trait object reference.
+pub fn register_plugin(plugin_id: &str) -> Result<(), CoreError>;
+
+/// Validate a plugin by confirming its expected registration signature and agreed-upon plugin id.
+/// Only basic validation lives in core; deeper behavior occurs in the plugin crate.
+pub fn validate_plugin(plugin_id: &str) -> Result<(), CoreError>;
+```
+
+**Plugin author notes**: a plugin crate must provide a registration function with a known signature exported through wasm-bindgen. The plugin performs heavy-lifting conversion logic; the core only stores the registration.
+
+---
+
+# 6. JavaScript / TypeScript façade (public API)
+
+## 6.1 Façade goals
+
+* High-level, strongly typed TS API.
+* No use of `this`, `any`, `is`, `try`, or `catch` in examples and public API.
+* All async functions return `Promise<Result<T, ErrorSummary>>` where `Result` is a small discriminated union.
+
+## 6.2 TypeScript types (explicit)
+
+```ts
+// Discriminated union for results
+export type Ok<T> = { ok: true; value: T };
+export type Err = { ok: false; error: string };
+export type Result<T> = Ok<T> | Err;
+
+// Table handle (opaque numeric id)
+export type TableHandle = number;
+
+export interface ColumnInfo {
+  name: string;
+  arrowType: string;
+  nullable: boolean;
 }
 
-// GOOD
-interface Table {
-  getData: () => unknown[];
+export interface SchemaSummary {
+  columns: ColumnInfo[];
 }
 
-function createTable(): Table {
-  const data = [];
-  return {
-    getData: () => data
-  };
+export interface WasmInitOptions {
+  // optional configuration for the WASM module
+  enableConsoleLogs?: boolean;
 }
 ```
 
-#### Instead of `any`:
-```typescript
-// BAD
-function process(data: any): void
+## 6.3 JS/TS functions (signature examples)
 
-// GOOD
-function process(data: unknown): void
-function process<T>(data: T): void
+All functions below return `Promise<Result<...>>` to avoid `try/catch` in examples.
+
+```ts
+// Initialize WASM module (must be called once)
+export function initWasm(bytes?: ArrayBuffer, opts?: WasmInitOptions): Promise<Result<void>>;
+
+// Read an Arrow/Feather/Parquet file from an ArrayBuffer
+export function readTableFromArrayBuffer(data: ArrayBuffer): Promise<Result<TableHandle>>;
+
+// Get schema summary for a table handle
+export function getSchemaSummary(handle: TableHandle): Promise<Result<SchemaSummary>>;
+
+// Free table handle
+export function freeTable(handle: TableHandle): Promise<Result<void>>;
+
+// Write table to IPC bytes with LZ4 option
+export function writeTableToIpc(handle: TableHandle, enableLz4: boolean): Promise<Result<ArrayBuffer>>;
+
+// Register a plugin by id
+export function registerPlugin(pluginId: string): Promise<Result<void>>;
 ```
 
-#### Instead of `is`:
-```typescript
-// BAD
-function isTable(obj: unknown): obj is Table
+> Implementation note: none of the façade functions expose or require users to handle raw memory pointers. The façade converts JS `ArrayBuffer` data into WASM-owned buffers with an internal copy-on-first-use or mapped memory by `wasm-bindgen` glue — but the user never performs manual zero-copy operations.
 
-// GOOD
-function checkTable(obj: unknown): boolean
-```
+## 6.4 Example (Node or Browser fetch + read)
 
-#### Instead of `try/catch`:
-```typescript
-// BAD
-try {
-  const table = readFile(data);
-} catch (e) {
-  console.error(e);
+```ts
+import { initWasm, readTableFromArrayBuffer, getSchemaSummary, writeTableToIpc } from 'arrow-rs-wasm';
+
+const wasmResult = await initWasm();
+if (!wasmResult.ok) {
+  console.error('WASM init failed', wasmResult.error);
+  // handle error without try/catch
 }
 
-// GOOD
-const result = readFile(data);
-if (result.ok) {
-  const table = result.value;
+const ab: ArrayBuffer = await fetch('data/simple.arrow').then(r => r.arrayBuffer());
+const readResult = await readTableFromArrayBuffer(ab);
+if (!readResult.ok) {
+  console.error('read failed', readResult.error);
 } else {
-  console.error(result.error);
-}
-```
-
-## 13. Usage Examples
-
-### 13.1 Basic Table Loading
-
-```javascript
-import { tableFromIPC, initialize } from 'wasm-arrow';
-
-// Initialize the library
-await initialize();
-
-// Load Arrow file
-const response = await fetch('data.arrow');
-const buffer = await response.arrayBuffer();
-const table = tableFromIPC(buffer);
-
-// Access table data
-console.log(`Rows: ${table.numRows}, Columns: ${table.numColumns}`);
-
-// Get column
-const column = table.getColumn('temperature');
-console.log(`Temperature range: ${column.statistics().min} - ${column.statistics().max}`);
-
-// Convert to JavaScript array
-const data = table.toArray();
-console.table(data);
-
-// Clean up
-table.dispose();
-```
-
-### 13.2 Creating and Writing Tables
-
-```javascript
-import { tableFromJSON, writeFile } from 'wasm-arrow';
-
-// Create table from JSON
-const data = [
-  { id: 1, name: 'Alice', value: 100 },
-  { id: 2, name: 'Bob', value: 200 },
-  { id: 3, name: 'Charlie', value: 300 }
-];
-
-const table = tableFromJSON(data);
-
-// Write with compression
-const options = {
-  compression: 'lz4',
-  metadata: {
-    'created_by': 'wasm-arrow',
-    'version': '1.0.0'
+  const handle = readResult.value;
+  const schemaResult = await getSchemaSummary(handle);
+  if (schemaResult.ok) {
+    console.table(schemaResult.value.columns);
   }
-};
-
-const result = await writeFile(table, options);
-if (result.ok) {
-  const buffer = result.value;
-  // Save buffer to file
-} else {
-  console.error(result.error);
+  const ipcResult = await writeTableToIpc(handle, true); // enable LZ4
+  if (ipcResult.ok) {
+    const ipcBuffer = ipcResult.value;
+    // ipcBuffer is an ArrayBuffer containing IPC bytes (owned by JS)
+  }
+  await freeTable(handle);
 }
-
-table.dispose();
 ```
 
-### 13.3 Table Operations
+This example does not use `try`/`catch` and uses explicit `Result`-style error handling.
 
-```javascript
-// Filter and select
-const filtered = table.filter(row => row.get('value') > 100);
-const selected = filtered.select(['id', 'name']);
+---
 
-// Slice
-const subset = selected.slice(0, 10);
+# 7. WASM ↔ JS zero-copy memory model (explicit)
 
-// Compute aggregations
-import { sum, mean } from 'wasm-arrow/compute';
+1. **WASM owns Arrow buffers.** Raw Arrow arrays and their aligned buffers are allocated and owned by the WASM runtime. JS is never given raw pointers.
+2. **Handles instead of pointers.** JS operates with `TableHandle` integers. All heavy operations happen in WASM functions exported via `wasm-bindgen`.
+3. **Zero-copy read path (concept):**
 
-const valueColumn = table.getColumn('value');
-const total = sum(valueColumn);
-const average = mean(valueColumn);
+   * When JS calls `readTableFromArrayBuffer`, the runtime passes the `ArrayBuffer` into WASM using the `wasm-bindgen` copy or memory-mapping strategy. If browser supports `SharedArrayBuffer` or wasm memory mapping, implementation will avoid extra copies internally; however this detail is encapsulated — the façade does not expose the mechanism.
+   * The table data remains inside WASM. JS can request a view (immutable snapshot) which forces a copy to JS-owned memory. By default, no copies are made unless the user requests a serialized output (`writeTableToIpc`) or a snapshot.
+4. **Memory lifecycle.** JS must explicitly call `freeTable(handle)` to release WASM-side resources. The façade may implement a finalizer that warns when handles are leaked, but explicit `freeTable` is primary.
 
-// Clean up all tables
-subset.dispose();
-selected.dispose();
-filtered.dispose();
+---
+
+# 8. File reading/writing specifics & LZ4
+
+* **Reading**: the core must accept Arrow IPC (single/multiple record batches), Feather, and Parquet byte streams and produce a `TableHandle`.
+* **Writing**: the core must expose a function that writes IPC bytes while accepting an `IpcWriteOptions` configuration that can enable LZ4 internal compression. The implementation will rely on `arrow-ipc` with the `lz4` feature enabled.
+* **Feather**: treated as Arrow IPC with Feather metadata; writing Feather-format bytes uses the same IPC writer with specific metadata flags.
+* **Parquet**: when writing Parquet, use the appropriate Arrow → Parquet writer if available. Note: Parquet is not IPC, so ensure separation of IPC write APIs and Parquet writer APIs in the core.
+
+Rust example signature:
+
+```rust
+pub fn write_table_with_options(handle: TableHandle, ipc_options: IpcWriteOptions) -> Result<Vec<u8>, CoreError>;
 ```
 
-## 14. Build Configuration
+---
 
-### 14.1 Rust Crate Dependencies
+# 9. Error handling (JS/TS + WASM)
 
-As specified in requirements:
+* **Rust side**: use `thiserror` / `anyhow` to build errors; all errors crossing the WASM boundary are serialized into `CoreError` equivalent string codes and messages.
+* **JS/TS side**: the façade returns `Promise<Result<T>>` instead of throwing. This avoids `try/catch` in examples and in end-user code. `Err` contains a stable string message and optional structured metadata for programmatic inspection.
+
+---
+
+# 10. TypeScript generation & type-safety
+
+* Generate `.d.ts` files for all façade exports.
+* Avoid `any`. Use explicit unions and interfaces.
+* Provide a `Result<T>` utility and `TableHandle` alias.
+* Provide typed plugin registration functions such that plugin contracts are type-checked at compile-time in TS.
+
+---
+
+# 11. Browser tests and model-based testing
+
+* **Testing tiers**:
+
+  * Unit tests: Rust unit tests for IPC read/write, LZ4, plugin validation logic.
+  * Integration tests: wasm-pack + Node tests that load actual Arrow, Feather, Parquet sample files.
+  * Model-based browser tests: property-based and model-based tests run in a headless browser harness that:
+
+    * uses model-based generators to create random schema + data,
+    * writes the data via core write functions (with and without LZ4),
+    * reads back and validates schema and data invariants,
+    * tests plugin behaviours (eg geometry plugin round-trips).
+* Use existing model-based testing frameworks (e.g., proptest or wasm-friendly alternatives) and a test harness that runs in CI.
+
+---
+
+# 12. Conventions and rules for authors and implementers
+
+* **No C-style exports**: do not expose C bindings or raw pointers in JavaScript interface.
+* **Plugin isolation**: plugin crates must not be compiled into the core artifact; they are separate crates and may be loaded by consumers.
+* **Minimal core verification only**: core plugin manager validates plugin identity and signature; plugins are responsible for runtime behavior.
+* **No `this`, `any`, `is`, `try`, `catch`** in public TypeScript examples and generated declaration files. Internals may use `try`/`catch` as needed but exported façade uses `Result` style.
+
+---
+
+# 13. Example: Geometry plugin (high level)
+
+* Plugin crate: `plugin-geo`
+* Implements `ArrowPlugin`.
+* Exposes `register_geo_plugin()` exported function for wasm-bindgen which the core calls via `registerPlugin("io.arrow.plugin.geo.v1")`.
+* Plugin converts geometry columns encoded as `LargeBinary` with well-known metadata into typed geometry accessors in WASM.
+
+---
+
+# 14. Packaging and distribution
+
+* Build the Rust core with `wasm-bindgen` and package with `wasm-pack` into `/pkg`.
+* Provide `package.json` with `exports` and modern ESM entry points.
+* Keep plugin crates as separate packages/crates with their own `Cargo.toml` and optional JS wrappers if needed.
+
+---
+
+# 15. Security, performance and ergonomics notes
+
+* Use safe Rust APIs and avoid `unsafe` except where strictly necessary for performance; all `unsafe` must be encapsulated and audited.
+* Prefer zero-copy buffer handling patterns inside WASM; however do not expose raw ArrayBuffer views to userland—always provide handles and high-level operations.
+* Provide diagnostics APIs (compact JSON) for debugging; these return structured data and should be gated behind optional flags.
+
+---
+
+# 16. Minimal API summary (quick reference)
+
+**Rust (core)**
+
+* `create_table_from_ipc(ipc_data_ptr, ipc_data_len) -> Result<TableHandle, CoreError>`
+* `read_table_from_bytes(bytes_ptr, bytes_len) -> Result<TableHandle, CoreError>`
+* `write_table_to_ipc(handle, IpcWriteOptions) -> Result<Vec<u8>, CoreError>`
+* `register_plugin(plugin_id: &str) -> Result<(), CoreError>`
+* `free_table(handle) -> Result<(), CoreError>`
+* `table_schema_summary(handle) -> Result<String, CoreError>`
+
+**TypeScript façade**
+
+* `initWasm(bytes?: ArrayBuffer, opts?: WasmInitOptions): Promise<Result<void>>`
+* `readTableFromArrayBuffer(data: ArrayBuffer): Promise<Result<TableHandle>>`
+* `getSchemaSummary(handle: TableHandle): Promise<Result<SchemaSummary>>`
+* `writeTableToIpc(handle: TableHandle, enableLz4: boolean): Promise<Result<ArrayBuffer>>`
+* `freeTable(handle: TableHandle): Promise<Result<void>>`
+* `registerPlugin(pluginId: string): Promise<Result<void>>`
+
+---
+
+# 17. Dependencies (as requested)
+
+Use the Arrow crates with LZ4 and ipc features enabled. Example `Cargo.toml` dependency block (as provided):
+
 ```toml
-[dependencies]
-arrow = { version = "56.1.0", default-features = false, features = ["ipc", "ipc_compression"] }
-arrow-ipc = { version = "56.1.0", default-features = false, features = ["lz4"] }
+arrow = {version="56.1.0", default-features = false, features=["ipc"]}
+arrow-ipc = {version="56.1.0", default-features = false, features=["lz4"]}
+arrow-array = {version="56.1.0", default-features = false}
+arrow-schema = {version="56.1.0", default-features = false}
+arrow-buffer = {version="56.1.0", default-features = false}
+arrow-data = {version="56.1.0", default-features = false}
+arrow-select = {version="56.1.0", default-features = false}
+arrow-cast = {version="56.1.0", default-features = false}
+arrow-ord = {version="56.1.0", default-features = false}
+
 wasm-bindgen = "0.2"
+wasm-bindgen-futures = "0.4"
 js-sys = "0.3"
 web-sys = { version = "0.3", features = ["console"] }
+serde-wasm-bindgen = "0.4"
+
 anyhow = "1.0"
 thiserror = "1.0"
 console_error_panic_hook = { version = "0.1", optional = true }
 once_cell = "1.20"
+
+lz4_flex = "0.11"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 ```
 
-### 14.2 WebAssembly Build Target
+---
 
-```toml
-[lib]
-crate-type = ["cdylib"]
+# 18. Documentation & examples to include
 
-[profile.release]
-opt-level = "z"
-lto = true
-```
+* README with quickstart (Node and Browser).
+* User manual with examples showing reading a sample Arrow file and writing IPC bytes with LZ4.
+* Plugin author guide with a concrete `plugin-geo` example.
+* API reference (Rust and TS) with signature tables.
+* Testing guide describing the model-based browser tests.
+* Manage progression with progress_report.md
+---
 
-## 15. Testing Strategy
+# 19. References
 
-### 15.1 Unit Tests
+* Apache Arrow Rust IPC documentation — Arrow IPC (Rust).
+  [https://arrow.apache.org/rust/arrow_ipc/index.html](https://arrow.apache.org/rust/arrow_ipc/index.html)
 
-Each module includes comprehensive unit tests:
-- Schema validation
-- Data type conversions
-- Memory management
-- Error conditions
+* wasm-bindgen — source and documentation (for WASM ↔ JS interop).
+  [https://rustwasm.github.io/wasm-bindgen/](https://rustwasm.github.io/wasm-bindgen/)
 
-### 15.2 Integration Tests
-
-End-to-end tests covering:
-- File reading and writing
-- Table operations
-- Memory lifecycle
-- Plugin integration
-
-### 15.3 Browser Tests
-
-Tests run in actual browser environment:
-- WebAssembly loading
-- Memory limits
-- Performance benchmarks
-- Type safety verification
-
-## 16. Performance Considerations
-
-### 16.1 Zero-Copy Operations
-
-All operations designed to minimize data copying:
-- Slicing creates views, not copies
-- Column access returns references
-- Data transfer uses SharedArrayBuffer where available
-
-### 16.2 Memory Pooling
-
-WASM-side memory management uses pooling:
-- Reuses allocated buffers
-- Reduces allocation overhead
-- Configurable pool sizes
-
-### 16.3 Lazy Evaluation
-
-Operations evaluated only when necessary:
-- Filter predicates applied on-demand
-- Statistics computed once and cached
-- Schema inference deferred until needed
-
-## 17. Future Extensions
-
-### 17.1 Planned Features
-
-1. **Geometry Plugin**: Full support for geometric data types
-2. **Streaming API**: Process large files in chunks
-3. **Parallel Operations**: Web Workers for compute operations
-4. **SQL Interface**: Query tables with SQL syntax
-5. **Format Converters**: CSV, Parquet, JSON converters
-
-### 17.2 API Stability
-
-The API follows semantic versioning:
-- Major version: Breaking changes
-- Minor version: New features, backward compatible
-- Patch version: Bug fixes
-
-## 18. Conclusion
-
-This API definition provides a comprehensive, type-safe, and efficient interface for Arrow operations in WebAssembly environments. The design prioritizes:
-
-- Zero-copy data transfer
-- Type safety without runtime overhead
-- Modular, extensible architecture
-- Clear memory ownership model
-- JavaScript/TypeScript best practices
+* (Project-local sample) Obsidian MCP server Arrow examples (path: `Rust/arrow`) — local sample code referenced by your team.

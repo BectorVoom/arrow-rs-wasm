@@ -1,0 +1,145 @@
+{
+  "logs": [
+    {
+      "type": "log",
+      "text": "[6:34:40 AM] Page loaded, initializing WASM test runner...",
+      "timestamp": 1759095281022
+    },
+    {
+      "type": "log",
+      "text": "[6:34:41 AM] Loading WASM module from /pkg/arrow_wasm.js...",
+      "timestamp": 1759095281022
+    },
+    {
+      "type": "log",
+      "text": "[6:34:41 AM] WASM JS bindings loaded, initializing...",
+      "timestamp": 1759095281028
+    },
+    {
+      "type": "log",
+      "text": "[Arrow WASM] Arrow WASM library initialized",
+      "timestamp": 1759095281044
+    },
+    {
+      "type": "log",
+      "text": "[6:34:41 AM] WASM binary loaded, calling init function...",
+      "timestamp": 1759095281044
+    },
+    {
+      "type": "log",
+      "text": "[Arrow WASM] Arrow WASM library initialized",
+      "timestamp": 1759095281044
+    },
+    {
+      "type": "log",
+      "text": "[6:34:41 AM] WASM init function called successfully...",
+      "timestamp": 1759095281045
+    },
+    {
+      "type": "log",
+      "text": "[6:34:41 AM] WASM module loaded and initialized successfully!",
+      "timestamp": 1759095281045
+    },
+    {
+      "type": "log",
+      "text": "[6:34:41 AM] Validating WASM module basic functionality...",
+      "timestamp": 1759095281045
+    },
+    {
+      "type": "log",
+      "text": "[6:34:41 AM] WASM module version: 0.1.0",
+      "timestamp": 1759095281046
+    },
+    {
+      "type": "log",
+      "text": "[6:34:41 AM] LZ4 compression support: true",
+      "timestamp": 1759095281046
+    },
+    {
+      "type": "log",
+      "text": "[6:34:41 AM] Initial table count: 0",
+      "timestamp": 1759095281046
+    },
+    {
+      "type": "log",
+      "text": "[6:34:41 AM] Memory stats: {\"active_tables\":0,\"total_rows\":0,\"total_batches\":0}",
+      "timestamp": 1759095281047
+    },
+    {
+      "type": "log",
+      "text": "[6:34:41 AM] Basic WASM validation completed successfully!",
+      "timestamp": 1759095281047
+    },
+    {
+      "type": "log",
+      "text": "[6:34:41 AM] Running MBD test suite...",
+      "timestamp": 1759095281050
+    },
+    {
+      "type": "log",
+      "text": "[6:34:41 AM] Loading MBD test specifications...",
+      "timestamp": 1759095281050
+    },
+    {
+      "type": "log",
+      "text": "[6:34:41 AM] Running basic functionality tests...",
+      "timestamp": 1759095281050
+    },
+    {
+      "type": "log",
+      "text": "[6:34:41 AM] Test 1: Version check",
+      "timestamp": 1759095281051
+    },
+    {
+      "type": "log",
+      "text": "[6:34:41 AM] ✅ Version test passed: 0.1.0",
+      "timestamp": 1759095281051
+    },
+    {
+      "type": "log",
+      "text": "[6:34:41 AM] Test 2: LZ4 support check",
+      "timestamp": 1759095281051
+    },
+    {
+      "type": "log",
+      "text": "[6:34:41 AM] ✅ LZ4 test passed: true",
+      "timestamp": 1759095281051
+    },
+    {
+      "type": "log",
+      "text": "[6:34:41 AM] Test 3: Memory stats",
+      "timestamp": 1759095281052
+    },
+    {
+      "type": "log",
+      "text": "[6:34:41 AM] ✅ Memory stats test passed",
+      "timestamp": 1759095281052
+    },
+    {
+      "type": "log",
+      "text": "[6:34:41 AM] Test 4: Table operations",
+      "timestamp": 1759095281052
+    },
+    {
+      "type": "log",
+      "text": "[6:34:41 AM] ✅ Table count test passed: 0",
+      "timestamp": 1759095281052
+    },
+    {
+      "type": "log",
+      "text": "[6:34:41 AM] Basic tests completed: 4 passed, 0 failed",
+      "timestamp": 1759095281053
+    },
+    {
+      "type": "log",
+      "text": "[6:34:41 AM] MBD test coverage: 1.5%",
+      "timestamp": 1759095281053
+    },
+    {
+      "type": "log",
+      "text": "[6:34:41 AM] MBD test suite completed: 4/261 passed",
+      "timestamp": 1759095281053
+    }
+  ],
+  "errors": []
+}

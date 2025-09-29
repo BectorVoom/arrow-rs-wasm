@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Performance Baseline Report - Arrow WASM</title>
+    <style>
+        body { font-family: system-ui, -apple-system, sans-serif; margin: 2rem; }
+        .header { background: #f8f9fa; padding: 1rem; border-radius: 8px; margin-bottom: 2rem; }
+        .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+        .metric { background: white; border: 1px solid #ddd; padding: 1rem; border-radius: 8px; text-align: center; }
+        .metric-value { font-size: 2rem; font-weight: bold; color: #0066cc; }
+        .browser-result { margin-bottom: 2rem; border: 1px solid #ddd; border-radius: 8px; }
+        .browser-header { padding: 1rem; background: #f8f9fa; font-weight: bold; }
+        .browser-content { padding: 1rem; }
+        .success { border-left: 4px solid #28a745; }
+        .failure { border-left: 4px solid #dc3545; }
+        .performance-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; }
+        .performance-section { background: #f8f9fa; padding: 1rem; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>⚡ Performance Baseline Report</h1>
+        <p><strong>Arrow WASM Library - Browser Performance Benchmarks</strong></p>
+        <p>Generated: 2025-09-28T21:37:30.563Z</p>
+    </div>
+
+    <div class="summary">
+        <div class="metric">
+            <div class="metric-value">3/3</div>
+            <div>Browsers Tested</div>
+        </div>
+    </div>
+
+    
+        <div class="browser-result success">
+            <div class="browser-header">
+                ✅ Chrome/Chromium
+            </div>
+            <div class="browser-content">
+                
+                    <div class="performance-grid">
+                        <div class="performance-section">
+                            <h4>API Latency</h4>
+                            
+                                <div><strong>get_version:</strong> 0.001ms avg</div>
+                            
+                                <div><strong>get_build_info:</strong> 0.043ms avg</div>
+                            
+                                <div><strong>is_lz4_supported:</strong> 0.000ms avg</div>
+                            
+                                <div><strong>get_supported_compression_types:</strong> 0.002ms avg</div>
+                            
+                                <div><strong>get_memory_stats:</strong> 0.001ms avg</div>
+                            
+                                <div><strong>get_table_count:</strong> 0.000ms avg</div>
+                            
+                        </div>
+                        <div class="performance-section">
+                            <h4>Memory Usage</h4>
+                            
+                                <div><strong>JS Heap:</strong> 9.54 MB</div>
+                                <div><strong>Heap Limit:</strong> 3585.82 MB</div>
+                            
+                        </div>
+                        <div class="performance-section">
+                            <h4>Module Loading</h4>
+                            <div><strong>Load Time:</strong> 83.48ms</div>
+                            <div><strong>Status:</strong> GOOD</div>
+                        </div>
+                    </div>
+                
+            </div>
+        </div>
+    
+        <div class="browser-result success">
+            <div class="browser-header">
+                ✅ Firefox
+            </div>
+            <div class="browser-content">
+                
+                    <div class="performance-grid">
+                        <div class="performance-section">
+                            <h4>API Latency</h4>
+                            
+                                <div><strong>get_version:</strong> 0.006ms avg</div>
+                            
+                                <div><strong>get_build_info:</strong> 0.014ms avg</div>
+                            
+                                <div><strong>is_lz4_supported:</strong> 0.001ms avg</div>
+                            
+                                <div><strong>get_supported_compression_types:</strong> 0.004ms avg</div>
+                            
+                                <div><strong>get_memory_stats:</strong> 0.002ms avg</div>
+                            
+                                <div><strong>get_table_count:</strong> 0.000ms avg</div>
+                            
+                        </div>
+                        <div class="performance-section">
+                            <h4>Memory Usage</h4>
+                            
+                                <div><strong>JS Heap:</strong> NaN MB</div>
+                                <div><strong>Heap Limit:</strong> NaN MB</div>
+                            
+                        </div>
+                        <div class="performance-section">
+                            <h4>Module Loading</h4>
+                            <div><strong>Load Time:</strong> 290.62ms</div>
+                            <div><strong>Status:</strong> GOOD</div>
+                        </div>
+                    </div>
+                
+            </div>
+        </div>
+    
+        <div class="browser-result success">
+            <div class="browser-header">
+                ✅ Safari/WebKit
+            </div>
+            <div class="browser-content">
+                
+                    <div class="performance-grid">
+                        <div class="performance-section">
+                            <h4>API Latency</h4>
+                            
+                                <div><strong>get_version:</strong> 0.017ms avg</div>
+                            
+                                <div><strong>get_build_info:</strong> 0.030ms avg</div>
+                            
+                                <div><strong>is_lz4_supported:</strong> 0.001ms avg</div>
+                            
+                                <div><strong>get_supported_compression_types:</strong> 0.006ms avg</div>
+                            
+                                <div><strong>get_memory_stats:</strong> 0.004ms avg</div>
+                            
+                                <div><strong>get_table_count:</strong> 0.001ms avg</div>
+                            
+                        </div>
+                        <div class="performance-section">
+                            <h4>Memory Usage</h4>
+                            
+                                <div><strong>JS Heap:</strong> NaN MB</div>
+                                <div><strong>Heap Limit:</strong> NaN MB</div>
+                            
+                        </div>
+                        <div class="performance-section">
+                            <h4>Module Loading</h4>
+                            <div><strong>Load Time:</strong> 122.88ms</div>
+                            <div><strong>Status:</strong> GOOD</div>
+                        </div>
+                    </div>
+                
+            </div>
+        </div>
+    
+
+    <div style="margin-top: 2rem; padding: 1rem; background: #f8f9fa; border-radius: 8px;">
+        <h3>📊 Performance Baseline Notes</h3>
+        <p>These baseline metrics establish expected performance characteristics for the Arrow WASM library 
+        across major browsers. Use these metrics for regression detection and performance monitoring.</p>
+        
+        <h4>Acceptance Criteria:</h4>
+        <ul>
+            <li>✅ Module loads in &lt; 5000ms</li>
+            <li>✅ API calls complete in &lt; 10ms average</li>
+            <li>✅ Memory usage reasonable for browser environment</li>
+        </ul>
+    </div>
+</body>
+</html>

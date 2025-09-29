@@ -1,0 +1,400 @@
+{
+  "model_id": "error_states_v1",
+  "model_type": "error_model",
+  "version": "1.0.0",
+  "description": "Comprehensive model of all possible error conditions, their causes, and system responses in the WASM Arrow library",
+  "error_categories": [
+    {
+      "id": "initialization_errors",
+      "name": "Initialization Errors",
+      "description": "Errors occurring during module initialization",
+      "error_states": [
+        {
+          "error_code": "NOT_INITIALIZED",
+          "severity": "blocking",
+          "description": "API called before module initialization",
+          "causes": [
+            "User calls API function before init_wasm_module",
+            "Module initialization failed but user continues",
+            "Module was disposed but user attempts operations"
+          ],
+          "system_state": {
+            "module_ready": false,
+            "memory_tracker_active": false,
+            "table_registry_active": false
+          },
+          "detection_method": "is_initialized() check in all API functions",
+          "user_visible_error": {
+            "message": "Module not initialized. Call init_wasm_module() first.",
+            "code": "NOT_INITIALIZED"
+          },
+          "recovery_actions": [
+            "Call init_wasm_module with valid options",
+            "Wait for initialization to complete",
+            "Retry the failed operation"
+          ],
+          "test_scenarios": [
+            "Call read_table_from_buffer before init_wasm_module",
+            "Call get_memory_usage before init_wasm_module",
+            "Use API after dispose_wasm_module"
+          ]
+        },
+        {
+          "error_code": "INITIALIZATION_FAILED",
+          "severity": "critical",
+          "description": "Module initialization process failed",
+          "causes": [
+            "Invalid InitOptions provided",
+            "Memory allocation failure during setup",
+            "WASM module loading failure"
+          ],
+          "system_state": {
+            "module_ready": false,
+            "partial_initialization_possible": true,
+            "cleanup_required": true
+          },
+          "detection_method": "Exception during init_wasm_module execution",
+          "user_visible_error": {
+            "message": "Module initialization failed: {specific_reason}",
+            "code": "INITIALIZATION_FAILED"
+          },
+          "recovery_actions": [
+            "Check InitOptions validity",
+            "Reduce memory requirements",
+            "Reload page/restart process"
+          ],
+          "test_scenarios": [
+            "Call init_wasm_module with invalid options",
+            "Simulate memory allocation failure",
+            "Provide extremely high memory limits"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "memory_errors",
+      "name": "Memory Management Errors",
+      "description": "Errors related to memory allocation, tracking, and limits",
+      "error_states": [
+        {
+          "error_code": "MEMORY_LIMIT_EXCEEDED",
+          "severity": "blocking",
+          "description": "Memory allocation would exceed configured limit",
+          "causes": [
+            "Large table exceeds available memory",
+            "Multiple tables consume all memory",
+            "Memory limit set too low for operation"
+          ],
+          "system_state": {
+            "module_ready": true,
+            "memory_at_limit": true,
+            "existing_tables_valid": true,
+            "new_allocations_blocked": true
+          },
+          "detection_method": "Memory tracker validates allocation before table creation",
+          "user_visible_error": {
+            "message": "Memory limit exceeded. Current: {current}MB, Limit: {limit}MB",
+            "code": "MEMORY_LIMIT_EXCEEDED"
+          },
+          "recovery_actions": [
+            "Release unused tables with release_table",
+            "Increase memory limit with new init_wasm_module",
+            "Process smaller data chunks"
+          ],
+          "test_scenarios": [
+            "Load tables until memory limit reached",
+            "Attempt to load oversized table",
+            "Set very low memory limit and load normal table"
+          ]
+        },
+        {
+          "error_code": "INVALID_HANDLE",
+          "severity": "user_error",
+          "description": "Table handle does not exist or was already released",
+          "causes": [
+            "User provides non-existent handle",
+            "Handle was already released via release_table",
+            "Handle corrupted or invalid value"
+          ],
+          "system_state": {
+            "module_ready": true,
+            "memory_tracking_intact": true,
+            "other_handles_valid": true
+          },
+          "detection_method": "Table registry lookup fails",
+          "user_visible_error": {
+            "message": "Invalid table handle: {handle}",
+            "code": "INVALID_HANDLE"
+          },
+          "recovery_actions": [
+            "Check handle value is correct",
+            "Verify table was not already released",
+            "Create new table if original is lost"
+          ],
+          "test_scenarios": [
+            "Use handle value 0 (reserved)",
+            "Use handle after release_table",
+            "Use random invalid handle value"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "data_format_errors",
+      "name": "Data Format Errors",
+      "description": "Errors related to data parsing, format detection, and validation",
+      "error_states": [
+        {
+          "error_code": "INVALID_FORMAT",
+          "severity": "user_error",
+          "description": "Data format is not recognized or supported",
+          "causes": [
+            "Buffer does not contain valid Arrow/Feather/Parquet data",
+            "Corrupted or truncated data file",
+            "Unsupported format version or features"
+          ],
+          "system_state": {
+            "module_ready": true,
+            "memory_unchanged": true,
+            "no_partial_allocation": true
+          },
+          "detection_method": "Format detection and parsing failure",
+          "user_visible_error": {
+            "message": "Unsupported format - expected Arrow IPC file/stream, Feather, or Parquet. Got {details}",
+            "code": "INVALID_FORMAT"
+          },
+          "recovery_actions": [
+            "Verify data file is not corrupted",
+            "Check file format is supported",
+            "Use appropriate format conversion tool"
+          ],
+          "test_scenarios": [
+            "Provide random binary data",
+            "Provide truncated Arrow file",
+            "Provide CSV or JSON data instead of Arrow"
+          ]
+        },
+        {
+          "error_code": "SCHEMA_MISMATCH",
+          "severity": "user_error",
+          "description": "Schema validation or compatibility error",
+          "causes": [
+            "Invalid schema structure provided",
+            "Field names or types incompatible",
+            "Schema metadata inconsistencies"
+          ],
+          "system_state": {
+            "module_ready": true,
+            "existing_data_intact": true,
+            "validation_failed": true
+          },
+          "detection_method": "Schema validation logic",
+          "user_visible_error": {
+            "message": "Schema mismatch: {specific_issue}",
+            "code": "SCHEMA_MISMATCH"
+          },
+          "recovery_actions": [
+            "Correct schema definition",
+            "Verify field names and types",
+            "Check for duplicate field names"
+          ],
+          "test_scenarios": [
+            "Validate schema with duplicate field names",
+            "Validate schema with empty field names",
+            "Validate schema with unsupported data types"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "operation_errors",
+      "name": "Operation Errors",
+      "description": "Errors during table operations like slicing, filtering, projection",
+      "error_states": [
+        {
+          "error_code": "VALIDATION_ERROR",
+          "severity": "user_error",
+          "description": "Operation parameters are invalid or out of bounds",
+          "causes": [
+            "Slice parameters exceed table bounds",
+            "Filter mask length doesn't match row count",
+            "Column indices are out of range",
+            "Column names don't exist in schema"
+          ],
+          "system_state": {
+            "module_ready": true,
+            "source_table_unchanged": true,
+            "no_new_table_created": true
+          },
+          "detection_method": "Parameter validation in operation functions",
+          "user_visible_error": {
+            "message": "Validation error: {specific_validation_failure}",
+            "code": "VALIDATION_ERROR"
+          },
+          "recovery_actions": [
+            "Check parameter values are within valid ranges",
+            "Verify column names exist in schema",
+            "Ensure mask length matches table row count"
+          ],
+          "test_scenarios": [
+            "Slice with start index beyond table rows",
+            "Filter with mask of wrong length",
+            "Select non-existent column by name",
+            "Select column index beyond range"
+          ]
+        },
+        {
+          "error_code": "ARROW_ERROR",
+          "severity": "internal",
+          "description": "Arrow library operation failed",
+          "causes": [
+            "Arrow library internal error",
+            "Data corruption during processing",
+            "Unsupported Arrow feature or format"
+          ],
+          "system_state": {
+            "module_ready": true,
+            "operation_failed": true,
+            "source_data_potentially_affected": false
+          },
+          "detection_method": "Arrow library returns error",
+          "user_visible_error": {
+            "message": "Arrow error: {arrow_error_details}",
+            "code": "ARROW_ERROR"
+          },
+          "recovery_actions": [
+            "Retry operation with different parameters",
+            "Check for data corruption",
+            "Report issue if error persists"
+          ],
+          "test_scenarios": [
+            "Trigger Arrow library edge cases",
+            "Process malformed but parseable data",
+            "Use unsupported Arrow features"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "compression_errors",
+      "name": "Compression Errors",
+      "description": "Errors related to compression and decompression operations",
+      "error_states": [
+        {
+          "error_code": "COMPRESSION_ERROR",
+          "severity": "operation_failure",
+          "description": "Compression or decompression operation failed",
+          "causes": [
+            "LZ4 compression/decompression failure",
+            "Corrupted compressed data",
+            "Insufficient memory for compression buffer",
+            "Unsupported compression algorithm specified"
+          ],
+          "system_state": {
+            "module_ready": true,
+            "source_data_unchanged": true,
+            "compression_operation_failed": true
+          },
+          "detection_method": "LZ4 library returns error or exception",
+          "user_visible_error": {
+            "message": "Compression error: {compression_error_details}",
+            "code": "COMPRESSION_ERROR"
+          },
+          "recovery_actions": [
+            "Retry with different compression settings",
+            "Use uncompressed format as fallback",
+            "Verify data is not corrupted"
+          ],
+          "test_scenarios": [
+            "Compress data with invalid parameters",
+            "Decompress corrupted LZ4 data",
+            "Attempt compression with insufficient memory"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "io_errors",
+      "name": "I/O Errors",
+      "description": "Errors related to input/output operations",
+      "error_states": [
+        {
+          "error_code": "IO_ERROR",
+          "severity": "environment",
+          "description": "Input/output operation failed",
+          "causes": [
+            "File not found (Node.js file operations)",
+            "Permission denied",
+            "Network error for remote data",
+            "Disk space issues"
+          ],
+          "system_state": {
+            "module_ready": true,
+            "no_data_loaded": true,
+            "system_resources_affected": true
+          },
+          "detection_method": "File system or network operation failure",
+          "user_visible_error": {
+            "message": "IO error: {io_error_details}",
+            "code": "IO_ERROR"
+          },
+          "recovery_actions": [
+            "Check file path exists and is accessible",
+            "Verify permissions",
+            "Retry operation",
+            "Use alternative data source"
+          ],
+          "test_scenarios": [
+            "Attempt to read non-existent file (Node.js)",
+            "Read file without permissions",
+            "Simulate network timeout"
+          ]
+        }
+      ]
+    }
+  ],
+  "error_recovery_patterns": [
+    {
+      "pattern_name": "graceful_degradation",
+      "description": "Continue operation with reduced functionality",
+      "applicable_errors": ["MEMORY_LIMIT_EXCEEDED", "COMPRESSION_ERROR"],
+      "recovery_strategy": "Fall back to simpler operations or alternative approaches"
+    },
+    {
+      "pattern_name": "parameter_validation_retry",
+      "description": "Validate and correct parameters before retry",
+      "applicable_errors": ["VALIDATION_ERROR", "INVALID_FORMAT"],
+      "recovery_strategy": "Provide clear error messages for user parameter correction"
+    },
+    {
+      "pattern_name": "resource_cleanup",
+      "description": "Clean up partial allocations on failure",
+      "applicable_errors": ["INITIALIZATION_FAILED", "MEMORY_LIMIT_EXCEEDED"],
+      "recovery_strategy": "Ensure no memory leaks or partial state corruption"
+    },
+    {
+      "pattern_name": "state_preservation",
+      "description": "Maintain system state integrity despite errors",
+      "applicable_errors": ["ARROW_ERROR", "COMPRESSION_ERROR", "IO_ERROR"],
+      "recovery_strategy": "Ensure errors don't corrupt existing data or state"
+    }
+  ],
+  "metadata": {
+    "created": "2025-09-28",
+    "author": "Claude Code MBD System",
+    "requirements": [
+      "REQ-601: All errors must have clear error codes and messages",
+      "REQ-602: Error handling must not corrupt system state",
+      "REQ-603: Recovery guidance must be provided for all error types",
+      "REQ-604: Error detection must be comprehensive and reliable",
+      "REQ-605: Error scenarios must be testable and reproducible"
+    ],
+    "error_design_principles": [
+      "Fail fast with clear error messages",
+      "Preserve system state integrity",
+      "Provide actionable recovery guidance",
+      "Distinguish between user errors and system errors",
+      "Enable graceful degradation where possible"
+    ]
+  }
+}

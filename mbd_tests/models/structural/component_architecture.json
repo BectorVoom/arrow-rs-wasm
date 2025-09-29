@@ -1,0 +1,321 @@
+{
+  "model_id": "component_architecture_v1",
+  "model_type": "component",
+  "version": "1.0.0",
+  "description": "Component architecture model showing module dependencies, interfaces, and interactions in the WASM Arrow library",
+  "components": [
+    {
+      "id": "wasm_core",
+      "name": "WASM Core Module",
+      "type": "core",
+      "properties": {
+        "language": "Rust",
+        "target": "wasm32-unknown-unknown",
+        "entry_point": "src/lib.rs",
+        "exports_functions": true,
+        "memory_managed": true
+      },
+      "responsibilities": [
+        "WASM module initialization and lifecycle",
+        "Memory management and tracking",
+        "Table registry management",
+        "Core business logic implementation"
+      ],
+      "interfaces": [
+        {
+          "name": "wasm_bindgen_exports",
+          "type": "export",
+          "functions": [
+            "init_wasm_module",
+            "read_table_from_buffer", 
+            "get_schema",
+            "get_column_view",
+            "slice_table",
+            "filter_table", 
+            "select_columns",
+            "write_table_to_buffer",
+            "release_table",
+            "dispose_wasm_module"
+          ]
+        }
+      ],
+      "dependencies": [
+        "arrow_ipc_parser",
+        "memory_tracker", 
+        "table_registry",
+        "compression_utils"
+      ]
+    },
+    {
+      "id": "arrow_ipc_parser",
+      "name": "Arrow IPC Parser",
+      "type": "library",
+      "properties": {
+        "external_crate": "arrow",
+        "version": "56.1.0",
+        "features": ["ipc", "lz4"]
+      },
+      "responsibilities": [
+        "Arrow IPC file format parsing",
+        "Arrow stream format parsing", 
+        "Schema validation and processing",
+        "Record batch creation and manipulation"
+      ],
+      "interfaces": [
+        {
+          "name": "file_reader",
+          "type": "import",
+          "functions": ["FileReader::try_new", "StreamReader::try_new"]
+        },
+        {
+          "name": "writer",
+          "type": "import", 
+          "functions": ["FileWriter::try_new_with_options"]
+        }
+      ],
+      "dependencies": []
+    },
+    {
+      "id": "memory_tracker",
+      "name": "Memory Tracker",
+      "type": "internal",
+      "properties": {
+        "singleton": true,
+        "thread_safe": true,
+        "persistent": true
+      },
+      "responsibilities": [
+        "Track memory allocations per table handle",
+        "Enforce configured memory limits",
+        "Provide memory usage statistics",
+        "Handle memory cleanup on disposal"
+      ],
+      "interfaces": [
+        {
+          "name": "memory_management",
+          "type": "internal",
+          "functions": [
+            "allocate",
+            "deallocate", 
+            "can_allocate",
+            "get_stats"
+          ]
+        }
+      ],
+      "dependencies": []
+    },
+    {
+      "id": "table_registry",
+      "name": "Table Registry",
+      "type": "internal",
+      "properties": {
+        "singleton": true,
+        "thread_safe": true,
+        "handle_based": true
+      },
+      "responsibilities": [
+        "Manage table handle allocation and mapping",
+        "Store RecordBatch instances with handles",
+        "Validate handle operations",
+        "Coordinate with memory tracker"
+      ],
+      "interfaces": [
+        {
+          "name": "handle_management",
+          "type": "internal",
+          "functions": [
+            "register",
+            "get",
+            "release",
+            "clear"
+          ]
+        }
+      ],
+      "dependencies": ["memory_tracker"]
+    },
+    {
+      "id": "compression_utils",
+      "name": "Compression Utilities",
+      "type": "internal",
+      "properties": {
+        "algorithms": ["lz4", "none"],
+        "external_crate": "lz4_flex"
+      },
+      "responsibilities": [
+        "LZ4 compression and decompression",
+        "Compression format detection",
+        "Compression options handling"
+      ],
+      "interfaces": [
+        {
+          "name": "compression_api",
+          "type": "internal",
+          "functions": [
+            "compress_lz4",
+            "decompress_lz4",
+            "is_lz4_compressed"
+          ]
+        }
+      ],
+      "dependencies": []
+    },
+    {
+      "id": "javascript_bindings",
+      "name": "JavaScript Bindings",
+      "type": "binding",
+      "properties": {
+        "generated": true,
+        "tool": "wasm-bindgen",
+        "target": "web"
+      },
+      "responsibilities": [
+        "Type conversion between JS and WASM",
+        "Promise-based API wrapping", 
+        "Error object creation and handling",
+        "Memory buffer management"
+      ],
+      "interfaces": [
+        {
+          "name": "js_api",
+          "type": "export",
+          "functions": [
+            "All exported functions from wasm_core",
+            "Type definitions",
+            "Error handling"
+          ]
+        }
+      ],
+      "dependencies": ["wasm_core"]
+    },
+    {
+      "id": "typescript_definitions",
+      "name": "TypeScript Definitions",
+      "type": "binding",
+      "properties": {
+        "generated": true,
+        "location": "src/index.ts",
+        "type_safe": true
+      },
+      "responsibilities": [
+        "Provide type-safe API definitions",
+        "Document API contracts",
+        "Support IDE integration",
+        "Enable compile-time type checking"
+      ],
+      "interfaces": [
+        {
+          "name": "type_definitions",
+          "type": "export",
+          "types": [
+            "TableHandle",
+            "InitOptions",
+            "WriteOptions", 
+            "ColumnView",
+            "SchemaInfo",
+            "MemoryStats"
+          ]
+        }
+      ],
+      "dependencies": ["javascript_bindings"]
+    }
+  ],
+  "relationships": [
+    {
+      "from": "wasm_core",
+      "to": "arrow_ipc_parser",
+      "type": "uses",
+      "description": "Core module uses Arrow library for IPC parsing and manipulation"
+    },
+    {
+      "from": "wasm_core", 
+      "to": "memory_tracker",
+      "type": "manages",
+      "description": "Core module manages memory through dedicated tracker"
+    },
+    {
+      "from": "wasm_core",
+      "to": "table_registry", 
+      "type": "manages",
+      "description": "Core module manages table handles through registry"
+    },
+    {
+      "from": "wasm_core",
+      "to": "compression_utils",
+      "type": "uses",
+      "description": "Core module uses compression utilities for data processing"
+    },
+    {
+      "from": "table_registry",
+      "to": "memory_tracker",
+      "type": "coordinates_with",
+      "description": "Registry coordinates with memory tracker for allocations"
+    },
+    {
+      "from": "javascript_bindings",
+      "to": "wasm_core",
+      "type": "wraps",
+      "description": "JS bindings wrap core WASM functions for browser/Node.js"
+    },
+    {
+      "from": "typescript_definitions",
+      "to": "javascript_bindings",
+      "type": "types",
+      "description": "TypeScript definitions provide types for JS bindings"
+    }
+  ],
+  "data_flows": [
+    {
+      "id": "table_creation_flow",
+      "description": "Data flow for table creation from buffer",
+      "steps": [
+        "User calls read_table_from_buffer with Uint8Array",
+        "JS bindings convert to Vec<u8>",
+        "WASM core detects format and parses with Arrow",
+        "Memory tracker validates allocation",
+        "Table registry allocates handle",
+        "Handle returned to user"
+      ]
+    },
+    {
+      "id": "table_operation_flow",
+      "description": "Data flow for table operations like slicing/filtering",
+      "steps": [
+        "User calls operation with table handle",
+        "WASM core validates handle in registry",
+        "Operation performed on RecordBatch",
+        "New RecordBatch created",
+        "Memory tracker validates new allocation",
+        "New handle allocated and returned"
+      ]
+    },
+    {
+      "id": "memory_cleanup_flow",
+      "description": "Data flow for memory cleanup and disposal",
+      "steps": [
+        "User calls release_table or dispose_wasm_module",
+        "WASM core coordinates cleanup",
+        "Table registry removes handles",
+        "Memory tracker releases allocations",
+        "Resources cleaned up"
+      ]
+    }
+  ],
+  "metadata": {
+    "created": "2025-09-28",
+    "author": "Claude Code MBD System",
+    "requirements": [
+      "REQ-401: Component architecture must support modular design",
+      "REQ-402: Dependencies must be clearly defined and managed",
+      "REQ-403: Interfaces must be well-defined and type-safe", 
+      "REQ-404: Data flows must be efficient and predictable",
+      "REQ-405: Memory management must be centralized and consistent"
+    ],
+    "architecture_principles": [
+      "Separation of concerns between components",
+      "Clear dependency management",
+      "Type safety at component boundaries", 
+      "Centralized resource management",
+      "Minimal external dependencies"
+    ]
+  }
+}

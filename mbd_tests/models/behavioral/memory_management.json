@@ -1,0 +1,234 @@
+{
+  "model_id": "memory_management_v1",
+  "model_type": "state_machine",
+  "version": "1.0.0",
+  "description": "State machine model for memory allocation, tracking, and cleanup in WASM Arrow library",
+  "states": [
+    {
+      "id": "untracked",
+      "name": "Untracked",
+      "type": "initial",
+      "properties": {
+        "memory_limit_set": false,
+        "allocations_tracked": false,
+        "total_used_bytes": 0,
+        "table_count": 0
+      },
+      "invariants": [
+        "Memory tracker is not initialized",
+        "No allocations are being tracked",
+        "Memory limit is default value",
+        "get_memory_usage should return error or default stats"
+      ]
+    },
+    {
+      "id": "configured",
+      "name": "Configured",
+      "type": "normal",
+      "properties": {
+        "memory_limit_set": true,
+        "allocations_tracked": true,
+        "total_used_bytes": 0,
+        "table_count": 0,
+        "can_allocate": true
+      },
+      "invariants": [
+        "Memory tracker is initialized with specific limit",
+        "Memory limit is enforced for new allocations",
+        "get_memory_usage returns accurate statistics",
+        "No memory is currently allocated"
+      ]
+    },
+    {
+      "id": "allocated",
+      "name": "Allocated",
+      "type": "normal",
+      "properties": {
+        "memory_limit_set": true,
+        "allocations_tracked": true,
+        "total_used_bytes": "> 0",
+        "table_count": "> 0",
+        "can_allocate": "depends_on_remaining_space"
+      },
+      "invariants": [
+        "Memory is actively allocated to one or more tables",
+        "Used bytes is less than or equal to memory limit",
+        "Table count matches number of tracked allocations",
+        "Memory stats are accurate and current"
+      ]
+    },
+    {
+      "id": "at_limit",
+      "name": "At Limit",
+      "type": "normal",
+      "properties": {
+        "memory_limit_set": true,
+        "allocations_tracked": true,
+        "total_used_bytes": "near_or_at_max_bytes",
+        "table_count": "> 0",
+        "can_allocate": false
+      },
+      "invariants": [
+        "Memory usage is at or very close to the configured limit",
+        "New allocations should be rejected",
+        "Existing allocations remain valid",
+        "MEMORY_LIMIT_EXCEEDED errors for new table creation"
+      ]
+    },
+    {
+      "id": "reset",
+      "name": "Reset",
+      "type": "final",
+      "properties": {
+        "memory_limit_set": false,
+        "allocations_tracked": false,
+        "total_used_bytes": 0,
+        "table_count": 0
+      },
+      "invariants": [
+        "All memory has been released",
+        "Memory tracker is reset to initial state",
+        "No allocations are tracked",
+        "get_memory_usage reflects clean state"
+      ]
+    }
+  ],
+  "transitions": [
+    {
+      "id": "initialize_memory_tracker",
+      "from": "untracked",
+      "to": "configured",
+      "trigger": "init_wasm_module",
+      "guard": "valid_memory_limit_mb provided",
+      "action": "set_memory_limit, initialize_allocation_tracking",
+      "requirements": ["REQ-201", "REQ-202"]
+    },
+    {
+      "id": "first_allocation",
+      "from": "configured",
+      "to": "allocated",
+      "trigger": "register_table",
+      "guard": "allocation_size <= available_memory",
+      "action": "allocate_memory, track_allocation, update_stats",
+      "requirements": ["REQ-203", "REQ-204"]
+    },
+    {
+      "id": "additional_allocation",
+      "from": "allocated",
+      "to": "allocated",
+      "trigger": "register_table",
+      "guard": "allocation_size <= remaining_memory",
+      "action": "allocate_memory, track_allocation, update_stats",
+      "requirements": ["REQ-203", "REQ-204"]
+    },
+    {
+      "id": "reach_memory_limit",
+      "from": "allocated",
+      "to": "at_limit",
+      "trigger": "register_table",
+      "guard": "allocation_would_exceed_limit",
+      "action": "reject_allocation, return_memory_limit_error",
+      "requirements": ["REQ-205"]
+    },
+    {
+      "id": "attempt_allocation_at_limit",
+      "from": "at_limit",
+      "to": "at_limit",
+      "trigger": "register_table",
+      "guard": "any_new_allocation",
+      "action": "reject_allocation, return_memory_limit_error",
+      "requirements": ["REQ-205"]
+    },
+    {
+      "id": "deallocate_from_allocated",
+      "from": "allocated",
+      "to": "allocated",
+      "trigger": "release_table",
+      "guard": "table_handle_exists",
+      "action": "deallocate_memory, remove_tracking, update_stats",
+      "requirements": ["REQ-206"]
+    },
+    {
+      "id": "deallocate_from_limit",
+      "from": "at_limit",
+      "to": "allocated",
+      "trigger": "release_table",
+      "guard": "table_handle_exists",
+      "action": "deallocate_memory, remove_tracking, update_stats",
+      "requirements": ["REQ-206"]
+    },
+    {
+      "id": "deallocate_last_table",
+      "from": "allocated",
+      "to": "configured",
+      "trigger": "release_table",
+      "guard": "last_table_being_released",
+      "action": "deallocate_memory, remove_tracking, reset_usage_stats",
+      "requirements": ["REQ-206"]
+    },
+    {
+      "id": "reset_memory_system",
+      "from": "configured",
+      "to": "reset",
+      "trigger": "dispose_wasm_module",
+      "guard": "none",
+      "action": "reset_memory_tracker, clear_all_allocations",
+      "requirements": ["REQ-207"]
+    },
+    {
+      "id": "reset_from_allocated",
+      "from": "allocated",
+      "to": "reset",
+      "trigger": "dispose_wasm_module",
+      "guard": "none",
+      "action": "force_release_all_tables, reset_memory_tracker",
+      "requirements": ["REQ-207"]
+    },
+    {
+      "id": "reset_from_limit",
+      "from": "at_limit",
+      "to": "reset",
+      "trigger": "dispose_wasm_module",
+      "guard": "none",
+      "action": "force_release_all_tables, reset_memory_tracker",
+      "requirements": ["REQ-207"]
+    },
+    {
+      "id": "invalid_deallocation",
+      "from": "allocated",
+      "to": "allocated",
+      "trigger": "release_table",
+      "guard": "invalid_table_handle",
+      "action": "return_invalid_handle_error, no_memory_change",
+      "requirements": ["REQ-208"]
+    },
+    {
+      "id": "invalid_deallocation_at_limit",
+      "from": "at_limit",
+      "to": "at_limit", 
+      "trigger": "release_table",
+      "guard": "invalid_table_handle",
+      "action": "return_invalid_handle_error, no_memory_change",
+      "requirements": ["REQ-208"]
+    }
+  ],
+  "metadata": {
+    "created": "2025-09-28",
+    "author": "Claude Code MBD System",
+    "requirements": [
+      "REQ-201: Memory tracker must be initialized with configurable limit",
+      "REQ-202: Memory limit must be enforced for all allocations",
+      "REQ-203: New table allocations must check available memory",
+      "REQ-204: Memory statistics must be accurate and updated in real-time",
+      "REQ-205: Memory limit exceeded errors must be returned when appropriate",
+      "REQ-206: Table deallocation must properly release and track memory",
+      "REQ-207: Module disposal must clean up all memory allocations",
+      "REQ-208: Invalid handle operations must not affect memory tracking"
+    ],
+    "test_coverage_targets": {
+      "state_coverage": "100%",
+      "transition_coverage": "100%",
+      "path_coverage": "95%"
+    }
+  }
+}

@@ -1,0 +1,823 @@
+{
+  "model_id": "api_interactions_v1",
+  "model_type": "state_machine",
+  "generated_at": "2025-09-28T11:18:56.496Z",
+  "test_cases": [
+    {
+      "test_id": "api_interactions_v1_state_session_start_validation",
+      "test_name": "Validate Session Start state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "session_start",
+      "requirements": [],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Session Start state",
+          "expected": "System reaches Session Start state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"module_loaded\":true,\"module_initialized\":false,\"tables_created\":0}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for api_interactions_v1_state_session_start_validation\n// Model: api_interactions_v1, Element: session_start\n\ndescribe('api_interactions_v1_state_session_start_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Session Start state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "api_interactions_v1_state_ready_for_operations_validation",
+      "test_name": "Validate Ready for Operations state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "ready_for_operations",
+      "requirements": [],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Ready for Operations state",
+          "expected": "System reaches Ready for Operations state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"module_loaded\":true,\"module_initialized\":true,\"tables_created\":0,\"can_accept_tables\":true}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for api_interactions_v1_state_ready_for_operations_validation\n// Model: api_interactions_v1, Element: ready_for_operations\n\ndescribe('api_interactions_v1_state_ready_for_operations_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Ready for Operations state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "api_interactions_v1_state_table_processing_validation",
+      "test_name": "Validate Table Processing state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "table_processing",
+      "requirements": [],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Table Processing state",
+          "expected": "System reaches Table Processing state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"module_initialized\":true,\"tables_created\":\"> 0\",\"active_operations\":\"configurable\"}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for api_interactions_v1_state_table_processing_validation\n// Model: api_interactions_v1, Element: table_processing\n\ndescribe('api_interactions_v1_state_table_processing_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Table Processing state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "api_interactions_v1_state_data_export_validation",
+      "test_name": "Validate Data Export state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "data_export",
+      "requirements": [],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Data Export state",
+          "expected": "System reaches Data Export state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"module_initialized\":true,\"tables_available\":true,\"export_in_progress\":true}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for api_interactions_v1_state_data_export_validation\n// Model: api_interactions_v1, Element: data_export\n\ndescribe('api_interactions_v1_state_data_export_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Data Export state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "api_interactions_v1_state_session_cleanup_validation",
+      "test_name": "Validate Session Cleanup state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "session_cleanup",
+      "requirements": [],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Session Cleanup state",
+          "expected": "System reaches Session Cleanup state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"module_initialized\":true,\"cleanup_in_progress\":true}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for api_interactions_v1_state_session_cleanup_validation\n// Model: api_interactions_v1, Element: session_cleanup\n\ndescribe('api_interactions_v1_state_session_cleanup_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Session Cleanup state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "api_interactions_v1_state_session_end_validation",
+      "test_name": "Validate Session End state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "session_end",
+      "requirements": [],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Session End state",
+          "expected": "System reaches Session End state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"module_loaded\":true,\"module_initialized\":false,\"tables_created\":0,\"all_resources_cleaned\":true}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for api_interactions_v1_state_session_end_validation\n// Model: api_interactions_v1, Element: session_end\n\ndescribe('api_interactions_v1_state_session_end_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Session End state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "api_interactions_v1_transition_initialize_module",
+      "test_name": "Test transition: Session Start → Ready for Operations",
+      "test_type": "transition_test",
+      "model_element": "initialize_module",
+      "requirements": [
+        "REQ-301",
+        "REQ-302"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Session Start state",
+          "expected": "System state is session_start"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: valid_initialization_options",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: init_wasm_module_success",
+          "expected": "Event init_wasm_module_success is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: configure_memory_limits, setup_logging, enable_apis",
+          "expected": "Action configure_memory_limits, setup_logging, enable_apis completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Ready for Operations state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {},
+      "browser_test_code": "\n// Generated test for api_interactions_v1_transition_initialize_module\n// Model: api_interactions_v1, Element: initialize_module\n\ndescribe('api_interactions_v1_transition_initialize_module', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: session_start\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "api_interactions_v1_transition_load_first_table",
+      "test_name": "Test transition: Ready for Operations → undefined",
+      "test_type": "transition_test",
+      "model_element": "load_first_table",
+      "requirements": [
+        "REQ-303",
+        "REQ-304"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Ready for Operations state",
+          "expected": "System state is ready_for_operations"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: valid_buffer_format AND memory_available",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: read_table_from_buffer_success",
+          "expected": "Event read_table_from_buffer_success is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: parse_buffer, allocate_table, return_handle",
+          "expected": "Action parse_buffer, allocate_table, return_handle completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to undefined state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {},
+      "browser_test_code": "\n// Generated test for api_interactions_v1_transition_load_first_table\n// Model: api_interactions_v1, Element: load_first_table\n\ndescribe('api_interactions_v1_transition_load_first_table', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: ready_for_operations\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "api_interactions_v1_transition_load_additional_table",
+      "test_name": "Test transition: undefined → undefined",
+      "test_type": "transition_test",
+      "model_element": "load_additional_table",
+      "requirements": [
+        "REQ-303",
+        "REQ-304"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in undefined state",
+          "expected": "System state is table_processing.single_table_ops"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: valid_buffer_format AND memory_available",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: read_table_from_buffer_success",
+          "expected": "Event read_table_from_buffer_success is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: parse_buffer, allocate_table, return_handle",
+          "expected": "Action parse_buffer, allocate_table, return_handle completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to undefined state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {},
+      "browser_test_code": "\n// Generated test for api_interactions_v1_transition_load_additional_table\n// Model: api_interactions_v1, Element: load_additional_table\n\ndescribe('api_interactions_v1_transition_load_additional_table', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: table_processing.single_table_ops\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "api_interactions_v1_transition_approach_memory_limit",
+      "test_name": "Test transition: undefined → undefined",
+      "test_type": "transition_test",
+      "model_element": "approach_memory_limit",
+      "requirements": [
+        "REQ-305"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in undefined state",
+          "expected": "System state is table_processing.multiple_table_ops"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: memory_used > 80% of limit",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: memory_usage_high",
+          "expected": "Event memory_usage_high is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: restrict_new_allocations, log_memory_warning",
+          "expected": "Action restrict_new_allocations, log_memory_warning completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to undefined state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {},
+      "browser_test_code": "\n// Generated test for api_interactions_v1_transition_approach_memory_limit\n// Model: api_interactions_v1, Element: approach_memory_limit\n\ndescribe('api_interactions_v1_transition_approach_memory_limit', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: table_processing.multiple_table_ops\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "api_interactions_v1_transition_release_memory_pressure",
+      "test_name": "Test transition: undefined → undefined",
+      "test_type": "transition_test",
+      "model_element": "release_memory_pressure",
+      "requirements": [
+        "REQ-306"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in undefined state",
+          "expected": "System state is table_processing.memory_pressure"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: memory_used < 70% of limit",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: release_table_success",
+          "expected": "Event release_table_success is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: enable_new_allocations, update_memory_stats",
+          "expected": "Action enable_new_allocations, update_memory_stats completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to undefined state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {},
+      "browser_test_code": "\n// Generated test for api_interactions_v1_transition_release_memory_pressure\n// Model: api_interactions_v1, Element: release_memory_pressure\n\ndescribe('api_interactions_v1_transition_release_memory_pressure', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: table_processing.memory_pressure\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "api_interactions_v1_transition_reduce_to_single_table",
+      "test_name": "Test transition: undefined → undefined",
+      "test_type": "transition_test",
+      "model_element": "reduce_to_single_table",
+      "requirements": [
+        "REQ-306"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in undefined state",
+          "expected": "System state is table_processing.multiple_table_ops"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: table_count == 1",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: release_table_success",
+          "expected": "Event release_table_success is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: update_table_count, free_memory",
+          "expected": "Action update_table_count, free_memory completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to undefined state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {},
+      "browser_test_code": "\n// Generated test for api_interactions_v1_transition_reduce_to_single_table\n// Model: api_interactions_v1, Element: reduce_to_single_table\n\ndescribe('api_interactions_v1_transition_reduce_to_single_table', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: table_processing.multiple_table_ops\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "api_interactions_v1_transition_reduce_from_pressure",
+      "test_name": "Test transition: undefined → undefined",
+      "test_type": "transition_test",
+      "model_element": "reduce_from_pressure",
+      "requirements": [
+        "REQ-306"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in undefined state",
+          "expected": "System state is table_processing.memory_pressure"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: table_count == 1",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: release_table_success",
+          "expected": "Event release_table_success is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: update_table_count, free_memory, enable_allocations",
+          "expected": "Action update_table_count, free_memory, enable_allocations completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to undefined state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {},
+      "browser_test_code": "\n// Generated test for api_interactions_v1_transition_reduce_from_pressure\n// Model: api_interactions_v1, Element: reduce_from_pressure\n\ndescribe('api_interactions_v1_transition_reduce_from_pressure', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: table_processing.memory_pressure\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "api_interactions_v1_transition_export_table_data",
+      "test_name": "Test transition: Table Processing → Data Export",
+      "test_type": "transition_test",
+      "model_element": "export_table_data",
+      "requirements": [
+        "REQ-307",
+        "REQ-308"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Table Processing state",
+          "expected": "System state is table_processing"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: valid_table_handle AND valid_write_options",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: write_table_to_buffer",
+          "expected": "Event write_table_to_buffer is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: serialize_table, apply_compression, return_buffer",
+          "expected": "Action serialize_table, apply_compression, return_buffer completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Data Export state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {},
+      "browser_test_code": "\n// Generated test for api_interactions_v1_transition_export_table_data\n// Model: api_interactions_v1, Element: export_table_data\n\ndescribe('api_interactions_v1_transition_export_table_data', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: table_processing\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "api_interactions_v1_transition_complete_export",
+      "test_name": "Test transition: Data Export → Table Processing",
+      "test_type": "transition_test",
+      "model_element": "complete_export",
+      "requirements": [
+        "REQ-309"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Data Export state",
+          "expected": "System state is data_export"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: none",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: export_complete",
+          "expected": "Event export_complete is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: return_to_normal_operations",
+          "expected": "Action return_to_normal_operations completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Table Processing state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {},
+      "browser_test_code": "\n// Generated test for api_interactions_v1_transition_complete_export\n// Model: api_interactions_v1, Element: complete_export\n\ndescribe('api_interactions_v1_transition_complete_export', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: data_export\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "api_interactions_v1_transition_start_cleanup",
+      "test_name": "Test transition: Table Processing → Session Cleanup",
+      "test_type": "transition_test",
+      "model_element": "start_cleanup",
+      "requirements": [
+        "REQ-310"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Table Processing state",
+          "expected": "System state is table_processing"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: none",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: dispose_wasm_module",
+          "expected": "Event dispose_wasm_module is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: begin_resource_cleanup",
+          "expected": "Action begin_resource_cleanup completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Session Cleanup state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {},
+      "browser_test_code": "\n// Generated test for api_interactions_v1_transition_start_cleanup\n// Model: api_interactions_v1, Element: start_cleanup\n\ndescribe('api_interactions_v1_transition_start_cleanup', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: table_processing\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "api_interactions_v1_transition_start_cleanup_from_export",
+      "test_name": "Test transition: Data Export → Session Cleanup",
+      "test_type": "transition_test",
+      "model_element": "start_cleanup_from_export",
+      "requirements": [
+        "REQ-310"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Data Export state",
+          "expected": "System state is data_export"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: none",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: dispose_wasm_module",
+          "expected": "Event dispose_wasm_module is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: cancel_export, begin_resource_cleanup",
+          "expected": "Action cancel_export, begin_resource_cleanup completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Session Cleanup state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {},
+      "browser_test_code": "\n// Generated test for api_interactions_v1_transition_start_cleanup_from_export\n// Model: api_interactions_v1, Element: start_cleanup_from_export\n\ndescribe('api_interactions_v1_transition_start_cleanup_from_export', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: data_export\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "api_interactions_v1_transition_start_cleanup_from_ready",
+      "test_name": "Test transition: Ready for Operations → Session Cleanup",
+      "test_type": "transition_test",
+      "model_element": "start_cleanup_from_ready",
+      "requirements": [
+        "REQ-310"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Ready for Operations state",
+          "expected": "System state is ready_for_operations"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: none",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: dispose_wasm_module",
+          "expected": "Event dispose_wasm_module is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: begin_resource_cleanup",
+          "expected": "Action begin_resource_cleanup completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Session Cleanup state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {},
+      "browser_test_code": "\n// Generated test for api_interactions_v1_transition_start_cleanup_from_ready\n// Model: api_interactions_v1, Element: start_cleanup_from_ready\n\ndescribe('api_interactions_v1_transition_start_cleanup_from_ready', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: ready_for_operations\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "api_interactions_v1_transition_complete_cleanup",
+      "test_name": "Test transition: Session Cleanup → Session End",
+      "test_type": "transition_test",
+      "model_element": "complete_cleanup",
+      "requirements": [
+        "REQ-311"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Session Cleanup state",
+          "expected": "System state is session_cleanup"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: all_resources_released",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: cleanup_complete",
+          "expected": "Event cleanup_complete is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: finalize_disposal, reset_module_state",
+          "expected": "Action finalize_disposal, reset_module_state completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Session End state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {},
+      "browser_test_code": "\n// Generated test for api_interactions_v1_transition_complete_cleanup\n// Model: api_interactions_v1, Element: complete_cleanup\n\ndescribe('api_interactions_v1_transition_complete_cleanup', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: session_cleanup\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "api_interactions_v1_transition_release_all_tables",
+      "test_name": "Test transition: Table Processing → Ready for Operations",
+      "test_type": "transition_test",
+      "model_element": "release_all_tables",
+      "requirements": [
+        "REQ-306"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Table Processing state",
+          "expected": "System state is table_processing"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: none",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: release_all_tables",
+          "expected": "Event release_all_tables is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: release_each_table, free_all_memory, reset_counters",
+          "expected": "Action release_each_table, free_all_memory, reset_counters completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Ready for Operations state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {},
+      "browser_test_code": "\n// Generated test for api_interactions_v1_transition_release_all_tables\n// Model: api_interactions_v1, Element: release_all_tables\n\ndescribe('api_interactions_v1_transition_release_all_tables', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: table_processing\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    }
+  ]
+}

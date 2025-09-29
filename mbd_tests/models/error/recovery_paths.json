@@ -1,0 +1,506 @@
+{
+  "model_id": "recovery_paths_v1",
+  "model_type": "error_recovery",
+  "version": "1.0.0",
+  "description": "Detailed recovery paths and procedures for error conditions in the WASM Arrow library",
+  "recovery_scenarios": [
+    {
+      "scenario_id": "initialization_recovery",
+      "name": "Module Initialization Recovery",
+      "description": "Recovery procedures when module initialization fails or is incomplete",
+      "error_triggers": ["NOT_INITIALIZED", "INITIALIZATION_FAILED"],
+      "recovery_paths": [
+        {
+          "path_id": "simple_reinit",
+          "name": "Simple Reinitialization",
+          "description": "Standard recovery for initialization failures",
+          "preconditions": [
+            "No partial initialization state",
+            "Memory is available",
+            "WASM module is loaded"
+          ],
+          "steps": [
+            {
+              "step": 1,
+              "action": "validate_init_options",
+              "description": "Verify InitOptions are valid and reasonable",
+              "validation": "memoryLimitMB > 0 and < 4096, maxTableCount > 0"
+            },
+            {
+              "step": 2,
+              "action": "call_init_wasm_module",
+              "description": "Call init_wasm_module with corrected options",
+              "expected_result": "Module state becomes 'ready'"
+            },
+            {
+              "step": 3,
+              "action": "verify_initialization",
+              "description": "Confirm module is ready for operations",
+              "validation": "is_initialized() returns true"
+            }
+          ],
+          "success_criteria": [
+            "is_initialized() returns true",
+            "get_init_state() returns 'ready'",
+            "get_memory_usage() returns valid statistics"
+          ],
+          "failure_handling": "If still fails, try 'reduce_requirements' path"
+        },
+        {
+          "path_id": "reduce_requirements",
+          "name": "Reduce Memory Requirements",
+          "description": "Recovery by reducing memory requirements",
+          "preconditions": [
+            "Simple reinitialization failed",
+            "Memory limit may be too high"
+          ],
+          "steps": [
+            {
+              "step": 1,
+              "action": "reduce_memory_limit",
+              "description": "Set memoryLimitMB to 64-128MB range",
+              "parameters": {"memoryLimitMB": 128, "maxTableCount": 10}
+            },
+            {
+              "step": 2,
+              "action": "disable_debug_logging",
+              "description": "Set enableDebugLogging to false to reduce overhead",
+              "parameters": {"enableDebugLogging": false}
+            },
+            {
+              "step": 3,
+              "action": "retry_initialization",
+              "description": "Attempt initialization with reduced requirements",
+              "expected_result": "Module initializes successfully"
+            }
+          ],
+          "success_criteria": [
+            "Module initializes with reduced limits",
+            "Basic operations work",
+            "Memory tracking is active"
+          ],
+          "failure_handling": "Escalate to 'environment_check' path"
+        },
+        {
+          "path_id": "environment_check",
+          "name": "Environment Compatibility Check",
+          "description": "Check browser/environment compatibility",
+          "preconditions": [
+            "Both previous paths failed",
+            "May be environment compatibility issue"
+          ],
+          "steps": [
+            {
+              "step": 1,
+              "action": "check_wasm_support",
+              "description": "Verify WebAssembly is supported",
+              "validation": "typeof WebAssembly !== 'undefined'"
+            },
+            {
+              "step": 2,
+              "action": "check_memory_availability",
+              "description": "Check available system memory",
+              "validation": "navigator.deviceMemory or similar checks"
+            },
+            {
+              "step": 3,
+              "action": "minimal_initialization",
+              "description": "Try minimal configuration",
+              "parameters": {"memoryLimitMB": 32, "maxTableCount": 1}
+            }
+          ],
+          "success_criteria": [
+            "Minimal configuration works",
+            "Basic API calls succeed"
+          ],
+          "failure_handling": "Report environment incompatibility to user"
+        }
+      ]
+    },
+    {
+      "scenario_id": "memory_pressure_recovery",
+      "name": "Memory Pressure Recovery",
+      "description": "Recovery procedures when memory limits are exceeded",
+      "error_triggers": ["MEMORY_LIMIT_EXCEEDED"],
+      "recovery_paths": [
+        {
+          "path_id": "release_unused_tables",
+          "name": "Release Unused Tables",
+          "description": "Free memory by releasing tables no longer needed",
+          "preconditions": [
+            "Module is initialized",
+            "Multiple tables are loaded",
+            "Some tables may be unused"
+          ],
+          "steps": [
+            {
+              "step": 1,
+              "action": "list_active_tables",
+              "description": "Get list of all active table handles",
+              "api_call": "list_table_handles()"
+            },
+            {
+              "step": 2,
+              "action": "identify_release_candidates",
+              "description": "Identify tables that can be safely released",
+              "criteria": "Tables not actively being used by application"
+            },
+            {
+              "step": 3,
+              "action": "release_selected_tables",
+              "description": "Release identified tables one by one",
+              "api_call": "release_table(handle) for each candidate"
+            },
+            {
+              "step": 4,
+              "action": "verify_memory_freed",
+              "description": "Confirm memory usage has decreased",
+              "validation": "get_memory_usage().usedBytes < previous_usage"
+            }
+          ],
+          "success_criteria": [
+            "Memory usage decreased significantly",
+            "New table creation succeeds",
+            "Remaining tables still functional"
+          ],
+          "failure_handling": "If insufficient memory freed, try 'optimize_data' path"
+        },
+        {
+          "path_id": "optimize_data",
+          "name": "Optimize Data Usage",
+          "description": "Reduce memory usage through data optimization",
+          "preconditions": [
+            "Simple table release insufficient",
+            "Data can be processed in smaller chunks"
+          ],
+          "steps": [
+            {
+              "step": 1,
+              "action": "analyze_table_sizes",
+              "description": "Identify largest tables consuming memory",
+              "api_call": "get_table_stats(handle) for each table"
+            },
+            {
+              "step": 2,
+              "action": "slice_large_tables",
+              "description": "Break large tables into smaller chunks",
+              "api_call": "slice_table(handle, start, length) for chunks"
+            },
+            {
+              "step": 3,
+              "action": "release_original_tables",
+              "description": "Release original large tables after slicing",
+              "api_call": "release_table(original_handle)"
+            },
+            {
+              "step": 4,
+              "action": "process_chunks_sequentially",
+              "description": "Process data chunks one at a time",
+              "pattern": "Load chunk -> Process -> Release -> Next chunk"
+            }
+          ],
+          "success_criteria": [
+            "Memory usage stays within limits",
+            "Data processing continues successfully",
+            "No data loss during optimization"
+          ],
+          "failure_handling": "Escalate to 'increase_memory_limit' path"
+        },
+        {
+          "path_id": "increase_memory_limit",
+          "name": "Increase Memory Limit",
+          "description": "Reinitialize with higher memory limit",
+          "preconditions": [
+            "Optimization strategies exhausted",
+            "Higher memory limit is feasible",
+            "Critical data processing required"
+          ],
+          "steps": [
+            {
+              "step": 1,
+              "action": "calculate_required_memory",
+              "description": "Estimate memory needed for current workload",
+              "calculation": "current_usage + new_data_size + safety_margin"
+            },
+            {
+              "step": 2,
+              "action": "dispose_current_module",
+              "description": "Clean up current module instance",
+              "api_call": "dispose_wasm_module()"
+            },
+            {
+              "step": 3,
+              "action": "reinitialize_with_higher_limit",
+              "description": "Initialize with increased memory limit",
+              "parameters": {"memoryLimitMB": "calculated_requirement * 1.2"}
+            },
+            {
+              "step": 4,
+              "action": "reload_essential_data",
+              "description": "Reload only essential data into new instance",
+              "priority": "Critical tables first, optional data as memory allows"
+            }
+          ],
+          "success_criteria": [
+            "Module reinitializes with higher limit",
+            "Essential data is reloaded",
+            "New operations succeed"
+          ],
+          "failure_handling": "Report memory limitations to user"
+        }
+      ]
+    },
+    {
+      "scenario_id": "data_corruption_recovery",
+      "name": "Data Corruption Recovery",
+      "description": "Recovery procedures for corrupted or invalid data",
+      "error_triggers": ["INVALID_FORMAT", "ARROW_ERROR", "COMPRESSION_ERROR"],
+      "recovery_paths": [
+        {
+          "path_id": "format_validation_retry",
+          "name": "Format Validation and Retry",
+          "description": "Validate and correct data format issues",
+          "preconditions": [
+            "Data format error detected",
+            "Original data source is available",
+            "Format correction is possible"
+          ],
+          "steps": [
+            {
+              "step": 1,
+              "action": "analyze_data_format",
+              "description": "Inspect data to identify format issues",
+              "checks": [
+                "Magic bytes verification",
+                "File size validation",
+                "Header structure check"
+              ]
+            },
+            {
+              "step": 2,
+              "action": "attempt_format_correction",
+              "description": "Apply known fixes for common format issues",
+              "techniques": [
+                "Try different format parsers",
+                "Check for compression",
+                "Validate file completeness"
+              ]
+            },
+            {
+              "step": 3,
+              "action": "retry_with_fallback",
+              "description": "Retry operation with alternative approach",
+              "fallbacks": [
+                "Try as Arrow stream if file parsing fails",
+                "Attempt decompression if compressed",
+                "Use different Arrow reader options"
+              ]
+            }
+          ],
+          "success_criteria": [
+            "Data parses successfully",
+            "Table is created without errors",
+            "Schema and data are valid"
+          ],
+          "failure_handling": "Try 'alternative_data_source' path"
+        },
+        {
+          "path_id": "alternative_data_source",
+          "name": "Alternative Data Source",
+          "description": "Use backup or alternative data when primary source fails",
+          "preconditions": [
+            "Primary data source is corrupted",
+            "Alternative data sources exist",
+            "Data loss is acceptable or recoverable"
+          ],
+          "steps": [
+            {
+              "step": 1,
+              "action": "identify_alternatives",
+              "description": "Find alternative data sources",
+              "sources": [
+                "Backup files",
+                "Cached data",
+                "Alternative file formats",
+                "Regenerated data"
+              ]
+            },
+            {
+              "step": 2,
+              "action": "validate_alternative_data",
+              "description": "Verify alternative data quality",
+              "validation": [
+                "Check data completeness",
+                "Verify schema compatibility",
+                "Confirm data freshness"
+              ]
+            },
+            {
+              "step": 3,
+              "action": "load_alternative_data",
+              "description": "Load data from alternative source",
+              "api_call": "read_table_from_buffer(alternative_buffer)"
+            }
+          ],
+          "success_criteria": [
+            "Alternative data loads successfully",
+            "Data quality is acceptable",
+            "Operations can continue"
+          ],
+          "failure_handling": "Report data unavailability to user"
+        }
+      ]
+    },
+    {
+      "scenario_id": "operation_failure_recovery",
+      "name": "Operation Failure Recovery",
+      "description": "Recovery procedures for failed table operations",
+      "error_triggers": ["VALIDATION_ERROR", "ARROW_ERROR"],
+      "recovery_paths": [
+        {
+          "path_id": "parameter_correction",
+          "name": "Parameter Correction",
+          "description": "Correct invalid parameters and retry operation",
+          "preconditions": [
+            "Operation failed due to parameter validation",
+            "Parameters can be corrected",
+            "Source data is valid"
+          ],
+          "steps": [
+            {
+              "step": 1,
+              "action": "analyze_validation_error",
+              "description": "Parse error message to identify specific issue",
+              "error_patterns": [
+                "Index out of bounds",
+                "Mask length mismatch",
+                "Column name not found",
+                "Invalid slice parameters"
+              ]
+            },
+            {
+              "step": 2,
+              "action": "correct_parameters",
+              "description": "Fix identified parameter issues",
+              "corrections": [
+                "Clamp indices to valid ranges",
+                "Resize masks to match row count",
+                "Validate column names against schema",
+                "Adjust slice ranges to table bounds"
+              ]
+            },
+            {
+              "step": 3,
+              "action": "retry_operation",
+              "description": "Attempt operation with corrected parameters",
+              "validation": "Verify parameters pass validation before retry"
+            }
+          ],
+          "success_criteria": [
+            "Parameters pass validation",
+            "Operation completes successfully",
+            "Result data is valid"
+          ],
+          "failure_handling": "Try 'simplified_operation' path"
+        },
+        {
+          "path_id": "simplified_operation",
+          "name": "Simplified Operation",
+          "description": "Perform simpler version of operation when complex version fails",
+          "preconditions": [
+            "Complex operation failed",
+            "Simpler alternative exists",
+            "Partial results are acceptable"
+          ],
+          "steps": [
+            {
+              "step": 1,
+              "action": "identify_simplification",
+              "description": "Find simpler alternative to failed operation",
+              "alternatives": [
+                "Smaller slice ranges",
+                "Subset of requested columns",
+                "Simplified filter conditions",
+                "Chunked processing"
+              ]
+            },
+            {
+              "step": 2,
+              "action": "attempt_simplified_operation",
+              "description": "Try simpler version of operation",
+              "approach": "Start with minimal complexity and gradually increase"
+            },
+            {
+              "step": 3,
+              "action": "combine_results_if_needed",
+              "description": "Combine multiple simple operations to achieve goal",
+              "pattern": "Multiple small operations instead of one large operation"
+            }
+          ],
+          "success_criteria": [
+            "Simplified operation succeeds",
+            "Partial or complete results obtained",
+            "System remains stable"
+          ],
+          "failure_handling": "Report operation limitations to user"
+        }
+      ]
+    }
+  ],
+  "recovery_best_practices": [
+    {
+      "practice": "state_preservation",
+      "description": "Always preserve system state during recovery",
+      "guidelines": [
+        "Never leave system in inconsistent state",
+        "Rollback partial changes on failure",
+        "Maintain existing table validity during recovery"
+      ]
+    },
+    {
+      "practice": "progressive_recovery",
+      "description": "Try simpler solutions before complex ones",
+      "guidelines": [
+        "Start with least disruptive recovery",
+        "Escalate to more complex solutions gradually",
+        "Preserve as much existing state as possible"
+      ]
+    },
+    {
+      "practice": "user_communication",
+      "description": "Keep user informed during recovery",
+      "guidelines": [
+        "Provide clear error messages",
+        "Suggest specific recovery actions",
+        "Indicate recovery progress when possible"
+      ]
+    },
+    {
+      "practice": "graceful_degradation",
+      "description": "Maintain functionality at reduced capacity",
+      "guidelines": [
+        "Continue operation with limitations",
+        "Clearly communicate reduced capabilities",
+        "Provide upgrade path when resources become available"
+      ]
+    }
+  ],
+  "metadata": {
+    "created": "2025-09-28",
+    "author": "Claude Code MBD System",
+    "requirements": [
+      "REQ-701: Recovery paths must preserve system integrity",
+      "REQ-702: Recovery procedures must be well-documented and testable",
+      "REQ-703: Recovery must provide clear user guidance",
+      "REQ-704: Failed recovery must not make situation worse",
+      "REQ-705: Recovery paths must be prioritized by success likelihood"
+    ],
+    "recovery_design_principles": [
+      "Fail gracefully with recovery options",
+      "Preserve user data and system state",
+      "Provide clear feedback during recovery",
+      "Escalate recovery complexity progressively",
+      "Enable manual intervention when automated recovery fails"
+    ]
+  }
+}

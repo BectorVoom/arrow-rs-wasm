@@ -1,0 +1,411 @@
+{
+  "model_id": "file_format_workflows", 
+  "model_type": "data_flow",
+  "version": "2.0.0",
+  "description": "Comprehensive file format processing workflows covering detection, reading, writing, and error handling for all supported formats",
+  "requirements": ["REQ-FORMAT-001", "REQ-FORMAT-002", "REQ-FORMAT-003", "REQ-DETECT-001"],
+  "workflows": [
+    {
+      "id": "format_detection_workflow",
+      "name": "File Format Detection",
+      "description": "Automatic detection of file format from binary data using magic numbers and structure analysis",
+      "steps": [
+        {
+          "id": "validate_input",
+          "name": "Validate Input Data",
+          "action": "validate_data_length",
+          "preconditions": ["data !== null", "data.length >= 0"],
+          "postconditions": ["validation_result !== null"],
+          "error_conditions": ["data.length < 4"],
+          "test_data": {
+            "valid_inputs": ["4_bytes", "1KB", "1MB", "100MB"],
+            "invalid_inputs": ["null", "empty_array", "1_byte", "2_bytes"],
+            "expected_errors": ["Data too short to determine format"]
+          }
+        },
+        {
+          "id": "check_parquet_magic",
+          "name": "Check Parquet Magic Numbers",
+          "action": "detect_parquet_format",
+          "preconditions": ["data.length >= 4"],
+          "postconditions": ["format_detected || check_next_format"],
+          "detection_criteria": ["ends_with_PAR1", "validate_footer_structure"],
+          "test_data": {
+            "parquet_samples": ["standard_parquet", "compressed_parquet", "large_parquet"],
+            "false_positives": ["ends_with_PAR1_but_not_parquet"],
+            "expected_timing": "< 1ms"
+          }
+        },
+        {
+          "id": "check_arrow_ipc_magic",
+          "name": "Check Arrow IPC File Magic",
+          "action": "detect_arrow_ipc_format",
+          "preconditions": ["data.length >= 8", "!parquet_detected"],
+          "postconditions": ["format_detected || check_next_format"],
+          "detection_criteria": ["starts_with_ARROW1", "validate_flatbuffer_header"],
+          "test_data": {
+            "arrow_ipc_samples": ["simple_ipc", "compressed_ipc_lz4", "large_schema_ipc"],
+            "header_variations": ["with_metadata", "without_metadata", "custom_schema"],
+            "expected_timing": "< 1ms"
+          }
+        },
+        {
+          "id": "check_arrow_stream_magic",
+          "name": "Check Arrow Stream Magic",
+          "action": "detect_arrow_stream_format",
+          "preconditions": ["data.length >= 8", "!parquet_detected", "!arrow_ipc_detected"],
+          "postconditions": ["format_detected || check_next_format"],
+          "detection_criteria": ["starts_with_0xFFFFFFFF", "validate_message_length"],
+          "test_data": {
+            "stream_samples": ["single_batch_stream", "multi_batch_stream", "compressed_stream"],
+            "message_length_validation": ["reasonable_length", "boundary_conditions"],
+            "expected_timing": "< 1ms"
+          }
+        },
+        {
+          "id": "check_feather_magic",
+          "name": "Check Feather Format Magic",
+          "action": "detect_feather_format",
+          "preconditions": ["data.length >= 10", "!other_formats_detected"],
+          "postconditions": ["format_detected || check_unsupported"],
+          "detection_criteria": ["starts_with_FEA1", "arrow_ipc_with_feather_metadata"],
+          "test_data": {
+            "feather_samples": ["feather_v1", "feather_v2_as_arrow"],
+            "metadata_validation": ["feather_specific_metadata"],
+            "expected_timing": "< 1ms"
+          }
+        },
+        {
+          "id": "check_unsupported_formats",
+          "name": "Detect Unsupported Formats",
+          "action": "identify_unsupported_format",
+          "preconditions": ["!supported_format_detected"],
+          "postconditions": ["error_with_helpful_message"],
+          "detection_criteria": ["zip_magic", "gzip_magic", "pdf_magic", "image_magic", "csv_heuristic"],
+          "test_data": {
+            "unsupported_samples": ["zip_file", "gzip_file", "pdf_file", "jpeg_image", "csv_file", "json_file"],
+            "error_messages": ["format_specific_errors", "helpful_suggestions"],
+            "expected_timing": "< 2ms"
+          }
+        },
+        {
+          "id": "fallback_heuristics",
+          "name": "Advanced Format Heuristics",
+          "action": "apply_advanced_heuristics",
+          "preconditions": ["!format_detected", "!unsupported_format_detected"],
+          "postconditions": ["best_guess_format || comprehensive_error"],
+          "heuristics": ["flatbuffer_structure_analysis", "binary_vs_text_detection"],
+          "test_data": {
+            "edge_cases": ["corrupted_arrow", "truncated_files", "binary_with_no_magic"],
+            "heuristic_accuracy": ">95%",
+            "expected_timing": "< 5ms"
+          }
+        }
+      ],
+      "error_paths": [
+        {
+          "condition": "data_too_short", 
+          "error_type": "validation_error",
+          "message": "Data too short to determine format (minimum 4 bytes required)",
+          "recovery": "none"
+        },
+        {
+          "condition": "unknown_format",
+          "error_type": "format_error", 
+          "message": "Comprehensive format help with supported types",
+          "recovery": "user_conversion"
+        },
+        {
+          "condition": "corrupted_data",
+          "error_type": "format_error",
+          "message": "Detected format but data appears corrupted",
+          "recovery": "data_repair_suggestions"
+        }
+      ]
+    },
+    {
+      "id": "arrow_ipc_read_workflow",
+      "name": "Arrow IPC File Reading",
+      "description": "Complete workflow for reading Arrow IPC files including metadata and batch processing",
+      "steps": [
+        {
+          "id": "create_file_reader",
+          "name": "Create FileReader",
+          "action": "create_arrow_file_reader",
+          "preconditions": ["format === arrow_ipc", "data_validated"],
+          "postconditions": ["reader_created"],
+          "test_data": {
+            "valid_files": ["simple_ipc", "multi_batch_ipc", "compressed_ipc"],
+            "expected_timing": "< 10ms"
+          }
+        },
+        {
+          "id": "extract_schema",
+          "name": "Extract Schema Information",
+          "action": "read_schema_from_reader", 
+          "preconditions": ["reader_created"],
+          "postconditions": ["schema_available"],
+          "test_data": {
+            "schema_variations": ["simple_types", "complex_types", "nested_types", "with_metadata"],
+            "expected_timing": "< 5ms"
+          }
+        },
+        {
+          "id": "read_metadata",
+          "name": "Read Custom Metadata",
+          "action": "extract_custom_metadata",
+          "preconditions": ["reader_created"],
+          "postconditions": ["metadata_extracted || no_metadata"],
+          "test_data": {
+            "metadata_cases": ["no_metadata", "simple_metadata", "extensive_metadata"],
+            "metadata_keys": ["user_defined", "system_generated", "plugin_specific"]
+          }
+        },
+        {
+          "id": "read_record_batches",
+          "name": "Read All Record Batches",
+          "action": "iterate_and_read_batches",
+          "preconditions": ["reader_created", "schema_available"],
+          "postconditions": ["all_batches_read"],
+          "test_data": {
+            "batch_scenarios": ["single_batch", "multiple_batches", "empty_batches", "large_batches"],
+            "performance_targets": ["1MB/s minimum", "< 100ms for 10MB"]
+          }
+        },
+        {
+          "id": "create_table_handle",
+          "name": "Create Managed Table Handle",
+          "action": "register_table_in_memory_manager",
+          "preconditions": ["schema_available", "batches_read"],
+          "postconditions": ["handle_created", "table_registered"],
+          "test_data": {
+            "handle_validation": ["handle > 0", "handle_unique", "handle_retrievable"],
+            "memory_tracking": ["memory_usage_recorded", "cleanup_scheduled"]
+          }
+        }
+      ],
+      "error_paths": [
+        {
+          "condition": "invalid_ipc_format",
+          "error_type": "ipc_error",
+          "message": "Failed to create IPC file reader: Invalid format",
+          "recovery": "format_redetection"
+        },
+        {
+          "condition": "corrupted_schema",
+          "error_type": "ipc_error",
+          "message": "Failed to read schema: Data corruption detected",
+          "recovery": "none"
+        },
+        {
+          "condition": "batch_read_failure", 
+          "error_type": "ipc_error",
+          "message": "Failed to read record batch: Batch N",
+          "recovery": "partial_recovery_possible"
+        }
+      ]
+    },
+    {
+      "id": "parquet_read_workflow",
+      "name": "Parquet File Reading",
+      "description": "Complete workflow for reading Parquet files with metadata and batch streaming",
+      "steps": [
+        {
+          "id": "create_parquet_builder",
+          "name": "Create Parquet Reader Builder",
+          "action": "create_parquet_reader_builder",
+          "preconditions": ["format === parquet", "data_validated"],
+          "postconditions": ["builder_created"],
+          "test_data": {
+            "parquet_variations": ["uncompressed", "snappy_compressed", "gzip_compressed", "lz4_compressed"],
+            "schema_complexity": ["simple", "nested", "with_lists", "with_structs"],
+            "expected_timing": "< 20ms"
+          }
+        },
+        {
+          "id": "extract_parquet_schema",
+          "name": "Extract Arrow Schema from Parquet",
+          "action": "get_arrow_schema_from_builder",
+          "preconditions": ["builder_created"],
+          "postconditions": ["arrow_schema_available"],
+          "test_data": {
+            "schema_conversion": ["parquet_to_arrow_types", "metadata_preservation"],
+            "type_mappings": ["primitives", "decimals", "timestamps", "binary"]
+          }
+        },
+        {
+          "id": "build_parquet_reader",
+          "name": "Build Record Batch Reader",
+          "action": "build_record_batch_reader",
+          "preconditions": ["builder_created", "schema_extracted"],
+          "postconditions": ["reader_built"],
+          "test_data": {
+            "reader_configurations": ["default", "custom_batch_size", "column_projection"]
+          }
+        },
+        {
+          "id": "read_parquet_batches",
+          "name": "Read Parquet Record Batches",
+          "action": "iterate_parquet_batches",
+          "preconditions": ["reader_built"],
+          "postconditions": ["all_batches_read", "batches_not_empty"],
+          "test_data": {
+            "batch_scenarios": ["single_row_group", "multiple_row_groups", "large_files"],
+            "performance_targets": ["500KB/s minimum", "< 200ms for 10MB"],
+            "data_validation": ["column_count_matches", "row_count_accurate", "data_integrity"]
+          }
+        },
+        {
+          "id": "create_parquet_table",
+          "name": "Create Table from Parquet Data", 
+          "action": "register_parquet_table",
+          "preconditions": ["batches_read", "batches_not_empty"],
+          "postconditions": ["table_handle_created"],
+          "test_data": {
+            "validation_checks": ["schema_preserved", "data_integrity", "metadata_available"]
+          }
+        }
+      ],
+      "error_paths": [
+        {
+          "condition": "invalid_parquet_format",
+          "error_type": "parquet_error",
+          "message": "Failed to create Parquet reader: Invalid file format",
+          "recovery": "format_revalidation"
+        },
+        {
+          "condition": "unsupported_parquet_feature",
+          "error_type": "parquet_error", 
+          "message": "Parquet feature not supported in WASM build",
+          "recovery": "feature_detection"
+        },
+        {
+          "condition": "empty_parquet_file",
+          "error_type": "parquet_error",
+          "message": "Parquet file contains no data",
+          "recovery": "validation_and_error_report"
+        }
+      ]
+    },
+    {
+      "id": "file_write_workflow",
+      "name": "File Writing Workflow",
+      "description": "Universal file writing workflow supporting multiple output formats with compression options",
+      "steps": [
+        {
+          "id": "validate_table_handle",
+          "name": "Validate Source Table Handle",
+          "action": "verify_handle_and_get_table",
+          "preconditions": ["handle_provided", "handle_numeric"],
+          "postconditions": ["table_retrieved", "schema_available", "batches_available"],
+          "test_data": {
+            "handle_scenarios": ["valid_handle", "invalid_handle", "disposed_handle"],
+            "table_variations": ["empty_table", "single_batch", "multi_batch", "large_table"]
+          }
+        },
+        {
+          "id": "select_output_format",
+          "name": "Determine Output Format",
+          "action": "select_writer_based_on_format",
+          "preconditions": ["table_retrieved", "output_format_specified"],
+          "postconditions": ["writer_type_selected"],
+          "format_options": ["arrow_ipc", "arrow_stream", "parquet", "feather"],
+          "test_data": {
+            "format_selection": ["explicit_format", "default_format", "format_with_options"],
+            "compression_options": ["none", "lz4", "snappy", "gzip"]
+          }
+        },
+        {
+          "id": "create_writer",
+          "name": "Create Format-Specific Writer",
+          "action": "instantiate_writer_with_options",
+          "preconditions": ["writer_type_selected", "output_buffer_available"],
+          "postconditions": ["writer_created", "writer_configured"],
+          "test_data": {
+            "writer_configurations": ["default_options", "compression_enabled", "custom_metadata"],
+            "buffer_types": ["vector_buffer", "cursor_buffer", "stream_buffer"]
+          }
+        },
+        {
+          "id": "write_schema_and_data",
+          "name": "Write Schema and Record Batches",
+          "action": "write_all_batches_to_format",
+          "preconditions": ["writer_created", "batches_available"],
+          "postconditions": ["all_data_written"],
+          "test_data": {
+            "write_scenarios": ["single_batch_write", "streaming_write", "bulk_write"],
+            "performance_targets": ["1MB/s minimum", "< 150ms for 10MB"],
+            "integrity_checks": ["schema_preserved", "batch_count_matches", "data_integrity"]
+          }
+        },
+        {
+          "id": "finalize_output",
+          "name": "Finalize and Return Data",
+          "action": "close_writer_and_return_bytes",
+          "preconditions": ["all_data_written"],
+          "postconditions": ["writer_closed", "output_bytes_available"],
+          "test_data": {
+            "output_validation": ["valid_format_bytes", "readable_by_reader", "size_reasonable"],
+            "format_verification": ["magic_bytes_correct", "metadata_preserved", "compression_applied"]
+          }
+        }
+      ],
+      "error_paths": [
+        {
+          "condition": "invalid_table_handle",
+          "error_type": "handle_error",
+          "message": "Invalid table handle provided",
+          "recovery": "handle_validation_and_error_report"
+        },
+        {
+          "condition": "unsupported_output_format",
+          "error_type": "format_error",
+          "message": "Output format not supported",
+          "recovery": "list_supported_formats"
+        },
+        {
+          "condition": "write_operation_failed",
+          "error_type": "io_error",
+          "message": "Failed to write data to format",
+          "recovery": "retry_with_different_options"
+        },
+        {
+          "condition": "compression_failed",
+          "error_type": "compression_error",
+          "message": "Compression operation failed",
+          "recovery": "fallback_to_uncompressed"
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "created": "2025-09-29",
+    "author": "Claude Code Enhanced MBD System", 
+    "version_history": [
+      "1.0.0: Initial file format workflows",
+      "2.0.0: Enhanced with comprehensive detection, Parquet support, error handling"
+    ],
+    "requirements": [
+      "REQ-FORMAT-001: Support reading Arrow IPC, Stream, Parquet, and Feather formats",
+      "REQ-FORMAT-002: Automatic format detection with comprehensive error messages",
+      "REQ-FORMAT-003: Support writing Arrow IPC, Parquet, Feather with compression options", 
+      "REQ-DETECT-001: Format detection must be fast and accurate with helpful error messages"
+    ],
+    "test_generation_notes": [
+      "Each workflow step should generate positive and negative test cases",
+      "Performance requirements must be validated in browser environments",
+      "Error paths require specific error condition testing with recovery validation",
+      "Format detection requires comprehensive file type testing including edge cases",
+      "Cross-format round-trip testing required for data integrity validation",
+      "Compression options testing required for all supported formats",
+      "Memory usage validation required for large file processing"
+    ],
+    "coverage_requirements": {
+      "workflow_step_coverage": "100%",
+      "error_path_coverage": "100%",
+      "format_combination_coverage": "All supported formats",
+      "performance_validation": "All timing and throughput constraints",
+      "data_integrity_validation": "100% round-trip accuracy"
+    }
+  }
+}

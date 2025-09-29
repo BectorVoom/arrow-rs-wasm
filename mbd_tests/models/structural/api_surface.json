@@ -1,0 +1,587 @@
+{
+  "model_id": "api_surface_v1", 
+  "model_type": "component",
+  "version": "1.0.0",
+  "description": "API surface model mapping the complete public API structure, contracts, and type relationships",
+  "api_categories": [
+    {
+      "id": "module_lifecycle",
+      "name": "Module Lifecycle",
+      "description": "Functions for initializing, managing, and disposing the WASM module",
+      "functions": [
+        {
+          "name": "init_wasm_module",
+          "signature": "(options?: InitOptions) => Promise<void>",
+          "description": "Initializes the WebAssembly module with specified configuration",
+          "parameters": [
+            {
+              "name": "options",
+              "type": "InitOptions",
+              "optional": true,
+              "description": "Configuration options for module initialization"
+            }
+          ],
+          "returns": {
+            "type": "Promise<void>",
+            "description": "Promise resolving when initialization completes"
+          },
+          "errors": ["NOT_INITIALIZED", "INVALID_FORMAT"],
+          "requirements": ["REQ-001", "REQ-002"],
+          "preconditions": ["Module must be loaded"],
+          "postconditions": ["Module is ready for operations"]
+        },
+        {
+          "name": "is_initialized", 
+          "signature": "() => boolean",
+          "description": "Check if the module is initialized",
+          "parameters": [],
+          "returns": {
+            "type": "boolean",
+            "description": "True if module is ready for operations"
+          },
+          "errors": [],
+          "requirements": ["REQ-002"],
+          "preconditions": ["None"],
+          "postconditions": ["Returns current initialization state"]
+        },
+        {
+          "name": "get_init_state",
+          "signature": "() => string",
+          "description": "Get module initialization state as string",
+          "parameters": [],
+          "returns": {
+            "type": "string",
+            "description": "Current state: uninitialized|loading|initializing|ready|disposed|error"
+          },
+          "errors": [],
+          "requirements": ["REQ-002"],
+          "preconditions": ["None"],
+          "postconditions": ["Returns accurate state information"]
+        },
+        {
+          "name": "dispose_wasm_module",
+          "signature": "() => Promise<void>",
+          "description": "Dispose the WASM module and cleanup all resources",
+          "parameters": [],
+          "returns": {
+            "type": "Promise<void>",
+            "description": "Promise resolving when disposal completes"
+          },
+          "errors": [],
+          "requirements": ["REQ-006"],
+          "preconditions": ["None"],
+          "postconditions": ["All resources are cleaned up"]
+        }
+      ]
+    },
+    {
+      "id": "table_operations",
+      "name": "Table Operations", 
+      "description": "Functions for creating, reading, and manipulating tables",
+      "functions": [
+        {
+          "name": "read_table_from_buffer",
+          "signature": "(buffer: Uint8Array) => Promise<TableHandle>",
+          "description": "Reads a table from a buffer containing Arrow/Feather/Parquet data",
+          "parameters": [
+            {
+              "name": "buffer",
+              "type": "Uint8Array",
+              "optional": false,
+              "description": "Binary data containing the table"
+            }
+          ],
+          "returns": {
+            "type": "Promise<TableHandle>",
+            "description": "Promise resolving to a table handle"
+          },
+          "errors": ["NOT_INITIALIZED", "INVALID_FORMAT", "MEMORY_LIMIT_EXCEEDED"],
+          "requirements": ["REQ-101", "REQ-102", "REQ-103"],
+          "preconditions": ["Module must be initialized", "Buffer must be valid"],
+          "postconditions": ["Table is loaded and handle is valid"]
+        },
+        {
+          "name": "read_table_from_file",
+          "signature": "(path: string) => Promise<TableHandle>",
+          "description": "Reads a table from a file path (Node.js only)",
+          "parameters": [
+            {
+              "name": "path",
+              "type": "string",
+              "optional": false,
+              "description": "File system path to the data file"
+            }
+          ],
+          "returns": {
+            "type": "Promise<TableHandle>",
+            "description": "Promise resolving to a table handle"
+          },
+          "errors": ["NOT_INITIALIZED", "IO_ERROR"],
+          "requirements": ["REQ-101"],
+          "preconditions": ["Module must be initialized", "Running in Node.js environment"],
+          "postconditions": ["Table is loaded and handle is valid"]
+        },
+        {
+          "name": "write_table_to_buffer",
+          "signature": "(handle: TableHandle, options: WriteOptions) => Promise<Uint8Array>",
+          "description": "Writes a table to a buffer in specified format",
+          "parameters": [
+            {
+              "name": "handle",
+              "type": "TableHandle",
+              "optional": false,
+              "description": "Table handle to write"
+            },
+            {
+              "name": "options",
+              "type": "WriteOptions",
+              "optional": false,
+              "description": "Writing configuration"
+            }
+          ],
+          "returns": {
+            "type": "Promise<Uint8Array>",
+            "description": "Promise resolving to binary data"
+          },
+          "errors": ["NOT_INITIALIZED", "INVALID_HANDLE", "COMPRESSION_ERROR"],
+          "requirements": ["REQ-307", "REQ-308"],
+          "preconditions": ["Module initialized", "Valid table handle", "Valid write options"],
+          "postconditions": ["Table data serialized to buffer"]
+        }
+      ]
+    },
+    {
+      "id": "schema_operations",
+      "name": "Schema Operations",
+      "description": "Functions for retrieving and validating table schemas",
+      "functions": [
+        {
+          "name": "get_schema",
+          "signature": "(handle: TableHandle) => Promise<SchemaInfo>",
+          "description": "Retrieves the schema of a table",
+          "parameters": [
+            {
+              "name": "handle",
+              "type": "TableHandle",
+              "optional": false,
+              "description": "Table handle"
+            }
+          ],
+          "returns": {
+            "type": "Promise<SchemaInfo>",
+            "description": "Promise resolving to the table schema"
+          },
+          "errors": ["NOT_INITIALIZED", "INVALID_HANDLE"],
+          "requirements": ["REQ-201"],
+          "preconditions": ["Module initialized", "Valid table handle"],
+          "postconditions": ["Schema information returned"]
+        },
+        {
+          "name": "validate_schema",
+          "signature": "(schema: SchemaInfo) => Promise<ValidationResult>",
+          "description": "Validates a schema for correctness",
+          "parameters": [
+            {
+              "name": "schema",
+              "type": "SchemaInfo",
+              "optional": false,
+              "description": "Schema to validate"
+            }
+          ],
+          "returns": {
+            "type": "Promise<ValidationResult>",
+            "description": "Promise resolving to validation result"
+          },
+          "errors": ["NOT_INITIALIZED", "VALIDATION_ERROR"],
+          "requirements": ["REQ-202"],
+          "preconditions": ["Module initialized"],
+          "postconditions": ["Validation results provided"]
+        }
+      ]
+    },
+    {
+      "id": "column_operations",
+      "name": "Column Operations",
+      "description": "Functions for accessing and manipulating table columns",
+      "functions": [
+        {
+          "name": "get_column_view",
+          "signature": "(handle: TableHandle, columnIndex: number) => Promise<ColumnView>",
+          "description": "Retrieves a zero-copy view of a column",
+          "parameters": [
+            {
+              "name": "handle", 
+              "type": "TableHandle",
+              "optional": false,
+              "description": "Table handle"
+            },
+            {
+              "name": "columnIndex",
+              "type": "number",
+              "optional": false,
+              "description": "Zero-based column index"
+            }
+          ],
+          "returns": {
+            "type": "Promise<ColumnView>",
+            "description": "Promise resolving to column view"
+          },
+          "errors": ["NOT_INITIALIZED", "INVALID_HANDLE", "VALIDATION_ERROR"],
+          "requirements": ["REQ-301"],
+          "preconditions": ["Module initialized", "Valid table handle", "Valid column index"],
+          "postconditions": ["Column view provided"]
+        },
+        {
+          "name": "get_column_by_name",
+          "signature": "(handle: TableHandle, fieldName: string) => Promise<ColumnView>",
+          "description": "Retrieves a column by field name",
+          "parameters": [
+            {
+              "name": "handle",
+              "type": "TableHandle", 
+              "optional": false,
+              "description": "Table handle"
+            },
+            {
+              "name": "fieldName",
+              "type": "string",
+              "optional": false,
+              "description": "Name of the field"
+            }
+          ],
+          "returns": {
+            "type": "Promise<ColumnView>",
+            "description": "Promise resolving to column view"
+          },
+          "errors": ["NOT_INITIALIZED", "INVALID_HANDLE", "VALIDATION_ERROR"],
+          "requirements": ["REQ-302"],
+          "preconditions": ["Module initialized", "Valid table handle", "Field name exists"],
+          "postconditions": ["Column view provided"]
+        }
+      ]
+    },
+    {
+      "id": "table_manipulation", 
+      "name": "Table Manipulation",
+      "description": "Functions for creating derived tables through operations",
+      "functions": [
+        {
+          "name": "slice_table",
+          "signature": "(handle: TableHandle, start: number, length: number) => Promise<TableHandle>",
+          "description": "Creates a new table containing a slice of rows",
+          "parameters": [
+            {
+              "name": "handle",
+              "type": "TableHandle",
+              "optional": false,
+              "description": "Source table handle"
+            },
+            {
+              "name": "start",
+              "type": "number", 
+              "optional": false,
+              "description": "Starting row index"
+            },
+            {
+              "name": "length",
+              "type": "number",
+              "optional": false,
+              "description": "Number of rows to include"
+            }
+          ],
+          "returns": {
+            "type": "Promise<TableHandle>",
+            "description": "Promise resolving to new table handle"
+          },
+          "errors": ["NOT_INITIALIZED", "INVALID_HANDLE", "VALIDATION_ERROR", "MEMORY_LIMIT_EXCEEDED"],
+          "requirements": ["REQ-105"],
+          "preconditions": ["Module initialized", "Valid table handle", "Valid slice parameters"],
+          "postconditions": ["New table created with sliced data"]
+        },
+        {
+          "name": "filter_table", 
+          "signature": "(handle: TableHandle, mask: Uint8Array) => Promise<TableHandle>",
+          "description": "Creates a filtered table based on boolean mask",
+          "parameters": [
+            {
+              "name": "handle",
+              "type": "TableHandle",
+              "optional": false,
+              "description": "Source table handle"
+            },
+            {
+              "name": "mask",
+              "type": "Uint8Array",
+              "optional": false,
+              "description": "Boolean array indicating rows to include"
+            }
+          ],
+          "returns": {
+            "type": "Promise<TableHandle>",
+            "description": "Promise resolving to new table handle"
+          },
+          "errors": ["NOT_INITIALIZED", "INVALID_HANDLE", "VALIDATION_ERROR", "MEMORY_LIMIT_EXCEEDED"],
+          "requirements": ["REQ-106"],
+          "preconditions": ["Module initialized", "Valid table handle", "Mask length matches row count"],
+          "postconditions": ["New table created with filtered data"]
+        },
+        {
+          "name": "select_columns",
+          "signature": "(handle: TableHandle, columns: number[]) => Promise<TableHandle>",
+          "description": "Creates a new table with selected columns",
+          "parameters": [
+            {
+              "name": "handle",
+              "type": "TableHandle",
+              "optional": false,
+              "description": "Source table handle"
+            },
+            {
+              "name": "columns",
+              "type": "number[]",
+              "optional": false,
+              "description": "Column indices to select"
+            }
+          ],
+          "returns": {
+            "type": "Promise<TableHandle>",
+            "description": "Promise resolving to new table handle"
+          },
+          "errors": ["NOT_INITIALIZED", "INVALID_HANDLE", "VALIDATION_ERROR", "MEMORY_LIMIT_EXCEEDED"],
+          "requirements": ["REQ-107"],
+          "preconditions": ["Module initialized", "Valid table handle", "Valid column indices"],
+          "postconditions": ["New table created with selected columns"]
+        }
+      ]
+    },
+    {
+      "id": "memory_management",
+      "name": "Memory Management",
+      "description": "Functions for managing memory and table lifecycle",
+      "functions": [
+        {
+          "name": "get_memory_usage",
+          "signature": "() => Promise<MemoryStats>",
+          "description": "Retrieves current memory usage statistics",
+          "parameters": [],
+          "returns": {
+            "type": "Promise<MemoryStats>",
+            "description": "Promise resolving to memory statistics"
+          },
+          "errors": ["NOT_INITIALIZED"],
+          "requirements": ["REQ-204"],
+          "preconditions": ["Module initialized"],
+          "postconditions": ["Memory statistics provided"]
+        },
+        {
+          "name": "release_table",
+          "signature": "(handle: TableHandle) => Promise<void>",
+          "description": "Releases memory associated with a table handle",
+          "parameters": [
+            {
+              "name": "handle",
+              "type": "TableHandle",
+              "optional": false,
+              "description": "Table handle to release"
+            }
+          ],
+          "returns": {
+            "type": "Promise<void>",
+            "description": "Promise resolving when memory is freed"
+          },
+          "errors": ["NOT_INITIALIZED", "INVALID_HANDLE"],
+          "requirements": ["REQ-206"],
+          "preconditions": ["Module initialized"],
+          "postconditions": ["Table memory released"]
+        }
+      ]
+    },
+    {
+      "id": "compression_api",
+      "name": "Compression API",
+      "description": "Functions for data compression and decompression",
+      "functions": [
+        {
+          "name": "compress_buffer_lz4",
+          "signature": "(buffer: Uint8Array, level?: number) => Promise<Uint8Array>",
+          "description": "Compresses a buffer using LZ4 algorithm",
+          "parameters": [
+            {
+              "name": "buffer",
+              "type": "Uint8Array",
+              "optional": false,
+              "description": "Data to compress"
+            },
+            {
+              "name": "level",
+              "type": "number",
+              "optional": true,
+              "description": "Compression level (1-17)"
+            }
+          ],
+          "returns": {
+            "type": "Promise<Uint8Array>",
+            "description": "Promise resolving to compressed data"
+          },
+          "errors": ["NOT_INITIALIZED", "COMPRESSION_ERROR"],
+          "requirements": ["REQ-401"],
+          "preconditions": ["Module initialized"],
+          "postconditions": ["Data compressed using LZ4"]
+        },
+        {
+          "name": "decompress_buffer_lz4",
+          "signature": "(buffer: Uint8Array, originalSize?: number) => Promise<Uint8Array>",
+          "description": "Decompresses LZ4 compressed data",
+          "parameters": [
+            {
+              "name": "buffer",
+              "type": "Uint8Array",
+              "optional": false,
+              "description": "Compressed data"
+            },
+            {
+              "name": "originalSize",
+              "type": "number",
+              "optional": true,
+              "description": "Expected decompressed size"
+            }
+          ],
+          "returns": {
+            "type": "Promise<Uint8Array>",
+            "description": "Promise resolving to decompressed data"
+          },
+          "errors": ["NOT_INITIALIZED", "COMPRESSION_ERROR"],
+          "requirements": ["REQ-402"],
+          "preconditions": ["Module initialized", "Data is LZ4 compressed"],
+          "postconditions": ["Data decompressed successfully"]
+        }
+      ]
+    }
+  ],
+  "type_definitions": [
+    {
+      "name": "TableHandle",
+      "type": "primitive",
+      "description": "Opaque reference to a table managed by WASM memory",
+      "base_type": "number",
+      "constraints": ["Range: 1 to 2^32-1", "0 reserved for null/invalid"]
+    },
+    {
+      "name": "InitOptions",
+      "type": "interface",
+      "description": "Configuration options for module initialization",
+      "properties": [
+        {"name": "memoryLimitMB", "type": "number", "optional": true, "default": 512},
+        {"name": "initialMemoryMB", "type": "number", "optional": true, "default": 16},
+        {"name": "allowMemoryGrowth", "type": "boolean", "optional": true, "default": true},
+        {"name": "maxTableCount", "type": "number", "optional": true, "default": 100},
+        {"name": "enableDebugLogging", "type": "boolean", "optional": true, "default": false}
+      ]
+    },
+    {
+      "name": "WriteOptions",
+      "type": "interface",
+      "description": "Configuration options for table writing",
+      "properties": [
+        {"name": "format", "type": "'arrow' | 'feather' | 'parquet'", "optional": false},
+        {"name": "compression", "type": "CompressionOptions", "optional": true},
+        {"name": "ipcVersion", "type": "'V4' | 'V5'", "optional": true},
+        {"name": "alignment", "type": "number", "optional": true, "default": 64},
+        {"name": "metadata", "type": "Map<string, string>", "optional": true}
+      ]
+    },
+    {
+      "name": "CompressionOptions",
+      "type": "interface",
+      "description": "Compression configuration",
+      "properties": [
+        {"name": "algorithm", "type": "'lz4' | 'none'", "optional": false},
+        {"name": "level", "type": "number", "optional": true, "constraints": ["Range: 1-17"]},
+        {"name": "blockSize", "type": "number", "optional": true, "default": 65536},
+        {"name": "compressMetadata", "type": "boolean", "optional": true, "default": false}
+      ]
+    },
+    {
+      "name": "SchemaInfo",
+      "type": "interface",
+      "description": "Table schema information",
+      "properties": [
+        {"name": "fields", "type": "FieldInfo[]", "optional": false},
+        {"name": "metadata", "type": "Map<string, string>", "optional": true},
+        {"name": "version", "type": "number", "optional": true}
+      ]
+    },
+    {
+      "name": "FieldInfo",
+      "type": "interface",
+      "description": "Field information within a schema",
+      "properties": [
+        {"name": "name", "type": "string", "optional": false},
+        {"name": "dataType", "type": "string", "optional": false},
+        {"name": "nullable", "type": "boolean", "optional": false},
+        {"name": "metadata", "type": "Map<string, string>", "optional": true}
+      ]
+    },
+    {
+      "name": "ColumnView",
+      "type": "interface", 
+      "description": "Zero-copy view of a column",
+      "properties": [
+        {"name": "length", "type": "number", "optional": false},
+        {"name": "dataType", "type": "string", "optional": false},
+        {"name": "nullCount", "type": "number", "optional": false},
+        {"name": "offset", "type": "number", "optional": true}
+      ]
+    },
+    {
+      "name": "MemoryStats",
+      "type": "interface",
+      "description": "Memory usage statistics",
+      "properties": [
+        {"name": "usedBytes", "type": "number", "optional": false},
+        {"name": "allocatedBytes", "type": "number", "optional": false},
+        {"name": "maxBytes", "type": "number", "optional": false},
+        {"name": "tableCount", "type": "number", "optional": false},
+        {"name": "bufferCount", "type": "number", "optional": false}
+      ]
+    },
+    {
+      "name": "ValidationResult",
+      "type": "interface",
+      "description": "Schema validation result",
+      "properties": [
+        {"name": "valid", "type": "boolean", "optional": false},
+        {"name": "errors", "type": "string[]", "optional": true}
+      ]
+    }
+  ],
+  "error_codes": [
+    {"code": "INVALID_HANDLE", "description": "Invalid table handle provided"},
+    {"code": "MEMORY_LIMIT_EXCEEDED", "description": "Memory allocation would exceed configured limit"},
+    {"code": "INVALID_FORMAT", "description": "Unrecognized or invalid data format"},
+    {"code": "COMPRESSION_ERROR", "description": "Compression or decompression operation failed"},
+    {"code": "IO_ERROR", "description": "Input/output operation failed"},
+    {"code": "SCHEMA_MISMATCH", "description": "Schema validation or compatibility error"},
+    {"code": "VALIDATION_ERROR", "description": "Data validation failed"},
+    {"code": "NOT_INITIALIZED", "description": "Module not properly initialized"},
+    {"code": "ARROW_ERROR", "description": "Arrow library operation failed"}
+  ],
+  "metadata": {
+    "created": "2025-09-28",
+    "author": "Claude Code MBD System",
+    "requirements": [
+      "REQ-501: All API functions must be async and return Promises",
+      "REQ-502: All functions must validate module initialization state",
+      "REQ-503: Error handling must use consistent error codes",
+      "REQ-504: Type definitions must be complete and accurate",
+      "REQ-505: API contracts must specify pre/post conditions"
+    ],
+    "api_design_principles": [
+      "Async-first design with Promise returns",
+      "Type safety through TypeScript definitions",
+      "Consistent error handling patterns",
+      "Zero-copy operations where possible",
+      "Resource lifecycle management"
+    ]
+  }
+}

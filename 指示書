@@ -1,0 +1,170 @@
+
+### Block requirements
+
+1. Begin with a minimal implementation following the API specification at
+    `/Users/ods/Documents/arrow-rs-wasm/.serena/memories/wasm-arrow-api-definition.md`, and implement it step by step. Test each stage of the implementation sequence. If the implementation approach is unclear, consult the **References**. Use the **brave-search-dev** MCP server.
+
+2. Produce a WASM build and test it in a web browser.
+
+3. Use Model-Based Development (MBD) to design, generate, and execute browser tests that verify the WASM module’s conformance to the API specification and requirements. The MBD activities must be performed alongside the implementation and testing steps in (1)–(2), and must include the following sub-tasks:
+
+    - **Model design (behavioral & structural):**
+
+        - Create explicit models that describe the expected behaviors and interactions relevant to the WASM module running in the browser. Models must cover:
+
+            - API-level behavior (calls, expected returned values/errors, state transitions).
+
+            - UI/browser interactions necessary to exercise the module (page load, initialization, file inputs, drag/drop, worker messages, fetch/XHR, event sequences).
+
+            - Error and edge cases (partial/corrupt input, concurrency, network failures).
+
+        - Use an appropriate formalism (statecharts, state machines, sequence diagrams, or control-flow graphs). Store model artifacts under the project repo in the designated test directory (`/Users/ods/Documents/arrow-rs-wasm/mbd_tests/models/`).
+
+    - **Model-to-test mapping & generation:**
+
+        - Derive concrete, executable test cases from the models. Each generated test must be traceable to the model node/transition and to one or more API/requirement items.
+
+        - Tests should be executable in a browser automation framework (headless and headed). The test harness must be able to accept either generated tests or manually authored tests that implement the same semantics.
+
+    - **Test oracles & assertions:**
+
+        - Define test oracles that check API conformance (return types, binary layouts, compression flags), DOM-level behavior (expected elements, messages, logs), and runtime invariants (no uncaught exceptions, no memory leaks, wasm module initialization completes).
+
+        - Include both positive (expected success) and negative (expected failure) oracles.
+
+    - **Automation & environment:**
+
+        - Tests must run against development builds (local `cargo build` / `wasm-pack`/`wasm-bindgen` outputs) and against the produced release WASM served via a local test server.
+
+        - Provide scripts to run the model-derived test suite locally and in CI (e.g., `npm test`, `make test-browser`, or equivalent). Place scripts and harness under `/Users/ods/Documents/arrow-rs-wasm/mbd_tests/harness/`.
+
+    - **Coverage & metrics:**
+
+        - Collect and report test coverage at two levels where feasible: (a) model coverage (percentage of model states/transitions exercised), and (b) implementation coverage (instrumentation / code coverage for JS/WASM glue code). Report test pass/fail, coverage, and a traceability matrix.
+
+    - **Non-functional checks:**
+
+        - Include performance smoke tests (module init time, essential API call latencies) and resource checks (memory usage trends during repetitive calls).
+
+        - Include cross-browser sanity: ensure at minimum that tests run successfully in the primary browsers used by the team (document the matrix and execution results).
+
+    - **Failure analysis & debugging support:**
+
+        - For failing tests, tests must capture reproducible artifacts (browser console logs, network traces, WASM/text stack traces, captured DOM snapshot, and a minimal reproduction script) and attach them to test reports.
+
+
+### Iteration conditions (must be satisfied)
+
+1. Iteratively revise until the API specification document’s requirements are fully met.
+
+2. Iteratively revise until `cargo build` completes successfully.
+
+3. Iteratively revise until all critical (blocking) issues are resolved.
+
+4. Iteratively revise until the module runs in a browser without errors.
+
+5. Ensure tests are performed with the explicit goal of verifying conformance to the requirements specification and the API definition.
+
+6. **(New)** Iteratively revise the model(s) and the generated test suites until all of the following MBD acceptance criteria are met:
+
+    - The **traceability matrix** mapping requirement ↔ model element ↔ test case is complete and up to date.
+
+    - All **critical model states/transitions** (those that implement mandatory or blocking features in the API doc) are exercised by at least one test case.
+
+    - Model coverage for mandatory behaviors reaches the agreed threshold (configurable; e.g., default ≥ 90% of mandatory transitions).
+
+    - All blocking tests (as defined in the test suite) pass in both local and CI browser runs.
+
+    - Non-functional smoke checks (init time, basic latency) remain within agreed benchmarks (benchmarks to be recorded in a `mbd_tests/performance/README`).
+
+
+### MCP servers
+
+- serena
+
+- brave-search-dev
+
+- obisidian
+
+
+### Test deliverables (must be produced and committed)
+
+All test deliverables must be placed under the repository root `/Users/ods/Documents/arrow-rs-wasm/` and specifically within the browser test directory `/Users/ods/Documents/arrow-rs-wasm/mbd_tests/` as follows:
+
+- `/Users/ods/Documents/arrow-rs-wasm/mbd_tests/models/` — model artifacts (statecharts/diagrams/JSON models) with a short README describing the model formalism and how to regenerate tests.
+
+- `/Users/ods/Documents/arrow-rs-wasm/mbd_tests/generated/` — generated executable tests (or scripts that generate them) runnable with the chosen browser automation framework.
+
+- `/Users/ods/Documents/arrow-rs-wasm/mbd_tests/harness/` — test harness and scripts to run tests locally and in CI (e.g., `make test-browser`, `npm run test:browser`, or `./scripts/run_model_tests.sh`).
+
+- `/Users/ods/Documents/arrow-rs-wasm/mbd_tests/reports/` — sample test reports with: pass/fail summary, model coverage, implementation coverage, collected logs and artifacts for any failures.
+
+- `/Users/ods/Documents/arrow-rs-wasm/mbd_tests/traceability_matrix.csv` — mapping: requirement id ⇄ model id ⇄ test id ⇄ test result.
+
+- `/Users/ods/Documents/arrow-rs-wasm/mbd_tests/performance/README` — recorded baseline metrics and instructions to run the performance smoke tests.
+
+- **(New, mandatory)** `/Users/ods/Documents/arrow-rs-wasm/.serena/memories/progress_report.md` — centralized, fact-based progress report that must be updated after every significant test run, iteration, or CI job. See the required template below.
+
+
+### `progress_report.md` (required — fact-based progress management)
+
+Create and maintain `/Users/ods/Documents/arrow-rs-wasm/.serena/memories/progress_report.md`. This file is the authoritative, factual record of browser-test progress for the `arrow-rs-wasm` WASM library. Updates to this file must be made after every local or CI browser test run and included in the same commit that records test artifacts when possible.
+
+Required structure / minimum fields (each entry = one test run / iteration):
+
+- **Date (UTC, ISO 8601):** e.g., `2025-09-28T08:21:00Z`
+
+- **Commit hash / branch / PR:** commit SHA and branch or PR number.
+
+- **Runner:** `local` or CI system (include CI job id).
+
+- **Build artifact:** path to the tested artifact(s) (e.g., `target/wasm32-unknown-unknown/release/arrow_rs_wasm.wasm` or `dist/arrow-rs-wasm.wasm`).
+
+- **Test suite:** reference to tests executed (e.g., `mbd_tests/generated/init_and_read_tests/*`).
+
+- **Model version:** model artifact hash or filename used for test generation (`mbd_tests/models/model_v1.json`).
+
+- **Test results (summary):** tests run / passed / failed.
+
+- **Model coverage:** percentage and raw numbers (states exercised / total mandatory states).
+
+- **Implementation coverage:** coverage report path and summary (if available).
+
+- **Artifacts produced:** links/paths to full test report, browser logs, network HAR, WASM stack traces, DOM snapshots.
+
+- **Blocking issues:** enumerate blocking failures with short factual descriptions, reproduction steps, and reference to issue tracker ID (if created).
+
+- **Next steps:** concrete next actions (code fixes, model updates, re-run tests) with owners and target dates.
+
+- **Signed-off-by:** name/email of the person who executed the run.
+
+
+**Policy for `progress_report.md`:**
+
+- Entries must be factual; avoid speculative language.
+
+- Each CI run must append a new entry (do not overwrite past runs).
+
+- For failing/blocked items, attach or link the minimal reproduction script and captured artifacts under `mbd_tests/reports/` and reference them in the entry.
+
+- The progress report is part of the deliverables and must be kept up to date for PR reviews and release gating.
+
+
+### Execution guidance & best practices (implementation suggestions)
+
+- Start small: model the simplest critical happy-path first (module init, single API call) then progressively add complexity (streams, compression, multi-chunk reads, error cases).
+
+- Keep models executable and versioned. Prefer machine-readable models so test generation can be automated.
+
+- Use the models to prioritize tests: tests for mandatory/critical transitions first, then extended paths and error cases.
+
+- Integrate model generation and test execution into CI so every PR runs the model-derived browser test suite against the build artifact.
+
+- Keep the test harness resilient: make it straightforward to run tests in headless CI and on a developer machine with a headed browser for debugging.
+
+- **Progress reporting:** update `/Users/ods/Documents/arrow-rs-wasm/.serena/memories/progress_report.md` after each test iteration and include links to `/Users/ods/Documents/arrow-rs-wasm/mbd_tests/reports/` artifacts so reviewers can verify claims.
+
+
+### References
+
+- The Arrow sample-code user manual on the Obisidian MCP server (path: `Rust/arrow`).

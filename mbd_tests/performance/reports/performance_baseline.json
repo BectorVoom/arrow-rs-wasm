@@ -1,0 +1,20 @@
+{
+  "timestamp": "2025-09-28T21:35:12.917Z",
+  "environment": {
+    "platform": "darwin",
+    "nodeVersion": "v24.3.0",
+    "arch": "arm64"
+  },
+  "benchmarks": {
+    "moduleInitialization": {
+      "iterations": 10,
+      "successful": 0,
+      "times": [],
+      "average": null,
+      "min": null,
+      "max": null,
+      "baseline": null
+    }
+  },
+  "error": "fetch failed"
+}

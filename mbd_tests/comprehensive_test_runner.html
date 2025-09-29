@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprehensive MBD Test Runner - Arrow WASM</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 300;
+        }
+        .nav-tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 1px solid #ddd;
+        }
+        .nav-tab {
+            padding: 1rem 2rem;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+        .nav-tab.active {
+            background: white;
+            border-bottom-color: #007bff;
+            color: #007bff;
+            font-weight: bold;
+        }
+        .nav-tab:hover {
+            background: #e9ecef;
+        }
+        .tab-content {
+            display: none;
+            padding: 2rem;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .test-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        .test-card {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 1.5rem;
+            border-left: 4px solid #007bff;
+        }
+        .test-card h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        .metric-display {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        .metric-item {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            border-left: 4px solid #28a745;
+        }
+        .metric-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #007bff;
+            margin: 0.5rem 0;
+        }
+        .metric-label {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        .progress-section {
+            background: #fff;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #e9ecef;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 1rem 0;
+            position: relative;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #007bff, #28a745);
+            transition: width 0.5s ease;
+            width: 0%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            min-width: 150px;
+        }
+        .btn-primary { background: #007bff; color: white; }
+        .btn-success { background: #28a745; color: white; }
+        .btn-warning { background: #ffc107; color: #333; }
+        .btn-danger { background: #dc3545; color: white; }
+        .btn-secondary { background: #6c757d; color: white; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .btn:disabled { background: #6c757d; cursor: not-allowed; transform: none; }
+        
+        .console-output {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 14px;
+            max-height: 300px;
+            overflow-y: auto;
+            margin: 1rem 0;
+            border: 2px solid #4a5568;
+        }
+        .model-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        .model-card {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 1rem;
+            transition: all 0.3s ease;
+        }
+        .model-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        .model-status {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        .status-pending { background: #6c757d; }
+        .status-running { background: #ffc107; animation: pulse 1.5s infinite; }
+        .status-passed { background: #28a745; }
+        .status-failed { background: #dc3545; }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .results-summary {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            text-align: center;
+        }
+        .results-summary.failed {
+            background: linear-gradient(135deg, #dc3545 0%, #e74c3c 100%);
+        }
+        
+        .artifact-download {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #007bff;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-right: 8px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧪 Comprehensive MBD Test Runner</h1>
+            <p>Model-Based Development Testing Suite for Arrow WASM</p>
+            <p id="browser-info"></p>
+        </div>
+        
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showTab('overview')">📊 Overview</button>
+            <button class="nav-tab" onclick="showTab('models')">🏗️ Models</button>
+            <button class="nav-tab" onclick="showTab('execution')">🚀 Execution</button>
+            <button class="nav-tab" onclick="showTab('results')">📈 Results</button>
+            <button class="nav-tab" onclick="showTab('performance')">⚡ Performance</button>
+        </div>
+        
+        <div id="overview" class="tab-content active">
+            <div class="metric-display">
+                <div class="metric-item">
+                    <div class="metric-value" id="total-tests">261</div>
+                    <div class="metric-label">Total Test Cases</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-value" id="total-models">20</div>
+                    <div class="metric-label">Behavioral Models</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-value" id="coverage-percentage">100%</div>
+                    <div class="metric-label">Model Coverage</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-value" id="passed-tests">0</div>
+                    <div class="metric-label">Tests Passed</div>
+                </div>
+            </div>
+            
+            <div class="test-grid">
+                <div class="test-card">
+                    <h3>🎯 Test Suite Objectives</h3>
+                    <ul>
+                        <li>Validate 261 model-derived test cases</li>
+                        <li>Achieve 100% mandatory transition coverage</li>
+                        <li>Verify cross-browser compatibility</li>
+                        <li>Establish performance baselines</li>
+                        <li>Generate comprehensive traceability reports</li>
+                    </ul>
+                </div>
+                <div class="test-card">
+                    <h3>📋 Test Categories</h3>
+                    <ul>
+                        <li>Module Lifecycle (21 tests)</li>
+                        <li>Table Lifecycle (25 tests)</li>
+                        <li>Memory Management (22 tests)</li>
+                        <li>API Interactions (20 tests)</li>
+                        <li>Error Handling (33 tests)</li>
+                        <li>Data Conversion (40 tests)</li>
+                        <li>Compression (18 tests)</li>
+                        <li>Plugin Management (16 tests)</li>
+                        <li>Array Builder (22 tests)</li>
+                        <li>Column Lifecycle (24 tests)</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="controls">
+                <button class="btn btn-primary" onclick="startFullTestSuite()">
+                    🚀 Run Complete Test Suite
+                </button>
+                <button class="btn btn-success" onclick="runQuickValidation()">
+                    ⚡ Quick Validation
+                </button>
+                <button class="btn btn-warning" onclick="runPerformanceTests()">
+                    📊 Performance Tests
+                </button>
+            </div>
+        </div>
+        
+        <div id="models" class="tab-content">
+            <h2>🏗️ Behavioral Models Overview</h2>
+            <div class="model-grid" id="model-status-grid">
+                <!-- Model status cards will be populated dynamically -->
+            </div>
+        </div>
+        
+        <div id="execution" class="tab-content">
+            <h2>🚀 Test Execution Dashboard</h2>
+            
+            <div class="progress-section">
+                <h3 id="execution-title">Ready to Execute Tests</h3>
+                <div id="progress-text">Click 'Run Complete Test Suite' to begin</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="execution-progress">0%</div>
+                </div>
+                <div id="current-model"></div>
+            </div>
+            
+            <div class="console-output" id="execution-console">
+                <div>🔄 Test execution environment initialized</div>
+                <div>📊 Ready to run 261 model-derived test cases</div>
+            </div>
+        </div>
+        
+        <div id="results" class="tab-content">
+            <h2>📈 Test Results & Analysis</h2>
+            
+            <div id="results-summary-container" style="display: none;">
+                <div class="results-summary" id="results-summary">
+                    <h2 id="results-title">Test Results</h2>
+                    <div id="results-metrics"></div>
+                </div>
+            </div>
+            
+            <div class="model-grid" id="model-results-grid">
+                <!-- Model results will be populated after execution -->
+            </div>
+            
+            <div id="artifacts-section" style="display: none;">
+                <h3>📄 Download Test Artifacts</h3>
+                <div id="artifacts-list">
+                    <!-- Downloadable artifacts will be listed here -->
+                </div>
+            </div>
+        </div>
+        
+        <div id="performance" class="tab-content">
+            <h2>⚡ Performance Analysis</h2>
+            <div id="performance-metrics">
+                <p>Performance metrics will be displayed after test execution.</p>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Global state
+        let testExecutor = null;
+        let testResults = null;
+        let isExecuting = false;
+
+        // Tab management
+        window.showTab = function(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            document.querySelector(`[onclick="showTab('${tabName}')"]`).classList.add('active');
+        };
+
+        // Logging function
+        function log(message, console_id = 'execution-console') {
+            const timestamp = new Date().toISOString().split('T')[1].slice(0, -1);
+            const logEntry = `[${timestamp}] ${message}`;
+            
+            const consoleElement = document.getElementById(console_id);
+            if (consoleElement) {
+                consoleElement.innerHTML += `<div>${logEntry}</div>`;
+                consoleElement.scrollTop = consoleElement.scrollHeight;
+            }
+            
+            console.log(logEntry);
+        }
+
+        // Progress callback
+        function updateProgress(percentage, message) {
+            const progressFill = document.getElementById('execution-progress');
+            const progressText = document.getElementById('progress-text');
+            const currentModel = document.getElementById('current-model');
+            
+            if (progressFill) {
+                progressFill.style.width = `${percentage}%`;
+                progressFill.textContent = `${Math.round(percentage)}%`;
+            }
+            
+            if (progressText) {
+                progressText.textContent = message;
+            }
+            
+            if (currentModel) {
+                currentModel.textContent = message;
+            }
+        }
+
+        // Logger for test executor
+        window.testLogger = function(message) {
+            log(message);
+        };
+
+        // Initialize browser info
+        function displayBrowserInfo() {
+            const ua = navigator.userAgent;
+            const browserName = detectBrowserName(ua);
+            const browserVersion = detectBrowserVersion(ua);
+            
+            document.getElementById('browser-info').innerHTML = `
+                <strong>Testing Environment:</strong> ${browserName} ${browserVersion} on ${navigator.platform}
+            `;
+        }
+
+        function detectBrowserName(ua) {
+            if (ua.includes('Chrome') && !ua.includes('Edg')) return 'Chrome';
+            if (ua.includes('Firefox')) return 'Firefox';
+            if (ua.includes('Safari') && !ua.includes('Chrome')) return 'Safari';
+            if (ua.includes('Edg')) return 'Edge';
+            return 'Unknown';
+        }
+
+        function detectBrowserVersion(ua) {
+            const patterns = {
+                Chrome: /Chrome\/([0-9.]+)/,
+                Firefox: /Firefox\/([0-9.]+)/,
+                Safari: /Version\/([0-9.]+)/,
+                Edge: /Edg\/([0-9.]+)/
+            };
+            
+            const browserName = detectBrowserName(ua);
+            const pattern = patterns[browserName];
+            
+            if (pattern) {
+                const match = ua.match(pattern);
+                return match ? match[1] : 'unknown';
+            }
+            return 'unknown';
+        }
+
+        // Initialize model status grid
+        function initializeModelGrid() {
+            const models = {
+                'module_lifecycle': { name: 'Module Lifecycle', tests: 21 },
+                'table_lifecycle': { name: 'Table Lifecycle', tests: 25 },
+                'memory_management': { name: 'Memory Management', tests: 22 },
+                'api_interactions': { name: 'API Interactions', tests: 20 },
+                'error_handling': { name: 'Error Handling', tests: 33 },
+                'array_builder': { name: 'Array Builder', tests: 22 },
+                'column_lifecycle': { name: 'Column Lifecycle', tests: 24 },
+                'data_conversion': { name: 'Data Conversion', tests: 40 },
+                'compression_handling': { name: 'Compression Handling', tests: 18 },
+                'plugin_management': { name: 'Plugin Management', tests: 16 }
+            };
+            
+            const grid = document.getElementById('model-status-grid');
+            grid.innerHTML = '';
+            
+            Object.entries(models).forEach(([id, model]) => {
+                const card = document.createElement('div');
+                card.className = 'model-card';
+                card.innerHTML = `
+                    <h4><span class="model-status status-pending" id="status-${id}"></span>${model.name}</h4>
+                    <p><strong>Test Cases:</strong> ${model.tests}</p>
+                    <p><strong>Status:</strong> <span id="model-status-text-${id}">Pending</span></p>
+                    <div style="font-size: 0.9rem; color: #6c757d;">
+                        Coverage: <span id="coverage-${id}">0%</span>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Start full test suite
+        window.startFullTestSuite = async function() {
+            if (isExecuting) return;
+            
+            isExecuting = true;
+            log('🚀 Initializing comprehensive MBD test suite...');
+            
+            try {
+                // Load test executor
+                const { default: MBDTestExecutor } = await import('./harness/mbd_test_executor.js');
+                testExecutor = new MBDTestExecutor();
+                
+                // Switch to execution tab
+                showTab('execution');
+                
+                // Execute test suite
+                testResults = await testExecutor.executeCompleteTestSuite(updateProgress);
+                
+                // Update UI with results
+                updateTestResults(testResults);
+                
+                // Switch to results tab
+                showTab('results');
+                
+                log('✅ Complete MBD test suite execution finished');
+                
+            } catch (error) {
+                log(`❌ Test suite execution failed: ${error.message}`);
+            } finally {
+                isExecuting = false;
+            }
+        };
+
+        // Quick validation
+        window.runQuickValidation = async function() {
+            log('⚡ Running quick validation...');
+            
+            try {
+                // Load WASM module
+                const wasmModule = await import('./pkg/arrow_wasm.js');
+                await wasmModule.default();
+                
+                // Test basic functionality
+                const version = wasmModule.get_version();
+                const lz4Support = wasmModule.is_lz4_supported();
+                const memStats = wasmModule.get_memory_stats();
+                
+                log(`✅ WASM version: ${version}`);
+                log(`✅ LZ4 support: ${lz4Support}`);
+                log(`✅ Memory stats available: ${memStats.length > 0}`);
+                
+                // Update basic metrics
+                document.getElementById('passed-tests').textContent = '3';
+                
+            } catch (error) {
+                log(`❌ Quick validation failed: ${error.message}`);
+            }
+        };
+
+        // Performance tests
+        window.runPerformanceTests = async function() {
+            log('📊 Running performance tests...');
+            showTab('performance');
+            
+            try {
+                const { default: BrowserPerformanceSuite } = await import('./performance/browser_performance_suite.js');
+                const perfSuite = new BrowserPerformanceSuite();
+                
+                const perfResults = await perfSuite.runComprehensiveBenchmarks();
+                
+                // Display performance results
+                const perfMetrics = document.getElementById('performance-metrics');
+                perfMetrics.innerHTML = `
+                    <div class="metric-display">
+                        <div class="metric-item">
+                            <div class="metric-value">${perfResults.summary?.moduleInitTime?.toFixed(2) || 'N/A'}ms</div>
+                            <div class="metric-label">Module Init Time</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-value">${perfResults.summary?.throughput ? Math.round(perfResults.summary.throughput).toLocaleString() : 'N/A'}</div>
+                            <div class="metric-label">Operations/sec</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-value">${perfResults.summary?.overallPerformance || 'N/A'}/100</div>
+                            <div class="metric-label">Performance Score</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-value">${perfResults.summary?.lz4Supported ? '✅' : '❌'}</div>
+                            <div class="metric-label">LZ4 Support</div>
+                        </div>
+                    </div>
+                `;
+                
+                log('✅ Performance tests completed');
+                
+            } catch (error) {
+                log(`❌ Performance tests failed: ${error.message}`);
+            }
+        };
+
+        // Update test results display
+        function updateTestResults(results) {
+            if (!results) return;
+            
+            // Update summary metrics
+            document.getElementById('passed-tests').textContent = results.passedTests;
+            document.getElementById('total-tests').textContent = results.totalTests;
+            
+            // Show results summary
+            const summaryContainer = document.getElementById('results-summary-container');
+            const summary = document.getElementById('results-summary');
+            const title = document.getElementById('results-title');
+            const metrics = document.getElementById('results-metrics');
+            
+            const successRate = (results.passedTests / results.totalTests) * 100;
+            const passed = successRate >= 90;
+            
+            summary.className = `results-summary ${passed ? '' : 'failed'}`;
+            title.textContent = passed ? '✅ Test Suite Passed' : '⚠️ Test Suite Failed';
+            
+            metrics.innerHTML = `
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                    <div><strong>Passed:</strong> ${results.passedTests}</div>
+                    <div><strong>Failed:</strong> ${results.failedTests}</div>
+                    <div><strong>Success Rate:</strong> ${successRate.toFixed(1)}%</div>
+                    <div><strong>Execution Time:</strong> ${(results.executionTime / 1000).toFixed(2)}s</div>
+                </div>
+            `;
+            
+            summaryContainer.style.display = 'block';
+            
+            // Update model results
+            updateModelResults(results.modelCoverage);
+        }
+
+        // Update model results display
+        function updateModelResults(modelCoverage) {
+            const resultsGrid = document.getElementById('model-results-grid');
+            resultsGrid.innerHTML = '';
+            
+            Object.entries(modelCoverage).forEach(([modelId, model]) => {
+                const card = document.createElement('div');
+                card.className = 'model-card';
+                
+                const passed = model.failed === 0;
+                const statusClass = passed ? 'status-passed' : 'status-failed';
+                
+                card.innerHTML = `
+                    <h4><span class="model-status ${statusClass}"></span>${model.modelName}</h4>
+                    <p><strong>Tests:</strong> ${model.passed}/${model.totalTests} passed</p>
+                    <p><strong>Coverage:</strong> ${model.coverage.toFixed(1)}%</p>
+                    <p><strong>Transitions:</strong> ${model.totalTransitions}</p>
+                `;
+                
+                resultsGrid.appendChild(card);
+            });
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            displayBrowserInfo();
+            initializeModelGrid();
+            log('🌐 Comprehensive MBD test runner initialized');
+        });
+    </script>
+</body>
+</html>

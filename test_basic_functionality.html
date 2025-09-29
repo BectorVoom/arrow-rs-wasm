@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arrow WASM - Basic Functionality Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .test-section {
+            background: #f5f5f5;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            border-left: 4px solid #007acc;
+        }
+        .success {
+            border-left-color: #28a745;
+            background: #d4edda;
+        }
+        .error {
+            border-left-color: #dc3545;
+            background: #f8d7da;
+        }
+        .test-result {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 3px;
+        }
+        button {
+            background: #007acc;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #005a9e;
+        }
+        #console {
+            background: #000;
+            color: #0f0;
+            padding: 15px;
+            border-radius: 5px;
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🚀 Arrow WASM - Basic Functionality Test</h1>
+    <p>This page tests the basic functionality of the Arrow WebAssembly library.</p>
+    
+    <div class="test-section">
+        <h3>Module Status</h3>
+        <div id="moduleStatus">Loading...</div>
+    </div>
+
+    <div class="test-section">
+        <h3>API Tests</h3>
+        <button onclick="testInitialization()">Test Initialization</button>
+        <button onclick="testVersionInfo()">Test Version Info</button>
+        <button onclick="testCompressionSupport()">Test LZ4 Support</button>
+        <button onclick="testMemoryStats()">Test Memory Stats</button>
+        <button onclick="runAllTests()">Run All Tests</button>
+        <div id="testResults"></div>
+    </div>
+
+    <div class="test-section">
+        <h3>Console Output</h3>
+        <div id="console"></div>
+        <button onclick="clearConsole()">Clear Console</button>
+    </div>
+
+    <script type="module">
+        import { 
+            initWasm, 
+            isWasmInitialized,
+            getSchemaSummary,
+            writeTableToIpc,
+            freeTable,
+            registerPlugin
+        } from './dist/index.js';
+
+        // Console output handling
+        const consoleDiv = document.getElementById('console');
+        const originalConsole = {
+            log: console.log,
+            error: console.error,
+            warn: console.warn
+        };
+
+        function addToConsole(message, type = 'log') {
+            const timestamp = new Date().toLocaleTimeString();
+            const colorClass = type === 'error' ? 'color: #ff4444;' : 
+                              type === 'warn' ? 'color: #ffaa00;' : 
+                              'color: #00ff00;';
+            consoleDiv.innerHTML += `<div style="${colorClass}">[${timestamp}] ${message}</div>`;
+            consoleDiv.scrollTop = consoleDiv.scrollHeight;
+        }
+
+        // Override console methods
+        console.log = (...args) => {
+            originalConsole.log(...args);
+            addToConsole(args.join(' '), 'log');
+        };
+        console.error = (...args) => {
+            originalConsole.error(...args);
+            addToConsole(args.join(' '), 'error');
+        };
+        console.warn = (...args) => {
+            originalConsole.warn(...args);
+            addToConsole(args.join(' '), 'warn');
+        };
+
+        window.clearConsole = () => {
+            consoleDiv.innerHTML = '';
+        };
+
+        // Test functions
+        let wasmModule = null;
+
+        async function initializeWasm() {
+            try {
+                console.log('Initializing WASM module...');
+                const result = await initWasm(undefined, { enableConsoleLogs: true });
+                
+                if (result.ok) {
+                    console.log('✅ WASM module initialized successfully');
+                    document.getElementById('moduleStatus').innerHTML = 
+                        '<span style="color: green;">✅ Ready</span>';
+                    return true;
+                } else {
+                    console.error('❌ WASM initialization failed:', result.error);
+                    document.getElementById('moduleStatus').innerHTML = 
+                        '<span style="color: red;">❌ Failed: ' + result.error + '</span>';
+                    return false;
+                }
+            } catch (error) {
+                console.error('❌ WASM initialization error:', error);
+                document.getElementById('moduleStatus').innerHTML = 
+                    '<span style="color: red;">❌ Error: ' + error.message + '</span>';
+                return false;
+            }
+        }
+
+        window.testInitialization = async () => {
+            const success = await initializeWasm();
+            addTestResult('Initialization Test', success);
+        };
+
+        window.testVersionInfo = async () => {
+            try {
+                if (!isWasmInitialized()) {
+                    await initializeWasm();
+                }
+                
+                // Import WASM functions directly since they're not in our facade yet
+                const wasm = await import('./pkg/arrow_wasm.js');
+                const version = wasm.get_version();
+                const buildInfo = wasm.get_build_info();
+                
+                console.log('📋 Version:', version);
+                console.log('📋 Build Info:', buildInfo);
+                
+                addTestResult('Version Info Test', true, `Version: ${version}`);
+            } catch (error) {
+                console.error('❌ Version test failed:', error);
+                addTestResult('Version Info Test', false, error.message);
+            }
+        };
+
+        window.testCompressionSupport = async () => {
+            try {
+                if (!isWasmInitialized()) {
+                    await initializeWasm();
+                }
+                
+                const wasm = await import('./pkg/arrow_wasm.js');
+                const lz4Supported = wasm.is_lz4_supported();
+                const compressionTypes = wasm.get_supported_compression_types();
+                
+                console.log('🗜️ LZ4 Supported:', lz4Supported);
+                console.log('🗜️ Compression Types:', compressionTypes);
+                
+                addTestResult('LZ4 Compression Test', lz4Supported, 
+                    `LZ4: ${lz4Supported ? 'Supported' : 'Not Supported'}`);
+            } catch (error) {
+                console.error('❌ Compression test failed:', error);
+                addTestResult('LZ4 Compression Test', false, error.message);
+            }
+        };
+
+        window.testMemoryStats = async () => {
+            try {
+                if (!isWasmInitialized()) {
+                    await initializeWasm();
+                }
+                
+                const wasm = await import('./pkg/arrow_wasm.js');
+                const stats = wasm.get_memory_stats();
+                const tableCount = wasm.get_table_count();
+                
+                console.log('💾 Memory Stats:', stats);
+                console.log('📊 Table Count:', tableCount);
+                
+                addTestResult('Memory Stats Test', true, 
+                    `Tables: ${tableCount}, Memory stats retrieved`);
+            } catch (error) {
+                console.error('❌ Memory stats test failed:', error);
+                addTestResult('Memory Stats Test', false, error.message);
+            }
+        };
+
+        window.runAllTests = async () => {
+            document.getElementById('testResults').innerHTML = '';
+            console.log('🧪 Running all tests...');
+            
+            await testInitialization();
+            await testVersionInfo();
+            await testCompressionSupport();
+            await testMemoryStats();
+            
+            console.log('✅ All tests completed!');
+        };
+
+        function addTestResult(testName, success, details = '') {
+            const resultsDiv = document.getElementById('testResults');
+            const resultDiv = document.createElement('div');
+            resultDiv.className = `test-result ${success ? 'success' : 'error'}`;
+            resultDiv.innerHTML = `
+                <strong>${success ? '✅' : '❌'} ${testName}</strong>
+                ${details ? `<br><small>${details}</small>` : ''}
+            `;
+            resultsDiv.appendChild(resultDiv);
+        }
+
+        // Initialize on page load
+        console.log('🚀 Starting Arrow WASM test page...');
+        initializeWasm();
+    </script>
+</body>
+</html>

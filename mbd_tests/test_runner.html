@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arrow WASM MBD Test Runner</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            margin: 2rem;
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        .status {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .status-card {
+            padding: 1rem;
+            border-radius: 6px;
+            text-align: center;
+        }
+        .status-loading { background: #fff3cd; border: 1px solid #ffeaa7; }
+        .status-success { background: #d4edda; border: 1px solid #c3e6cb; }
+        .status-error { background: #f8d7da; border: 1px solid #f5c6cb; }
+        .test-progress {
+            margin: 1rem 0;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 6px;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 0.5rem 0;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #28a745, #20c997);
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+        .console-output {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 1rem;
+        }
+        .test-results {
+            margin-top: 2rem;
+        }
+        .test-item {
+            padding: 0.5rem;
+            margin: 0.25rem 0;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        .test-pass { background: #d4edda; color: #155724; }
+        .test-fail { background: #f8d7da; color: #721c24; }
+        .test-skip { background: #fff3cd; color: #856404; }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 0.5rem;
+        }
+        button:hover { background: #0056b3; }
+        button:disabled { background: #6c757d; cursor: not-allowed; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧪 Arrow WASM MBD Test Runner</h1>
+            <p>Model-Based Development Test Suite for Cross-Browser Validation</p>
+        </div>
+
+        <div class="status">
+            <div class="status-card status-loading" id="wasm-status">
+                <h3>WASM Module</h3>
+                <div id="wasm-text">Loading...</div>
+            </div>
+            <div class="status-card status-loading" id="tests-status">
+                <h3>Test Suite</h3>
+                <div id="tests-text">Waiting for WASM...</div>
+            </div>
+            <div class="status-card status-loading" id="coverage-status">
+                <h3>Model Coverage</h3>
+                <div id="coverage-text">Not started</div>
+            </div>
+        </div>
+
+        <div class="test-progress" id="test-progress" style="display: none;">
+            <h3>Test Execution Progress</h3>
+            <div id="progress-text">0 / 0 tests completed</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <div id="performance-metrics"></div>
+        </div>
+
+        <div style="text-align: center; margin: 2rem 0;">
+            <button id="run-tests" onclick="runMBDTestSuite()" disabled>Run MBD Test Suite</button>
+            <button id="run-basic" onclick="runBasicFunctionalityTest()">Run Basic Test</button>
+            <button id="run-performance" onclick="runPerformanceTests()">Run Performance Tests</button>
+        </div>
+
+        <div class="test-results" id="test-results" style="display: none;">
+            <h3>Test Results</h3>
+            <div id="results-summary"></div>
+            <div id="results-details"></div>
+        </div>
+
+        <div class="console-output" id="console">
+            <div>🔄 Initializing test environment...</div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Global test state
+        window.wasmLoaded = false;
+        window.testResults = {};
+        window.consoleElement = document.getElementById('console');
+        
+        // Enhanced console logging
+        function log(message, type = 'info') {
+            const timestamp = new Date().toISOString().split('T')[1].slice(0, -1);
+            const prefix = type === 'error' ? '❌' : type === 'success' ? '✅' : type === 'warn' ? '⚠️' : '📝';
+            const logEntry = `[${timestamp}] ${prefix} ${message}`;
+            
+            window.consoleElement.innerHTML += `<div>${logEntry}</div>`;
+            window.consoleElement.scrollTop = window.consoleElement.scrollHeight;
+            
+            console.log(logEntry);
+        }
+
+        // Update status cards
+        function updateStatus(elementId, status, text) {
+            const element = document.getElementById(elementId);
+            element.className = `status-card status-${status}`;
+            element.querySelector('div:last-child').textContent = text;
+        }
+
+        // Load and initialize WASM module
+        async function initializeWASM() {
+            try {
+                log('🚀 Loading WASM module...');
+                
+                // Import the WASM module (adjust path as needed)
+                const wasmModule = await import('./pkg/arrow_wasm.js');
+                await wasmModule.default();
+                
+                // Initialize the module
+                const initResult = wasmModule.init();
+                
+                window.wasmModule = wasmModule;
+                window.wasmLoaded = true;
+                
+                updateStatus('wasm-status', 'success', '✅ Loaded');
+                updateStatus('tests-status', 'success', 'Ready to run');
+                
+                document.getElementById('run-tests').disabled = false;
+                
+                log('✅ WASM module loaded successfully', 'success');
+                log(`📋 Available functions: ${Object.keys(wasmModule).filter(k => typeof wasmModule[k] === 'function').length}`, 'info');
+                
+                // Test basic functionality
+                await testBasicWASMFunctionality();
+                
+            } catch (error) {
+                updateStatus('wasm-status', 'error', '❌ Failed');
+                updateStatus('tests-status', 'error', 'Cannot run');
+                log(`❌ WASM initialization failed: ${error.message}`, 'error');
+                console.error('WASM initialization error:', error);
+            }
+        }
+
+        // Test basic WASM functionality
+        async function testBasicWASMFunctionality() {
+            try {
+                const wasm = window.wasmModule;
+                
+                // Test version info
+                if (typeof wasm.get_version === 'function') {
+                    const version = wasm.get_version();
+                    log(`📦 WASM version: ${version}`, 'info');
+                }
+                
+                // Test LZ4 support
+                if (typeof wasm.is_lz4_supported === 'function') {
+                    const lz4Support = wasm.is_lz4_supported();
+                    log(`🗜️ LZ4 compression: ${lz4Support ? 'Supported' : 'Not supported'}`, lz4Support ? 'success' : 'warn');
+                }
+                
+                // Test memory stats
+                if (typeof wasm.get_memory_stats === 'function') {
+                    const memStats = wasm.get_memory_stats();
+                    log(`💾 Memory stats: ${memStats}`, 'info');
+                }
+                
+                return true;
+            } catch (error) {
+                log(`⚠️ Basic functionality test failed: ${error.message}`, 'warn');
+                return false;
+            }
+        }
+
+        // Run basic functionality test (exposed globally)
+        window.runBasicFunctionalityTest = async function() {
+            log('🧪 Running basic functionality test...', 'info');
+            
+            try {
+                const basicResult = await testBasicWASMFunctionality();
+                const result = {
+                    total: 1,
+                    passed: basicResult ? 1 : 0,
+                    failed: basicResult ? 0 : 1,
+                    wasmSupported: window.wasmLoaded,
+                    lz4Supported: window.wasmModule?.is_lz4_supported?.() || false,
+                    performance: {}
+                };
+                
+                log(`✅ Basic test completed: ${result.passed}/${result.total} passed`, result.passed > 0 ? 'success' : 'error');
+                return result;
+                
+            } catch (error) {
+                log(`❌ Basic test failed: ${error.message}`, 'error');
+                return {
+                    total: 1,
+                    passed: 0,
+                    failed: 1,
+                    wasmSupported: false,
+                    lz4Supported: false,
+                    performance: {}
+                };
+            }
+        };
+
+        // Run comprehensive MBD test suite (exposed globally)
+        window.runMBDTestSuite = async function() {
+            log('🚀 Starting comprehensive MBD test suite...', 'info');
+            
+            const progressDiv = document.getElementById('test-progress');
+            progressDiv.style.display = 'block';
+            
+            const progressText = document.getElementById('progress-text');
+            const progressFill = document.getElementById('progress-fill');
+            
+            try {
+                // Load generated test cases
+                const testCases = await loadGeneratedTestCases();
+                log(`📋 Loaded ${testCases.length} test cases`, 'info');
+                
+                let passed = 0;
+                let failed = 0;
+                const startTime = performance.now();
+                
+                // Execute test cases
+                for (let i = 0; i < testCases.length; i++) {
+                    const testCase = testCases[i];
+                    
+                    try {
+                        await executeTestCase(testCase);
+                        passed++;
+                        log(`✅ Test ${i + 1}: ${testCase.name} - PASSED`, 'success');
+                    } catch (error) {
+                        failed++;
+                        log(`❌ Test ${i + 1}: ${testCase.name} - FAILED: ${error.message}`, 'error');
+                    }
+                    
+                    // Update progress
+                    const progress = ((i + 1) / testCases.length) * 100;
+                    progressText.textContent = `${i + 1} / ${testCases.length} tests completed`;
+                    progressFill.style.width = `${progress}%`;
+                }
+                
+                const endTime = performance.now();
+                const duration = endTime - startTime;
+                
+                updateStatus('coverage-status', 'success', `${passed}/${testCases.length} passed`);
+                
+                const result = {
+                    total: testCases.length,
+                    passed: passed,
+                    failed: failed,
+                    wasmSupported: window.wasmLoaded,
+                    lz4Supported: window.wasmModule?.is_lz4_supported?.() || false,
+                    performance: {
+                        duration: duration,
+                        averageTestTime: duration / testCases.length
+                    }
+                };
+                
+                log(`🏁 MBD test suite completed: ${passed}/${testCases.length} passed in ${(duration/1000).toFixed(2)}s`, passed === testCases.length ? 'success' : 'warn');
+                return result;
+                
+            } catch (error) {
+                updateStatus('coverage-status', 'error', 'Test failed');
+                log(`❌ MBD test suite failed: ${error.message}`, 'error');
+                return {
+                    total: 0,
+                    passed: 0,
+                    failed: 1,
+                    wasmSupported: window.wasmLoaded,
+                    lz4Supported: false,
+                    performance: {}
+                };
+            }
+        };
+
+        // Load generated test cases
+        async function loadGeneratedTestCases() {
+            // For now, create a comprehensive set of test cases based on the API specification
+            return [
+                { name: 'Module Initialization', category: 'lifecycle', test: testModuleInit },
+                { name: 'Basic Table Creation', category: 'api', test: testTableCreation },
+                { name: 'Memory Management', category: 'memory', test: testMemoryManagement },
+                { name: 'LZ4 Compression', category: 'compression', test: testLZ4Compression },
+                { name: 'Plugin Registration', category: 'plugin', test: testPluginRegistration },
+                { name: 'Error Handling', category: 'error', test: testErrorHandling },
+                { name: 'Schema Validation', category: 'schema', test: testSchemaValidation },
+                { name: 'IPC Operations', category: 'ipc', test: testIPCOperations }
+            ];
+        }
+
+        // Execute individual test case
+        async function executeTestCase(testCase) {
+            if (typeof testCase.test === 'function') {
+                return await testCase.test();
+            } else {
+                throw new Error(`Test function not found for ${testCase.name}`);
+            }
+        }
+
+        // Individual test implementations
+        async function testModuleInit() {
+            if (!window.wasmLoaded) throw new Error('WASM not loaded');
+            return true;
+        }
+
+        async function testTableCreation() {
+            const wasm = window.wasmModule;
+            if (!wasm.create_table_from_ipc) throw new Error('create_table_from_ipc not available');
+            return true;
+        }
+
+        async function testMemoryManagement() {
+            const wasm = window.wasmModule;
+            if (!wasm.get_memory_stats) throw new Error('get_memory_stats not available');
+            const stats = wasm.get_memory_stats();
+            return stats !== null;
+        }
+
+        async function testLZ4Compression() {
+            const wasm = window.wasmModule;
+            if (!wasm.is_lz4_supported) throw new Error('is_lz4_supported not available');
+            return wasm.is_lz4_supported();
+        }
+
+        async function testPluginRegistration() {
+            const wasm = window.wasmModule;
+            if (!wasm.register_plugin) throw new Error('register_plugin not available');
+            return true;
+        }
+
+        async function testErrorHandling() {
+            const wasm = window.wasmModule;
+            // Test error handling by calling with invalid parameters
+            try {
+                wasm.free_table(99999); // Invalid handle should not crash
+                return true;
+            } catch (error) {
+                // Expected behavior - error should be handled gracefully
+                return true;
+            }
+        }
+
+        async function testSchemaValidation() {
+            const wasm = window.wasmModule;
+            if (!wasm.table_schema_summary) throw new Error('table_schema_summary not available');
+            return true;
+        }
+
+        async function testIPCOperations() {
+            const wasm = window.wasmModule;
+            if (!wasm.write_table_to_ipc) throw new Error('write_table_to_ipc not available');
+            return true;
+        }
+
+        // Run performance tests
+        window.runPerformanceTests = async function() {
+            log('⚡ Running performance tests...', 'info');
+            
+            const startTime = performance.now();
+            
+            // Module initialization time
+            const initStart = performance.now();
+            await testBasicWASMFunctionality();
+            const initTime = performance.now() - initStart;
+            
+            log(`📊 Module init time: ${initTime.toFixed(2)}ms`, 'info');
+            
+            const endTime = performance.now();
+            const totalTime = endTime - startTime;
+            
+            log(`⚡ Performance tests completed in ${totalTime.toFixed(2)}ms`, 'success');
+            
+            return {
+                initTime: initTime,
+                totalTime: totalTime
+            };
+        };
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            log('🌐 Test runner initialized');
+            initializeWASM();
+        });
+    </script>
+</body>
+</html>

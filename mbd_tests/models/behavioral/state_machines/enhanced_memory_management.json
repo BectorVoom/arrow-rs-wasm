@@ -1,0 +1,465 @@
+{
+  "model_id": "enhanced_memory_management",
+  "model_type": "state_machine",
+  "version": "2.0.0", 
+  "description": "Enhanced memory management state machine for WASM Arrow library covering handle lifecycle, memory tracking, leak prevention, and cleanup",
+  "requirements": ["REQ-MEM-001", "REQ-MEM-002", "REQ-MEM-003", "REQ-HANDLE-001"],
+  "states": [
+    {
+      "id": "memory_uninitialized",
+      "name": "Memory Manager Uninitialized",
+      "type": "initial",
+      "properties": {
+        "registry_initialized": false,
+        "handle_counter": 0,
+        "active_tables": 0,
+        "memory_tracking_enabled": false
+      },
+      "invariants": [
+        "registry_initialized === false",
+        "handle_counter === 0",
+        "active_tables === 0"
+      ]
+    },
+    {
+      "id": "memory_ready",
+      "name": "Memory Manager Ready", 
+      "type": "normal",
+      "properties": {
+        "registry_initialized": true,
+        "handle_counter": 0,
+        "active_tables": 0,
+        "memory_tracking_enabled": true,
+        "can_create_handles": true
+      },
+      "invariants": [
+        "registry_initialized === true",
+        "handle_counter >= 0",
+        "active_tables >= 0",
+        "active_tables <= handle_counter"
+      ]
+    },
+    {
+      "id": "handle_active",
+      "name": "Handles Active",
+      "type": "normal",
+      "properties": {
+        "registry_initialized": true,
+        "handle_counter": ">0",
+        "active_tables": ">0",
+        "memory_tracking_enabled": true,
+        "can_create_handles": true,
+        "memory_usage_tracked": true
+      },
+      "invariants": [
+        "registry_initialized === true",
+        "handle_counter > 0",
+        "active_tables > 0",
+        "active_tables <= handle_counter",
+        "memory_usage_tracked === true"
+      ]
+    },
+    {
+      "id": "handle_creating",
+      "name": "Creating New Handle",
+      "type": "normal",
+      "properties": {
+        "registry_initialized": true,
+        "handle_creation_in_progress": true,
+        "new_handle_id": ">0",
+        "table_data_prepared": true
+      },
+      "invariants": [
+        "handle_creation_in_progress === true",
+        "new_handle_id > 0",
+        "table_data_prepared === true"
+      ]
+    },
+    {
+      "id": "handle_disposing",
+      "name": "Disposing Handle",
+      "type": "normal", 
+      "properties": {
+        "registry_initialized": true,
+        "disposal_in_progress": true,
+        "target_handle_id": ">0",
+        "cleanup_started": true
+      },
+      "invariants": [
+        "disposal_in_progress === true",
+        "target_handle_id > 0",
+        "cleanup_started === true"
+      ]
+    },
+    {
+      "id": "memory_cleanup",
+      "name": "Memory Cleanup in Progress",
+      "type": "normal",
+      "properties": {
+        "registry_initialized": true,
+        "cleanup_in_progress": true,
+        "handles_being_freed": ">=1",
+        "memory_being_released": true
+      },
+      "invariants": [
+        "cleanup_in_progress === true",
+        "handles_being_freed >= 1"
+      ]
+    },
+    {
+      "id": "memory_leak_detected",
+      "name": "Memory Leak Detected",
+      "type": "error",
+      "properties": {
+        "leak_detected": true,
+        "leaked_handles": ">=1",
+        "leak_detection_time": "timestamp",
+        "automatic_cleanup_possible": "boolean",
+        "error_type": "memory_leak"
+      },
+      "invariants": [
+        "leak_detected === true", 
+        "leaked_handles >= 1",
+        "error_type === 'memory_leak'"
+      ]
+    },
+    {
+      "id": "handle_corruption_detected",
+      "name": "Handle Corruption Detected",
+      "type": "error",
+      "properties": {
+        "corruption_detected": true,
+        "corrupted_handle_id": ">0",
+        "corruption_type": "string",
+        "recovery_possible": false,
+        "error_type": "handle_corruption"
+      },
+      "invariants": [
+        "corruption_detected === true",
+        "corrupted_handle_id > 0",
+        "recovery_possible === false"
+      ]
+    },
+    {
+      "id": "memory_exhausted",
+      "name": "Memory Exhausted",
+      "type": "error",
+      "properties": {
+        "memory_exhausted": true,
+        "current_memory_usage": "number",
+        "memory_limit_reached": true,
+        "new_allocations_blocked": true,
+        "error_type": "memory_exhausted"
+      },
+      "invariants": [
+        "memory_exhausted === true",
+        "new_allocations_blocked === true",
+        "error_type === 'memory_exhausted'"
+      ]
+    },
+    {
+      "id": "memory_disposed",
+      "name": "Memory Manager Disposed",
+      "type": "final",
+      "properties": {
+        "registry_initialized": false,
+        "handle_counter": 0,
+        "active_tables": 0,
+        "all_handles_freed": true,
+        "memory_released": true,
+        "disposed": true
+      },
+      "invariants": [
+        "disposed === true",
+        "active_tables === 0",
+        "all_handles_freed === true"
+      ]
+    }
+  ],
+  "transitions": [
+    {
+      "id": "initialize_memory_manager",
+      "from": "memory_uninitialized",
+      "to": "memory_ready",
+      "trigger": "init_memory_system",
+      "guard": "wasm_memory_available",
+      "action": "setup_table_registry",
+      "requirements": ["REQ-MEM-001"],
+      "test_data": {
+        "initialization_steps": ["create_registry", "setup_mutex", "enable_tracking"],
+        "expected_timing": "< 10ms",
+        "memory_overhead": "< 1MB"
+      }
+    },
+    {
+      "id": "create_new_handle",
+      "from": "memory_ready",
+      "to": "handle_creating",
+      "trigger": "create_table_from_batches|create_table_with_metadata",
+      "guard": "memory_available && schema_valid && batches_valid",
+      "action": "begin_handle_creation",
+      "requirements": ["REQ-HANDLE-001"],
+      "test_data": {
+        "creation_scenarios": ["small_table", "large_table", "empty_table", "complex_schema"],
+        "expected_timing": "< 50ms",
+        "memory_allocation": "proportional_to_data_size"
+      }
+    },
+    {
+      "id": "create_additional_handle",
+      "from": "handle_active",
+      "to": "handle_creating",
+      "trigger": "create_table_from_batches|create_table_with_metadata",
+      "guard": "memory_available && schema_valid && batches_valid && handle_limit_not_reached",
+      "action": "begin_handle_creation",
+      "requirements": ["REQ-HANDLE-001"],
+      "test_data": {
+        "concurrent_creation": ["multiple_handles", "rapid_creation", "interleaved_operations"],
+        "handle_limits": ["max_1000_handles", "memory_based_limits"],
+        "expected_timing": "< 50ms per handle"
+      }
+    },
+    {
+      "id": "handle_creation_complete",
+      "from": "handle_creating",
+      "to": "handle_active",
+      "trigger": "handle_registered",
+      "guard": "handle_id_unique && table_data_stored",
+      "action": "complete_handle_registration",
+      "requirements": ["REQ-HANDLE-001"],
+      "test_data": {
+        "validation_checks": ["handle_unique", "handle_retrievable", "data_accessible", "memory_tracked"],
+        "post_creation_state": ["handle_counter_incremented", "active_tables_incremented"],
+        "expected_timing": "< 5ms"
+      }
+    },
+    {
+      "id": "dispose_single_handle",
+      "from": "handle_active",
+      "to": "handle_disposing",
+      "trigger": "free_table",
+      "guard": "handle_exists && handle_valid",
+      "action": "begin_handle_disposal",
+      "requirements": ["REQ-MEM-002"],
+      "test_data": {
+        "disposal_scenarios": ["valid_handle", "last_handle", "middle_handle"],
+        "validation_steps": ["handle_exists", "handle_not_disposed", "cleanup_possible"],
+        "expected_timing": "< 20ms"
+      }
+    },
+    {
+      "id": "handle_disposal_complete",
+      "from": "handle_disposing", 
+      "to": "handle_active",
+      "trigger": "disposal_finished",
+      "guard": "cleanup_successful && other_handles_remain",
+      "action": "finalize_disposal_with_active_handles",
+      "requirements": ["REQ-MEM-002"],
+      "test_data": {
+        "cleanup_validation": ["memory_freed", "handle_removed", "counters_decremented"],
+        "remaining_handles": ["still_accessible", "unaffected_by_disposal"],
+        "expected_timing": "< 10ms"
+      }
+    },
+    {
+      "id": "last_handle_disposal_complete",
+      "from": "handle_disposing",
+      "to": "memory_ready", 
+      "trigger": "disposal_finished",
+      "guard": "cleanup_successful && no_handles_remain",
+      "action": "return_to_ready_state",
+      "requirements": ["REQ-MEM-002"],
+      "test_data": {
+        "final_cleanup": ["all_memory_freed", "counters_reset", "registry_clean"],
+        "state_validation": ["ready_for_new_handles", "memory_baseline_restored"],
+        "expected_timing": "< 15ms"
+      }
+    },
+    {
+      "id": "cleanup_all_handles",
+      "from": "handle_active",
+      "to": "memory_cleanup",
+      "trigger": "clear_all_tables|dispose_all",
+      "guard": "handles_exist",
+      "action": "begin_mass_cleanup",
+      "requirements": ["REQ-MEM-003"],
+      "test_data": {
+        "cleanup_scenarios": ["few_handles", "many_handles", "mixed_table_sizes"],
+        "cleanup_strategy": ["sequential_disposal", "batch_disposal"],
+        "expected_timing": "< 100ms for 100 handles"
+      }
+    },
+    {
+      "id": "mass_cleanup_complete",
+      "from": "memory_cleanup",
+      "to": "memory_ready",
+      "trigger": "all_handles_freed",
+      "guard": "cleanup_successful",
+      "action": "reset_to_clean_state",
+      "requirements": ["REQ-MEM-003"],
+      "test_data": {
+        "validation_checks": ["all_memory_freed", "counters_zeroed", "registry_empty"],
+        "performance_validation": ["cleanup_efficient", "no_memory_leaks"]
+      }
+    },
+    {
+      "id": "detect_memory_leak",
+      "from": "handle_active",
+      "to": "memory_leak_detected",
+      "trigger": "leak_detection_triggered",
+      "guard": "unreachable_handles_detected || memory_usage_excessive",
+      "action": "capture_leak_information",
+      "requirements": ["REQ-MEM-004"],
+      "test_data": {
+        "leak_scenarios": ["unreferenced_handles", "circular_references", "forgotten_cleanup"],
+        "detection_methods": ["usage_threshold", "periodic_scan", "explicit_check"],
+        "leak_information": ["handle_ids", "creation_time", "memory_usage"]
+      }
+    },
+    {
+      "id": "automatic_leak_recovery",
+      "from": "memory_leak_detected",
+      "to": "memory_cleanup", 
+      "trigger": "automatic_cleanup",
+      "guard": "automatic_cleanup_possible && safe_to_recover",
+      "action": "force_cleanup_leaked_handles",
+      "requirements": ["REQ-MEM-004"],
+      "test_data": {
+        "recovery_scenarios": ["recoverable_leaks", "safe_cleanup_conditions"],
+        "cleanup_validation": ["leaked_handles_freed", "memory_reclaimed"],
+        "side_effects": ["minimal_disruption", "state_consistency_maintained"]
+      }
+    },
+    {
+      "id": "detect_handle_corruption", 
+      "from": "handle_active",
+      "to": "handle_corruption_detected",
+      "trigger": "invalid_handle_access|corrupted_table_data",
+      "guard": "corruption_detected",
+      "action": "capture_corruption_details",
+      "requirements": ["REQ-MEM-005"],
+      "test_data": {
+        "corruption_types": ["invalid_handle_id", "corrupted_table_data", "memory_overwrites"],
+        "detection_triggers": ["handle_validation_failed", "data_integrity_check_failed"],
+        "captured_info": ["handle_id", "corruption_type", "call_stack", "memory_state"]
+      }
+    },
+    {
+      "id": "memory_exhaustion",
+      "from": "handle_creating",
+      "to": "memory_exhausted",
+      "trigger": "allocation_failed",
+      "guard": "memory_limit_exceeded",
+      "action": "block_new_allocations",
+      "requirements": ["REQ-MEM-006"],
+      "test_data": {
+        "exhaustion_scenarios": ["large_table_creation", "many_small_tables", "memory_fragmentation"],
+        "memory_thresholds": ["browser_memory_limits", "wasm_memory_limits"],
+        "error_information": ["current_usage", "requested_size", "available_memory"]
+      }
+    },
+    {
+      "id": "memory_recovery_after_exhaustion",
+      "from": "memory_exhausted",
+      "to": "memory_cleanup",
+      "trigger": "force_cleanup_for_recovery",
+      "guard": "cleanup_can_free_memory",
+      "action": "emergency_cleanup",
+      "requirements": ["REQ-MEM-006"],
+      "test_data": {
+        "recovery_strategies": ["free_oldest_handles", "free_largest_tables", "user_guided_cleanup"],
+        "cleanup_effectiveness": ["memory_freed", "allocation_unblocked"],
+        "recovery_validation": ["system_functional", "performance_restored"]
+      }
+    },
+    {
+      "id": "dispose_memory_manager",
+      "from": "memory_ready",
+      "to": "memory_disposed",
+      "trigger": "dispose_system",
+      "guard": "no_active_handles",
+      "action": "shutdown_memory_manager",
+      "requirements": ["REQ-MEM-001"],
+      "test_data": {
+        "shutdown_steps": ["verify_no_handles", "cleanup_registry", "release_system_memory"],
+        "validation_checks": ["all_resources_freed", "registry_destroyed"],
+        "expected_timing": "< 20ms"
+      }
+    },
+    {
+      "id": "force_dispose_with_cleanup",
+      "from": "handle_active",
+      "to": "memory_disposed",
+      "trigger": "force_dispose_system",
+      "guard": "true",
+      "action": "emergency_shutdown_with_cleanup",
+      "requirements": ["REQ-MEM-001"],
+      "test_data": {
+        "emergency_shutdown": ["force_free_all_handles", "emergency_cleanup", "system_shutdown"],
+        "cleanup_thoroughness": ["all_memory_freed", "no_dangling_references"],
+        "expected_timing": "< 100ms regardless of handle count"
+      }
+    }
+  ],
+  "memory_tracking": {
+    "tracked_metrics": [
+      "active_handle_count",
+      "total_memory_usage", 
+      "peak_memory_usage",
+      "allocation_rate",
+      "deallocation_rate",
+      "memory_fragmentation",
+      "handle_creation_rate",
+      "handle_disposal_rate"
+    ],
+    "performance_thresholds": {
+      "max_handle_creation_time": "50ms",
+      "max_handle_disposal_time": "20ms",
+      "max_memory_cleanup_time": "100ms",
+      "memory_leak_detection_interval": "30s",
+      "max_memory_usage_growth": "10MB/min"
+    },
+    "leak_detection": {
+      "methods": ["reference_counting", "periodic_scanning", "usage_threshold_monitoring"],
+      "thresholds": {
+        "memory_growth_rate": "5MB/min",
+        "unreferenced_handle_timeout": "60s",
+        "max_inactive_handles": "100"
+      }
+    }
+  },
+  "metadata": {
+    "created": "2025-09-29",
+    "author": "Claude Code Enhanced MBD System",
+    "version_history": [
+      "1.0.0: Initial memory management model",
+      "2.0.0: Enhanced with comprehensive leak detection, handle corruption detection, memory exhaustion handling"
+    ],
+    "requirements": [
+      "REQ-MEM-001: Memory manager must initialize properly and support clean shutdown",
+      "REQ-MEM-002: Handle lifecycle must be properly managed with creation and disposal",
+      "REQ-MEM-003: Bulk operations must support efficient cleanup of multiple handles",
+      "REQ-HANDLE-001: Table handles must be unique, valid, and retrievable throughout lifecycle",
+      "REQ-MEM-004: Memory leaks must be detected and recoverable where possible",
+      "REQ-MEM-005: Handle corruption must be detected and reported with detailed information",
+      "REQ-MEM-006: Memory exhaustion must be handled gracefully with recovery mechanisms"
+    ],
+    "test_generation_notes": [
+      "Each state should have comprehensive validation tests for all invariants",
+      "Handle lifecycle transitions require stress testing with various table sizes",
+      "Memory leak detection requires long-running tests and memory monitoring",
+      "Error states require specific corruption and exhaustion scenario testing",
+      "Performance thresholds must be validated across different browser environments",
+      "Concurrent operations require thread-safety and atomicity testing",
+      "Recovery mechanisms require validation of system consistency after errors"
+    ],
+    "coverage_requirements": {
+      "state_coverage": "100%",
+      "transition_coverage": "100%", 
+      "error_recovery_coverage": "100%",
+      "performance_threshold_validation": "All timing constraints",
+      "stress_testing": "High handle counts, large tables, memory pressure",
+      "browser_compatibility": ["Chrome", "Firefox", "Safari", "Edge"]
+    }
+  }
+}

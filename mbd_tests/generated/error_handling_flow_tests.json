@@ -1,0 +1,1459 @@
+{
+  "model_id": "error_handling_flow",
+  "model_type": "state_machine",
+  "generated_at": "2025-09-28T11:18:56.552Z",
+  "test_cases": [
+    {
+      "test_id": "error_handling_flow_state_normal_operation_validation",
+      "test_name": "Validate Normal Operation state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "normal_operation",
+      "requirements": [
+        "REQ-ERROR-001",
+        "REQ-ERROR-002",
+        "REQ-ERROR-003",
+        "REQ-ERROR-004"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Normal Operation state",
+          "expected": "System reaches Normal Operation state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"error_occurred\":false,\"operation_in_progress\":false,\"system_healthy\":true}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for error_handling_flow_state_normal_operation_validation\n// Model: error_handling_flow, Element: normal_operation\n\ndescribe('error_handling_flow_state_normal_operation_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Normal Operation state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "error_handling_flow_state_operation_executing_validation",
+      "test_name": "Validate Operation Executing state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "operation_executing",
+      "requirements": [
+        "REQ-ERROR-001",
+        "REQ-ERROR-002",
+        "REQ-ERROR-003",
+        "REQ-ERROR-004"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Operation Executing state",
+          "expected": "System reaches Operation Executing state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"operation_in_progress\":true,\"operation_type\":\"string\",\"error_occurred\":false,\"can_fail\":true}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for error_handling_flow_state_operation_executing_validation\n// Model: error_handling_flow, Element: operation_executing\n\ndescribe('error_handling_flow_state_operation_executing_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Operation Executing state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "error_handling_flow_state_error_detected_validation",
+      "test_name": "Validate Error Detected state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "error_detected",
+      "requirements": [
+        "REQ-ERROR-001",
+        "REQ-ERROR-002",
+        "REQ-ERROR-003",
+        "REQ-ERROR-004"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Error Detected state",
+          "expected": "System reaches Error Detected state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"error_occurred\":true,\"error_detected\":true,\"error_type\":\"string\",\"error_severity\":\"string\",\"recovery_assessed\":false}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for error_handling_flow_state_error_detected_validation\n// Model: error_handling_flow, Element: error_detected\n\ndescribe('error_handling_flow_state_error_detected_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Error Detected state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "error_handling_flow_state_error_classifying_validation",
+      "test_name": "Validate Classifying Error state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "error_classifying",
+      "requirements": [
+        "REQ-ERROR-001",
+        "REQ-ERROR-002",
+        "REQ-ERROR-003",
+        "REQ-ERROR-004"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Classifying Error state",
+          "expected": "System reaches Classifying Error state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"error_occurred\":true,\"classification_in_progress\":true,\"error_code\":\"string or null\",\"error_category\":\"string or null\"}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for error_handling_flow_state_error_classifying_validation\n// Model: error_handling_flow, Element: error_classifying\n\ndescribe('error_handling_flow_state_error_classifying_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Classifying Error state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "error_handling_flow_state_recoverable_error_validation",
+      "test_name": "Validate Recoverable Error state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "recoverable_error",
+      "requirements": [
+        "REQ-ERROR-001",
+        "REQ-ERROR-002",
+        "REQ-ERROR-003",
+        "REQ-ERROR-004"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Recoverable Error state",
+          "expected": "System reaches Recoverable Error state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"error_occurred\":true,\"error_classified\":true,\"is_recoverable\":true,\"recovery_strategy\":\"string\",\"can_retry\":true}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for error_handling_flow_state_recoverable_error_validation\n// Model: error_handling_flow, Element: recoverable_error\n\ndescribe('error_handling_flow_state_recoverable_error_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Recoverable Error state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "error_handling_flow_state_critical_error_validation",
+      "test_name": "Validate Critical Error state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "critical_error",
+      "requirements": [
+        "REQ-ERROR-001",
+        "REQ-ERROR-002",
+        "REQ-ERROR-003",
+        "REQ-ERROR-004"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Critical Error state",
+          "expected": "System reaches Critical Error state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"error_occurred\":true,\"error_classified\":true,\"is_recoverable\":false,\"system_compromised\":true,\"requires_cleanup\":true}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for error_handling_flow_state_critical_error_validation\n// Model: error_handling_flow, Element: critical_error\n\ndescribe('error_handling_flow_state_critical_error_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Critical Error state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "error_handling_flow_state_recovering_validation",
+      "test_name": "Validate Attempting Recovery state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "recovering",
+      "requirements": [
+        "REQ-ERROR-001",
+        "REQ-ERROR-002",
+        "REQ-ERROR-003",
+        "REQ-ERROR-004"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Attempting Recovery state",
+          "expected": "System reaches Attempting Recovery state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"error_occurred\":true,\"recovery_in_progress\":true,\"recovery_strategy\":\"string\",\"retry_count\":\">=0\"}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for error_handling_flow_state_recovering_validation\n// Model: error_handling_flow, Element: recovering\n\ndescribe('error_handling_flow_state_recovering_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Attempting Recovery state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "error_handling_flow_state_cleanup_required_validation",
+      "test_name": "Validate Cleanup Required state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "cleanup_required",
+      "requirements": [
+        "REQ-ERROR-001",
+        "REQ-ERROR-002",
+        "REQ-ERROR-003",
+        "REQ-ERROR-004"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Cleanup Required state",
+          "expected": "System reaches Cleanup Required state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"error_occurred\":true,\"cleanup_needed\":true,\"resources_to_cleanup\":\"array\",\"cleanup_in_progress\":false}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for error_handling_flow_state_cleanup_required_validation\n// Model: error_handling_flow, Element: cleanup_required\n\ndescribe('error_handling_flow_state_cleanup_required_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Cleanup Required state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "error_handling_flow_state_cleaning_up_validation",
+      "test_name": "Validate Cleaning Up state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "cleaning_up",
+      "requirements": [
+        "REQ-ERROR-001",
+        "REQ-ERROR-002",
+        "REQ-ERROR-003",
+        "REQ-ERROR-004"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Cleaning Up state",
+          "expected": "System reaches Cleaning Up state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"error_occurred\":true,\"cleanup_in_progress\":true,\"resources_being_cleaned\":\"array\",\"cleanup_strategy\":\"string\"}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for error_handling_flow_state_cleaning_up_validation\n// Model: error_handling_flow, Element: cleaning_up\n\ndescribe('error_handling_flow_state_cleaning_up_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Cleaning Up state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "error_handling_flow_state_error_reported_validation",
+      "test_name": "Validate Error Reported state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "error_reported",
+      "requirements": [
+        "REQ-ERROR-001",
+        "REQ-ERROR-002",
+        "REQ-ERROR-003",
+        "REQ-ERROR-004"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Error Reported state",
+          "expected": "System reaches Error Reported state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"error_occurred\":true,\"error_reported\":true,\"error_message\":\"string\",\"error_details\":\"object\",\"user_notified\":true}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for error_handling_flow_state_error_reported_validation\n// Model: error_handling_flow, Element: error_reported\n\ndescribe('error_handling_flow_state_error_reported_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Error Reported state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "error_handling_flow_state_recovery_successful_validation",
+      "test_name": "Validate Recovery Successful state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "recovery_successful",
+      "requirements": [
+        "REQ-ERROR-001",
+        "REQ-ERROR-002",
+        "REQ-ERROR-003",
+        "REQ-ERROR-004"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Recovery Successful state",
+          "expected": "System reaches Recovery Successful state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"error_occurred\":false,\"recovery_completed\":true,\"system_restored\":true,\"operation_can_continue\":true}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for error_handling_flow_state_recovery_successful_validation\n// Model: error_handling_flow, Element: recovery_successful\n\ndescribe('error_handling_flow_state_recovery_successful_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Recovery Successful state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "error_handling_flow_state_recovery_failed_validation",
+      "test_name": "Validate Recovery Failed state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "recovery_failed",
+      "requirements": [
+        "REQ-ERROR-001",
+        "REQ-ERROR-002",
+        "REQ-ERROR-003",
+        "REQ-ERROR-004"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Recovery Failed state",
+          "expected": "System reaches Recovery Failed state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"error_occurred\":true,\"recovery_attempted\":true,\"recovery_failed\":true,\"system_compromised\":true}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for error_handling_flow_state_recovery_failed_validation\n// Model: error_handling_flow, Element: recovery_failed\n\ndescribe('error_handling_flow_state_recovery_failed_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Recovery Failed state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "error_handling_flow_state_system_shutdown_validation",
+      "test_name": "Validate System Shutdown state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "system_shutdown",
+      "requirements": [
+        "REQ-ERROR-001",
+        "REQ-ERROR-002",
+        "REQ-ERROR-003",
+        "REQ-ERROR-004"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to System Shutdown state",
+          "expected": "System reaches System Shutdown state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"system_operational\":false,\"all_resources_cleaned\":true,\"safe_shutdown\":true}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for error_handling_flow_state_system_shutdown_validation\n// Model: error_handling_flow, Element: system_shutdown\n\ndescribe('error_handling_flow_state_system_shutdown_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to System Shutdown state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "error_handling_flow_transition_start_operation",
+      "test_name": "Test transition: Normal Operation → Operation Executing",
+      "test_type": "transition_test",
+      "model_element": "start_operation",
+      "requirements": [
+        "REQ-ERROR-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Normal Operation state",
+          "expected": "System state is normal_operation"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: system_healthy",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: api_call_started",
+          "expected": "Event api_call_started is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: begin_operation_monitoring",
+          "expected": "Action begin_operation_monitoring completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Operation Executing state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "monitored_operations": [
+          "tableFromJSON",
+          "tableFromIPC",
+          "table.toArray",
+          "table.dispose"
+        ]
+      },
+      "browser_test_code": "\n// Generated test for error_handling_flow_transition_start_operation\n// Model: error_handling_flow, Element: start_operation\n\ndescribe('error_handling_flow_transition_start_operation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: normal_operation\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "error_handling_flow_transition_operation_success",
+      "test_name": "Test transition: Operation Executing → Normal Operation",
+      "test_type": "transition_test",
+      "model_element": "operation_success",
+      "requirements": [
+        "REQ-ERROR-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Operation Executing state",
+          "expected": "System state is operation_executing"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: no_error_detected",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: operation_completed",
+          "expected": "Event operation_completed is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: complete_operation",
+          "expected": "Action complete_operation completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Normal Operation state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {},
+      "browser_test_code": "\n// Generated test for error_handling_flow_transition_operation_success\n// Model: error_handling_flow, Element: operation_success\n\ndescribe('error_handling_flow_transition_operation_success', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: operation_executing\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "error_handling_flow_transition_detect_validation_error",
+      "test_name": "Test transition: Operation Executing → Error Detected",
+      "test_type": "transition_test",
+      "model_element": "detect_validation_error",
+      "requirements": [
+        "REQ-ERROR-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Operation Executing state",
+          "expected": "System state is operation_executing"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: true",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: validation_failed",
+          "expected": "Event validation_failed is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: capture_validation_error",
+          "expected": "Action capture_validation_error completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Error Detected state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "validation_errors": [
+          "invalid_json_format",
+          "unsupported_data_type",
+          "schema_mismatch",
+          "null_input_data"
+        ]
+      },
+      "browser_test_code": "\n// Generated test for error_handling_flow_transition_detect_validation_error\n// Model: error_handling_flow, Element: detect_validation_error\n\ndescribe('error_handling_flow_transition_detect_validation_error', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: operation_executing\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "error_handling_flow_transition_detect_memory_error",
+      "test_name": "Test transition: Operation Executing → Error Detected",
+      "test_type": "transition_test",
+      "model_element": "detect_memory_error",
+      "requirements": [
+        "REQ-ERROR-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Operation Executing state",
+          "expected": "System state is operation_executing"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: true",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: memory_error_occurred",
+          "expected": "Event memory_error_occurred is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: capture_memory_error",
+          "expected": "Action capture_memory_error completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Error Detected state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "memory_errors": [
+          "allocation_failed",
+          "out_of_memory",
+          "buffer_overflow",
+          "use_after_free"
+        ]
+      },
+      "browser_test_code": "\n// Generated test for error_handling_flow_transition_detect_memory_error\n// Model: error_handling_flow, Element: detect_memory_error\n\ndescribe('error_handling_flow_transition_detect_memory_error', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: operation_executing\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "error_handling_flow_transition_detect_conversion_error",
+      "test_name": "Test transition: Operation Executing → Error Detected",
+      "test_type": "transition_test",
+      "model_element": "detect_conversion_error",
+      "requirements": [
+        "REQ-ERROR-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Operation Executing state",
+          "expected": "System state is operation_executing"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: true",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: conversion_failed",
+          "expected": "Event conversion_failed is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: capture_conversion_error",
+          "expected": "Action capture_conversion_error completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Error Detected state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "conversion_errors": [
+          "type_conversion_failed",
+          "schema_inference_failed",
+          "ipc_parsing_failed",
+          "data_corruption"
+        ]
+      },
+      "browser_test_code": "\n// Generated test for error_handling_flow_transition_detect_conversion_error\n// Model: error_handling_flow, Element: detect_conversion_error\n\ndescribe('error_handling_flow_transition_detect_conversion_error', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: operation_executing\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "error_handling_flow_transition_start_error_classification",
+      "test_name": "Test transition: Error Detected → Classifying Error",
+      "test_type": "transition_test",
+      "model_element": "start_error_classification",
+      "requirements": [
+        "REQ-ERROR-002"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Error Detected state",
+          "expected": "System state is error_detected"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: true",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: classify_error",
+          "expected": "Event classify_error is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: begin_error_analysis",
+          "expected": "Action begin_error_analysis completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Classifying Error state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "classification_criteria": [
+          "error_severity_assessment",
+          "recovery_possibility_analysis",
+          "system_impact_evaluation"
+        ]
+      },
+      "browser_test_code": "\n// Generated test for error_handling_flow_transition_start_error_classification\n// Model: error_handling_flow, Element: start_error_classification\n\ndescribe('error_handling_flow_transition_start_error_classification', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: error_detected\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "error_handling_flow_transition_classify_as_recoverable",
+      "test_name": "Test transition: Classifying Error → Recoverable Error",
+      "test_type": "transition_test",
+      "model_element": "classify_as_recoverable",
+      "requirements": [
+        "REQ-ERROR-002"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Classifying Error state",
+          "expected": "System state is error_classifying"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: error_is_recoverable",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: classification_complete",
+          "expected": "Event classification_complete is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: set_recovery_strategy",
+          "expected": "Action set_recovery_strategy completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Recoverable Error state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "recoverable_conditions": [
+          "validation_error_with_fallback",
+          "temporary_memory_shortage",
+          "retryable_operation_failure"
+        ]
+      },
+      "browser_test_code": "\n// Generated test for error_handling_flow_transition_classify_as_recoverable\n// Model: error_handling_flow, Element: classify_as_recoverable\n\ndescribe('error_handling_flow_transition_classify_as_recoverable', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: error_classifying\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "error_handling_flow_transition_classify_as_critical",
+      "test_name": "Test transition: Classifying Error → Critical Error",
+      "test_type": "transition_test",
+      "model_element": "classify_as_critical",
+      "requirements": [
+        "REQ-ERROR-002"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Classifying Error state",
+          "expected": "System state is error_classifying"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: error_is_critical",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: classification_complete",
+          "expected": "Event classification_complete is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: mark_system_compromised",
+          "expected": "Action mark_system_compromised completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Critical Error state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "critical_conditions": [
+          "memory_corruption",
+          "wasm_module_crash",
+          "unrecoverable_state",
+          "security_violation"
+        ]
+      },
+      "browser_test_code": "\n// Generated test for error_handling_flow_transition_classify_as_critical\n// Model: error_handling_flow, Element: classify_as_critical\n\ndescribe('error_handling_flow_transition_classify_as_critical', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: error_classifying\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "error_handling_flow_transition_attempt_recovery",
+      "test_name": "Test transition: Recoverable Error → Attempting Recovery",
+      "test_type": "transition_test",
+      "model_element": "attempt_recovery",
+      "requirements": [
+        "REQ-ERROR-003"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Recoverable Error state",
+          "expected": "System state is recoverable_error"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: recovery_strategy_available",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: start_recovery",
+          "expected": "Event start_recovery is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: execute_recovery_procedure",
+          "expected": "Action execute_recovery_procedure completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Attempting Recovery state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "recovery_strategies": [
+          "input_sanitization_retry",
+          "memory_cleanup_retry",
+          "schema_fallback",
+          "graceful_degradation"
+        ]
+      },
+      "browser_test_code": "\n// Generated test for error_handling_flow_transition_attempt_recovery\n// Model: error_handling_flow, Element: attempt_recovery\n\ndescribe('error_handling_flow_transition_attempt_recovery', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: recoverable_error\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "error_handling_flow_transition_recovery_succeeded",
+      "test_name": "Test transition: Attempting Recovery → Recovery Successful",
+      "test_type": "transition_test",
+      "model_element": "recovery_succeeded",
+      "requirements": [
+        "REQ-ERROR-003"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Attempting Recovery state",
+          "expected": "System state is recovering"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: system_restored",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: recovery_complete",
+          "expected": "Event recovery_complete is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: restore_normal_state",
+          "expected": "Action restore_normal_state completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Recovery Successful state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "success_indicators": [
+          "operation_can_retry",
+          "memory_stable",
+          "handles_valid",
+          "api_responsive"
+        ]
+      },
+      "browser_test_code": "\n// Generated test for error_handling_flow_transition_recovery_succeeded\n// Model: error_handling_flow, Element: recovery_succeeded\n\ndescribe('error_handling_flow_transition_recovery_succeeded', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: recovering\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "error_handling_flow_transition_recovery_failed_attempt",
+      "test_name": "Test transition: Attempting Recovery → Recovery Failed",
+      "test_type": "transition_test",
+      "model_element": "recovery_failed_attempt",
+      "requirements": [
+        "REQ-ERROR-003"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Attempting Recovery state",
+          "expected": "System state is recovering"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: recovery_unsuccessful",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: recovery_failed",
+          "expected": "Event recovery_failed is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: mark_recovery_failure",
+          "expected": "Action mark_recovery_failure completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Recovery Failed state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "failure_conditions": [
+          "retry_limit_exceeded",
+          "resources_exhausted",
+          "state_corruption_detected",
+          "cascading_failures"
+        ]
+      },
+      "browser_test_code": "\n// Generated test for error_handling_flow_transition_recovery_failed_attempt\n// Model: error_handling_flow, Element: recovery_failed_attempt\n\ndescribe('error_handling_flow_transition_recovery_failed_attempt', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: recovering\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "error_handling_flow_transition_require_cleanup_from_critical",
+      "test_name": "Test transition: Critical Error → Cleanup Required",
+      "test_type": "transition_test",
+      "model_element": "require_cleanup_from_critical",
+      "requirements": [
+        "REQ-ERROR-004"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Critical Error state",
+          "expected": "System state is critical_error"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: true",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: assess_cleanup_needs",
+          "expected": "Event assess_cleanup_needs is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: identify_cleanup_requirements",
+          "expected": "Action identify_cleanup_requirements completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Cleanup Required state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "cleanup_scenarios": [
+          "dispose_all_tables",
+          "free_leaked_memory",
+          "reset_handle_registry",
+          "clear_error_state"
+        ]
+      },
+      "browser_test_code": "\n// Generated test for error_handling_flow_transition_require_cleanup_from_critical\n// Model: error_handling_flow, Element: require_cleanup_from_critical\n\ndescribe('error_handling_flow_transition_require_cleanup_from_critical', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: critical_error\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "error_handling_flow_transition_require_cleanup_from_recovery_failed",
+      "test_name": "Test transition: Recovery Failed → Cleanup Required",
+      "test_type": "transition_test",
+      "model_element": "require_cleanup_from_recovery_failed",
+      "requirements": [
+        "REQ-ERROR-004"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Recovery Failed state",
+          "expected": "System state is recovery_failed"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: true",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: assess_cleanup_needs",
+          "expected": "Event assess_cleanup_needs is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: identify_cleanup_requirements",
+          "expected": "Action identify_cleanup_requirements completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Cleanup Required state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {},
+      "browser_test_code": "\n// Generated test for error_handling_flow_transition_require_cleanup_from_recovery_failed\n// Model: error_handling_flow, Element: require_cleanup_from_recovery_failed\n\ndescribe('error_handling_flow_transition_require_cleanup_from_recovery_failed', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: recovery_failed\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "error_handling_flow_transition_start_cleanup",
+      "test_name": "Test transition: Cleanup Required → Cleaning Up",
+      "test_type": "transition_test",
+      "model_element": "start_cleanup",
+      "requirements": [
+        "REQ-ERROR-004"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Cleanup Required state",
+          "expected": "System state is cleanup_required"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: true",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: begin_cleanup",
+          "expected": "Event begin_cleanup is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: execute_cleanup_procedure",
+          "expected": "Action execute_cleanup_procedure completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Cleaning Up state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "cleanup_procedures": [
+          "emergency_memory_cleanup",
+          "handle_registry_reset",
+          "partial_state_recovery",
+          "safe_shutdown_preparation"
+        ]
+      },
+      "browser_test_code": "\n// Generated test for error_handling_flow_transition_start_cleanup\n// Model: error_handling_flow, Element: start_cleanup\n\ndescribe('error_handling_flow_transition_start_cleanup', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: cleanup_required\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "error_handling_flow_transition_report_recoverable_error",
+      "test_name": "Test transition: Recoverable Error → Error Reported",
+      "test_type": "transition_test",
+      "model_element": "report_recoverable_error",
+      "requirements": [
+        "REQ-ERROR-002"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Recoverable Error state",
+          "expected": "System state is recoverable_error"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: true",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: report_error",
+          "expected": "Event report_error is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: generate_error_report",
+          "expected": "Action generate_error_report completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Error Reported state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "report_contents": [
+          "error_code_and_message",
+          "operation_context",
+          "recovery_instructions",
+          "troubleshooting_info"
+        ]
+      },
+      "browser_test_code": "\n// Generated test for error_handling_flow_transition_report_recoverable_error\n// Model: error_handling_flow, Element: report_recoverable_error\n\ndescribe('error_handling_flow_transition_report_recoverable_error', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: recoverable_error\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "error_handling_flow_transition_report_critical_error",
+      "test_name": "Test transition: Critical Error → Error Reported",
+      "test_type": "transition_test",
+      "model_element": "report_critical_error",
+      "requirements": [
+        "REQ-ERROR-002"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Critical Error state",
+          "expected": "System state is critical_error"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: true",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: report_error",
+          "expected": "Event report_error is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: generate_critical_error_report",
+          "expected": "Action generate_critical_error_report completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Error Reported state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "critical_report_contents": [
+          "detailed_error_analysis",
+          "system_state_snapshot",
+          "failure_timeline",
+          "recommended_actions"
+        ]
+      },
+      "browser_test_code": "\n// Generated test for error_handling_flow_transition_report_critical_error\n// Model: error_handling_flow, Element: report_critical_error\n\ndescribe('error_handling_flow_transition_report_critical_error', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: critical_error\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "error_handling_flow_transition_cleanup_successful",
+      "test_name": "Test transition: Cleaning Up → Error Reported",
+      "test_type": "transition_test",
+      "model_element": "cleanup_successful",
+      "requirements": [
+        "REQ-ERROR-004"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Cleaning Up state",
+          "expected": "System state is cleaning_up"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: cleanup_successful",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: cleanup_complete",
+          "expected": "Event cleanup_complete is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: finalize_error_handling",
+          "expected": "Action finalize_error_handling completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Error Reported state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {},
+      "browser_test_code": "\n// Generated test for error_handling_flow_transition_cleanup_successful\n// Model: error_handling_flow, Element: cleanup_successful\n\ndescribe('error_handling_flow_transition_cleanup_successful', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: cleaning_up\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "error_handling_flow_transition_cleanup_failed_shutdown",
+      "test_name": "Test transition: Cleaning Up → System Shutdown",
+      "test_type": "transition_test",
+      "model_element": "cleanup_failed_shutdown",
+      "requirements": [
+        "REQ-ERROR-004"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Cleaning Up state",
+          "expected": "System state is cleaning_up"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: cleanup_impossible",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: cleanup_failed",
+          "expected": "Event cleanup_failed is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: initiate_emergency_shutdown",
+          "expected": "Action initiate_emergency_shutdown completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to System Shutdown state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "shutdown_triggers": [
+          "memory_corruption_unrecoverable",
+          "infinite_error_loop",
+          "resource_exhaustion",
+          "security_breach"
+        ]
+      },
+      "browser_test_code": "\n// Generated test for error_handling_flow_transition_cleanup_failed_shutdown\n// Model: error_handling_flow, Element: cleanup_failed_shutdown\n\ndescribe('error_handling_flow_transition_cleanup_failed_shutdown', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: cleaning_up\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "error_handling_flow_transition_return_to_normal",
+      "test_name": "Test transition: Recovery Successful → Normal Operation",
+      "test_type": "transition_test",
+      "model_element": "return_to_normal",
+      "requirements": [
+        "REQ-ERROR-003"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Recovery Successful state",
+          "expected": "System state is recovery_successful"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: system_fully_restored",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: resume_operations",
+          "expected": "Event resume_operations is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: reset_error_state",
+          "expected": "Action reset_error_state completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Normal Operation state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {},
+      "browser_test_code": "\n// Generated test for error_handling_flow_transition_return_to_normal\n// Model: error_handling_flow, Element: return_to_normal\n\ndescribe('error_handling_flow_transition_return_to_normal', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: recovery_successful\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "error_handling_flow_transition_shutdown_from_critical",
+      "test_name": "Test transition: Critical Error → System Shutdown",
+      "test_type": "transition_test",
+      "model_element": "shutdown_from_critical",
+      "requirements": [
+        "REQ-ERROR-004"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Critical Error state",
+          "expected": "System state is critical_error"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: system_unrecoverable",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: emergency_shutdown",
+          "expected": "Event emergency_shutdown is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: immediate_shutdown",
+          "expected": "Action immediate_shutdown completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to System Shutdown state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {},
+      "browser_test_code": "\n// Generated test for error_handling_flow_transition_shutdown_from_critical\n// Model: error_handling_flow, Element: shutdown_from_critical\n\ndescribe('error_handling_flow_transition_shutdown_from_critical', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: critical_error\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    }
+  ]
+}

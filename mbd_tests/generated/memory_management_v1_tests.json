@@ -1,0 +1,748 @@
+{
+  "model_id": "memory_management_v1",
+  "model_type": "state_machine",
+  "generated_at": "2025-09-28T11:18:56.504Z",
+  "test_cases": [
+    {
+      "test_id": "memory_management_v1_state_untracked_validation",
+      "test_name": "Validate Untracked state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "untracked",
+      "requirements": [],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Untracked state",
+          "expected": "System reaches Untracked state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"memory_limit_set\":false,\"allocations_tracked\":false,\"total_used_bytes\":0,\"table_count\":0}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for memory_management_v1_state_untracked_validation\n// Model: memory_management_v1, Element: untracked\n\ndescribe('memory_management_v1_state_untracked_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Untracked state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "memory_management_v1_state_configured_validation",
+      "test_name": "Validate Configured state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "configured",
+      "requirements": [],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Configured state",
+          "expected": "System reaches Configured state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"memory_limit_set\":true,\"allocations_tracked\":true,\"total_used_bytes\":0,\"table_count\":0,\"can_allocate\":true}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for memory_management_v1_state_configured_validation\n// Model: memory_management_v1, Element: configured\n\ndescribe('memory_management_v1_state_configured_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Configured state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "memory_management_v1_state_allocated_validation",
+      "test_name": "Validate Allocated state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "allocated",
+      "requirements": [],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Allocated state",
+          "expected": "System reaches Allocated state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"memory_limit_set\":true,\"allocations_tracked\":true,\"total_used_bytes\":\"> 0\",\"table_count\":\"> 0\",\"can_allocate\":\"depends_on_remaining_space\"}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for memory_management_v1_state_allocated_validation\n// Model: memory_management_v1, Element: allocated\n\ndescribe('memory_management_v1_state_allocated_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Allocated state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "memory_management_v1_state_at_limit_validation",
+      "test_name": "Validate At Limit state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "at_limit",
+      "requirements": [],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to At Limit state",
+          "expected": "System reaches At Limit state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"memory_limit_set\":true,\"allocations_tracked\":true,\"total_used_bytes\":\"near_or_at_max_bytes\",\"table_count\":\"> 0\",\"can_allocate\":false}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for memory_management_v1_state_at_limit_validation\n// Model: memory_management_v1, Element: at_limit\n\ndescribe('memory_management_v1_state_at_limit_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to At Limit state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "memory_management_v1_state_reset_validation",
+      "test_name": "Validate Reset state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "reset",
+      "requirements": [],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Reset state",
+          "expected": "System reaches Reset state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"memory_limit_set\":false,\"allocations_tracked\":false,\"total_used_bytes\":0,\"table_count\":0}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for memory_management_v1_state_reset_validation\n// Model: memory_management_v1, Element: reset\n\ndescribe('memory_management_v1_state_reset_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Reset state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "memory_management_v1_transition_initialize_memory_tracker",
+      "test_name": "Test transition: Untracked → Configured",
+      "test_type": "transition_test",
+      "model_element": "initialize_memory_tracker",
+      "requirements": [
+        "REQ-201",
+        "REQ-202"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Untracked state",
+          "expected": "System state is untracked"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: valid_memory_limit_mb provided",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: init_wasm_module",
+          "expected": "Event init_wasm_module is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: set_memory_limit, initialize_allocation_tracking",
+          "expected": "Action set_memory_limit, initialize_allocation_tracking completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Configured state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {},
+      "browser_test_code": "\n// Generated test for memory_management_v1_transition_initialize_memory_tracker\n// Model: memory_management_v1, Element: initialize_memory_tracker\n\ndescribe('memory_management_v1_transition_initialize_memory_tracker', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: untracked\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "memory_management_v1_transition_first_allocation",
+      "test_name": "Test transition: Configured → Allocated",
+      "test_type": "transition_test",
+      "model_element": "first_allocation",
+      "requirements": [
+        "REQ-203",
+        "REQ-204"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Configured state",
+          "expected": "System state is configured"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: allocation_size <= available_memory",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: register_table",
+          "expected": "Event register_table is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: allocate_memory, track_allocation, update_stats",
+          "expected": "Action allocate_memory, track_allocation, update_stats completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Allocated state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {},
+      "browser_test_code": "\n// Generated test for memory_management_v1_transition_first_allocation\n// Model: memory_management_v1, Element: first_allocation\n\ndescribe('memory_management_v1_transition_first_allocation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: configured\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "memory_management_v1_transition_additional_allocation",
+      "test_name": "Test transition: Allocated → Allocated",
+      "test_type": "transition_test",
+      "model_element": "additional_allocation",
+      "requirements": [
+        "REQ-203",
+        "REQ-204"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Allocated state",
+          "expected": "System state is allocated"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: allocation_size <= remaining_memory",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: register_table",
+          "expected": "Event register_table is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: allocate_memory, track_allocation, update_stats",
+          "expected": "Action allocate_memory, track_allocation, update_stats completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Allocated state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {},
+      "browser_test_code": "\n// Generated test for memory_management_v1_transition_additional_allocation\n// Model: memory_management_v1, Element: additional_allocation\n\ndescribe('memory_management_v1_transition_additional_allocation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: allocated\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "memory_management_v1_transition_reach_memory_limit",
+      "test_name": "Test transition: Allocated → At Limit",
+      "test_type": "transition_test",
+      "model_element": "reach_memory_limit",
+      "requirements": [
+        "REQ-205"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Allocated state",
+          "expected": "System state is allocated"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: allocation_would_exceed_limit",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: register_table",
+          "expected": "Event register_table is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: reject_allocation, return_memory_limit_error",
+          "expected": "Action reject_allocation, return_memory_limit_error completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to At Limit state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {},
+      "browser_test_code": "\n// Generated test for memory_management_v1_transition_reach_memory_limit\n// Model: memory_management_v1, Element: reach_memory_limit\n\ndescribe('memory_management_v1_transition_reach_memory_limit', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: allocated\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "memory_management_v1_transition_attempt_allocation_at_limit",
+      "test_name": "Test transition: At Limit → At Limit",
+      "test_type": "transition_test",
+      "model_element": "attempt_allocation_at_limit",
+      "requirements": [
+        "REQ-205"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in At Limit state",
+          "expected": "System state is at_limit"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: any_new_allocation",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: register_table",
+          "expected": "Event register_table is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: reject_allocation, return_memory_limit_error",
+          "expected": "Action reject_allocation, return_memory_limit_error completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to At Limit state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {},
+      "browser_test_code": "\n// Generated test for memory_management_v1_transition_attempt_allocation_at_limit\n// Model: memory_management_v1, Element: attempt_allocation_at_limit\n\ndescribe('memory_management_v1_transition_attempt_allocation_at_limit', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: at_limit\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "memory_management_v1_transition_deallocate_from_allocated",
+      "test_name": "Test transition: Allocated → Allocated",
+      "test_type": "transition_test",
+      "model_element": "deallocate_from_allocated",
+      "requirements": [
+        "REQ-206"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Allocated state",
+          "expected": "System state is allocated"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: table_handle_exists",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: release_table",
+          "expected": "Event release_table is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: deallocate_memory, remove_tracking, update_stats",
+          "expected": "Action deallocate_memory, remove_tracking, update_stats completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Allocated state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {},
+      "browser_test_code": "\n// Generated test for memory_management_v1_transition_deallocate_from_allocated\n// Model: memory_management_v1, Element: deallocate_from_allocated\n\ndescribe('memory_management_v1_transition_deallocate_from_allocated', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: allocated\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "memory_management_v1_transition_deallocate_from_limit",
+      "test_name": "Test transition: At Limit → Allocated",
+      "test_type": "transition_test",
+      "model_element": "deallocate_from_limit",
+      "requirements": [
+        "REQ-206"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in At Limit state",
+          "expected": "System state is at_limit"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: table_handle_exists",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: release_table",
+          "expected": "Event release_table is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: deallocate_memory, remove_tracking, update_stats",
+          "expected": "Action deallocate_memory, remove_tracking, update_stats completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Allocated state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {},
+      "browser_test_code": "\n// Generated test for memory_management_v1_transition_deallocate_from_limit\n// Model: memory_management_v1, Element: deallocate_from_limit\n\ndescribe('memory_management_v1_transition_deallocate_from_limit', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: at_limit\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "memory_management_v1_transition_deallocate_last_table",
+      "test_name": "Test transition: Allocated → Configured",
+      "test_type": "transition_test",
+      "model_element": "deallocate_last_table",
+      "requirements": [
+        "REQ-206"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Allocated state",
+          "expected": "System state is allocated"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: last_table_being_released",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: release_table",
+          "expected": "Event release_table is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: deallocate_memory, remove_tracking, reset_usage_stats",
+          "expected": "Action deallocate_memory, remove_tracking, reset_usage_stats completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Configured state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {},
+      "browser_test_code": "\n// Generated test for memory_management_v1_transition_deallocate_last_table\n// Model: memory_management_v1, Element: deallocate_last_table\n\ndescribe('memory_management_v1_transition_deallocate_last_table', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: allocated\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "memory_management_v1_transition_reset_memory_system",
+      "test_name": "Test transition: Configured → Reset",
+      "test_type": "transition_test",
+      "model_element": "reset_memory_system",
+      "requirements": [
+        "REQ-207"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Configured state",
+          "expected": "System state is configured"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: none",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: dispose_wasm_module",
+          "expected": "Event dispose_wasm_module is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: reset_memory_tracker, clear_all_allocations",
+          "expected": "Action reset_memory_tracker, clear_all_allocations completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Reset state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {},
+      "browser_test_code": "\n// Generated test for memory_management_v1_transition_reset_memory_system\n// Model: memory_management_v1, Element: reset_memory_system\n\ndescribe('memory_management_v1_transition_reset_memory_system', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: configured\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "memory_management_v1_transition_reset_from_allocated",
+      "test_name": "Test transition: Allocated → Reset",
+      "test_type": "transition_test",
+      "model_element": "reset_from_allocated",
+      "requirements": [
+        "REQ-207"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Allocated state",
+          "expected": "System state is allocated"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: none",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: dispose_wasm_module",
+          "expected": "Event dispose_wasm_module is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: force_release_all_tables, reset_memory_tracker",
+          "expected": "Action force_release_all_tables, reset_memory_tracker completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Reset state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {},
+      "browser_test_code": "\n// Generated test for memory_management_v1_transition_reset_from_allocated\n// Model: memory_management_v1, Element: reset_from_allocated\n\ndescribe('memory_management_v1_transition_reset_from_allocated', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: allocated\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "memory_management_v1_transition_reset_from_limit",
+      "test_name": "Test transition: At Limit → Reset",
+      "test_type": "transition_test",
+      "model_element": "reset_from_limit",
+      "requirements": [
+        "REQ-207"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in At Limit state",
+          "expected": "System state is at_limit"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: none",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: dispose_wasm_module",
+          "expected": "Event dispose_wasm_module is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: force_release_all_tables, reset_memory_tracker",
+          "expected": "Action force_release_all_tables, reset_memory_tracker completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Reset state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {},
+      "browser_test_code": "\n// Generated test for memory_management_v1_transition_reset_from_limit\n// Model: memory_management_v1, Element: reset_from_limit\n\ndescribe('memory_management_v1_transition_reset_from_limit', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: at_limit\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "memory_management_v1_transition_invalid_deallocation",
+      "test_name": "Test transition: Allocated → Allocated",
+      "test_type": "transition_test",
+      "model_element": "invalid_deallocation",
+      "requirements": [
+        "REQ-208"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Allocated state",
+          "expected": "System state is allocated"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: invalid_table_handle",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: release_table",
+          "expected": "Event release_table is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: return_invalid_handle_error, no_memory_change",
+          "expected": "Action return_invalid_handle_error, no_memory_change completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Allocated state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {},
+      "browser_test_code": "\n// Generated test for memory_management_v1_transition_invalid_deallocation\n// Model: memory_management_v1, Element: invalid_deallocation\n\ndescribe('memory_management_v1_transition_invalid_deallocation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: allocated\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "memory_management_v1_transition_invalid_deallocation_at_limit",
+      "test_name": "Test transition: At Limit → At Limit",
+      "test_type": "transition_test",
+      "model_element": "invalid_deallocation_at_limit",
+      "requirements": [
+        "REQ-208"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in At Limit state",
+          "expected": "System state is at_limit"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: invalid_table_handle",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: release_table",
+          "expected": "Event release_table is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: return_invalid_handle_error, no_memory_change",
+          "expected": "Action return_invalid_handle_error, no_memory_change completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to At Limit state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {},
+      "browser_test_code": "\n// Generated test for memory_management_v1_transition_invalid_deallocation_at_limit\n// Model: memory_management_v1, Element: invalid_deallocation_at_limit\n\ndescribe('memory_management_v1_transition_invalid_deallocation_at_limit', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: at_limit\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    }
+  ]
+}

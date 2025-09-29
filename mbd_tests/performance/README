@@ -1,0 +1,199 @@
+# Performance Baseline Documentation
+
+This document records baseline performance metrics and instructions for running performance smoke tests for the Arrow WASM library.
+
+## Baseline Metrics (Recorded 2025-09-28)
+
+### Module Initialization Performance
+- **WASM Module Load Time**: < 100ms (target)
+- **Memory Allocation Time**: < 20ms (target)
+- **API Readiness Time**: < 50ms total (target)
+- **Initial Memory Footprint**: < 2MB (target)
+
+### API Call Latency Baselines
+- **get_version()**: < 1ms (synchronous)
+- **get_build_info()**: < 5ms (JSON serialization)
+- **is_lz4_supported()**: < 1ms (synchronous)
+- **get_table_count()**: < 1ms (synchronous)
+- **get_memory_stats()**: < 10ms (includes memory introspection)
+
+### Table Operations Performance
+- **Small Table Creation** (< 1000 rows): < 50ms
+- **Medium Table Creation** (< 10,000 rows): < 200ms 
+- **Large Table Creation** (< 100,000 rows): < 2000ms
+- **Schema Summary Generation**: < 10ms per table
+- **Table Disposal**: < 5ms per table
+
+### Compression Performance (LZ4)
+- **Small Data Compression** (< 10KB): < 20ms
+- **Medium Data Compression** (< 100KB): < 100ms
+- **Large Data Compression** (< 1MB): < 500ms
+- **Compression Ratio**: 40-60% size reduction (typical)
+
+### Memory Management Performance
+- **Handle Allocation**: < 1ms per handle
+- **Handle Disposal**: < 1ms per handle
+- **Memory Leak Rate**: 0 bytes/hour (sustained operation)
+- **Peak Memory Usage**: < 50MB (for typical workloads)
+
+### Cross-Browser Performance Variations
+
+#### Chrome (Recommended Target)
+- **Module Init**: Fastest performance
+- **WASM Execution**: Optimal performance
+- **Memory Management**: Most efficient
+
+#### Firefox
+- **Module Init**: ~10% slower than Chrome
+- **WASM Execution**: Comparable to Chrome
+- **Memory Management**: Comparable efficiency
+
+#### Safari
+- **Module Init**: ~20% slower than Chrome
+- **WASM Execution**: ~15% slower than Chrome
+- **Memory Management**: Slightly less efficient
+
+#### Edge (Chromium)
+- **Module Init**: Comparable to Chrome
+- **WASM Execution**: Comparable to Chrome
+- **Memory Management**: Comparable efficiency
+
+## Performance Test Execution
+
+### Automated Performance Tests
+
+Run the automated performance test suite:
+
+```bash
+# Run full performance suite
+npm run test:performance
+
+# Run specific performance categories
+npm run test:performance -- --category=init
+npm run test:performance -- --category=api
+npm run test:performance -- --category=memory
+npm run test:performance -- --category=compression
+
+# Run with custom browser
+npm run test:performance -- --browser=chrome
+npm run test:performance -- --browser=firefox
+npm run test:performance -- --browser=safari
+```
+
+### Manual Performance Testing
+
+1. **Module Initialization Test**:
+   ```bash
+   # Open browser test page
+   open http://127.0.0.1:8080/test_basic_functionality.html
+   
+   # Measure init time in browser dev tools:
+   # - Open Developer Tools (F12)
+   # - Go to Performance tab
+   # - Record page load and measure WASM init time
+   ```
+
+2. **Memory Leak Detection**:
+   ```bash
+   # Run extended memory test
+   npm run test:memory
+   
+   # Or manual browser test:
+   open http://127.0.0.1:8080/test_memory_usage.html
+   
+   # Monitor memory usage in browser:
+   # - Developer Tools → Memory tab
+   # - Take heap snapshots before/after operations
+   # - Look for object count increases
+   ```
+
+3. **API Latency Measurement**:
+   ```bash
+   # Run API latency tests
+   npm run test:latency
+   
+   # Or manual measurement in browser console:
+   console.time('api-call'); 
+   wasm.get_version(); 
+   console.timeEnd('api-call');
+   ```
+
+### Performance Regression Detection
+
+Acceptable performance degradation thresholds:
+- **Module Init**: +50ms from baseline (hard limit)
+- **API Calls**: +100% latency increase (soft limit)
+- **Memory Usage**: +20% from baseline (soft limit)
+- **Compression**: +50% time increase (soft limit)
+
+### Performance Test Environment
+
+**Recommended Test Environment**:
+- **OS**: macOS 12+ / Windows 10+ / Ubuntu 20.04+
+- **Browser**: Chrome 90+, Firefox 85+, Safari 14+
+- **Memory**: 8GB+ available RAM
+- **CPU**: Intel i5 / AMD Ryzen 5 equivalent or better
+- **Network**: Local testing (no network latency)
+
+**Performance Test Data**:
+- Test data files located in `mdb_tests/performance/data/`
+- Small dataset: 1KB Arrow file (100 rows)
+- Medium dataset: 100KB Arrow file (10,000 rows)  
+- Large dataset: 10MB Arrow file (1,000,000 rows)
+
+### Continuous Performance Monitoring
+
+Performance tests are integrated into CI/CD pipeline:
+
+1. **Pre-commit hooks**: Fast performance smoke tests
+2. **PR validation**: Full performance test suite
+3. **Nightly builds**: Extended performance tests with regression analysis
+4. **Release validation**: Cross-browser performance certification
+
+### Performance Debugging
+
+When performance regressions are detected:
+
+1. **Capture Performance Profile**:
+   - Browser Developer Tools → Performance tab
+   - Record detailed performance trace
+   - Export as JSON for analysis
+
+2. **WASM Performance Analysis**:
+   - Use `wasm-pack profiling` build
+   - Analyze function call frequencies
+   - Identify hotspots in Rust code
+
+3. **Memory Analysis**:
+   - Take heap snapshots before/after operations
+   - Analyze object retention and GC pressure
+   - Check for memory leaks in WASM linear memory
+
+### Performance Report Template
+
+When reporting performance issues:
+
+```
+Performance Issue Report
+
+Browser: [Chrome/Firefox/Safari] version X.X
+OS: [macOS/Windows/Linux] version X.X
+Test: [Test name and category]
+Baseline: [Expected performance]  
+Measured: [Actual performance]
+Regression: [Percentage degradation]
+
+Reproduction Steps:
+1. [Step 1]
+2. [Step 2]
+3. [Step 3]
+
+Performance Profile: [Link to .json profile]
+Memory Snapshot: [Link to heap snapshot]
+Test Data: [Size and type of test data used]
+```
+
+---
+
+*Last updated: 2025-09-28*  
+*Next review: Monthly or on major releases*

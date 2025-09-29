@@ -1,0 +1,3025 @@
+[
+  {
+    "requirement_ids": [
+      "REQ-CONV-001",
+      "REQ-CONV-002",
+      "REQ-CONV-003",
+      "REQ-API-001"
+    ],
+    "model_id": "data_conversion_flow",
+    "model_element": "initial",
+    "test_id": "data_conversion_flow_state_initial_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.485Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-CONV-001",
+      "REQ-CONV-002",
+      "REQ-CONV-003",
+      "REQ-API-001"
+    ],
+    "model_id": "data_conversion_flow",
+    "model_element": "json_input_received",
+    "test_id": "data_conversion_flow_state_json_input_received_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.485Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-CONV-001",
+      "REQ-CONV-002",
+      "REQ-CONV-003",
+      "REQ-API-001"
+    ],
+    "model_id": "data_conversion_flow",
+    "model_element": "ipc_input_received",
+    "test_id": "data_conversion_flow_state_ipc_input_received_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.485Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-CONV-001",
+      "REQ-CONV-002",
+      "REQ-CONV-003",
+      "REQ-API-001"
+    ],
+    "model_id": "data_conversion_flow",
+    "model_element": "json_validating",
+    "test_id": "data_conversion_flow_state_json_validating_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.485Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-CONV-001",
+      "REQ-CONV-002",
+      "REQ-CONV-003",
+      "REQ-API-001"
+    ],
+    "model_id": "data_conversion_flow",
+    "model_element": "ipc_validating",
+    "test_id": "data_conversion_flow_state_ipc_validating_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.485Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-CONV-001",
+      "REQ-CONV-002",
+      "REQ-CONV-003",
+      "REQ-API-001"
+    ],
+    "model_id": "data_conversion_flow",
+    "model_element": "json_validated",
+    "test_id": "data_conversion_flow_state_json_validated_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.485Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-CONV-001",
+      "REQ-CONV-002",
+      "REQ-CONV-003",
+      "REQ-API-001"
+    ],
+    "model_id": "data_conversion_flow",
+    "model_element": "ipc_validated",
+    "test_id": "data_conversion_flow_state_ipc_validated_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.485Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-CONV-001",
+      "REQ-CONV-002",
+      "REQ-CONV-003",
+      "REQ-API-001"
+    ],
+    "model_id": "data_conversion_flow",
+    "model_element": "schema_inferring",
+    "test_id": "data_conversion_flow_state_schema_inferring_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.485Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-CONV-001",
+      "REQ-CONV-002",
+      "REQ-CONV-003",
+      "REQ-API-001"
+    ],
+    "model_id": "data_conversion_flow",
+    "model_element": "schema_parsing",
+    "test_id": "data_conversion_flow_state_schema_parsing_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.485Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-CONV-001",
+      "REQ-CONV-002",
+      "REQ-CONV-003",
+      "REQ-API-001"
+    ],
+    "model_id": "data_conversion_flow",
+    "model_element": "schema_ready",
+    "test_id": "data_conversion_flow_state_schema_ready_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.485Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-CONV-001",
+      "REQ-CONV-002",
+      "REQ-CONV-003",
+      "REQ-API-001"
+    ],
+    "model_id": "data_conversion_flow",
+    "model_element": "converting_to_arrow",
+    "test_id": "data_conversion_flow_state_converting_to_arrow_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.485Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-CONV-001",
+      "REQ-CONV-002",
+      "REQ-CONV-003",
+      "REQ-API-001"
+    ],
+    "model_id": "data_conversion_flow",
+    "model_element": "arrow_created",
+    "test_id": "data_conversion_flow_state_arrow_created_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.485Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-CONV-001",
+      "REQ-CONV-002",
+      "REQ-CONV-003",
+      "REQ-API-001"
+    ],
+    "model_id": "data_conversion_flow",
+    "model_element": "converting_to_js",
+    "test_id": "data_conversion_flow_state_converting_to_js_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.485Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-CONV-001",
+      "REQ-CONV-002",
+      "REQ-CONV-003",
+      "REQ-API-001"
+    ],
+    "model_id": "data_conversion_flow",
+    "model_element": "js_array_ready",
+    "test_id": "data_conversion_flow_state_js_array_ready_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.485Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-CONV-001",
+      "REQ-CONV-002",
+      "REQ-CONV-003",
+      "REQ-API-001"
+    ],
+    "model_id": "data_conversion_flow",
+    "model_element": "converting_to_ipc",
+    "test_id": "data_conversion_flow_state_converting_to_ipc_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.485Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-CONV-001",
+      "REQ-CONV-002",
+      "REQ-CONV-003",
+      "REQ-API-001"
+    ],
+    "model_id": "data_conversion_flow",
+    "model_element": "ipc_buffer_ready",
+    "test_id": "data_conversion_flow_state_ipc_buffer_ready_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.485Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-CONV-001",
+      "REQ-CONV-002",
+      "REQ-CONV-003",
+      "REQ-API-001"
+    ],
+    "model_id": "data_conversion_flow",
+    "model_element": "validation_error",
+    "test_id": "data_conversion_flow_state_validation_error_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.485Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-CONV-001",
+      "REQ-CONV-002",
+      "REQ-CONV-003",
+      "REQ-API-001"
+    ],
+    "model_id": "data_conversion_flow",
+    "model_element": "conversion_error",
+    "test_id": "data_conversion_flow_state_conversion_error_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.485Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-CONV-001",
+      "REQ-CONV-002",
+      "REQ-CONV-003",
+      "REQ-API-001"
+    ],
+    "model_id": "data_conversion_flow",
+    "model_element": "memory_error",
+    "test_id": "data_conversion_flow_state_memory_error_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.485Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-CONV-001",
+      "REQ-CONV-002",
+      "REQ-CONV-003",
+      "REQ-API-001"
+    ],
+    "model_id": "data_conversion_flow",
+    "model_element": "receive_json_input",
+    "test_id": "data_conversion_flow_transition_receive_json_input",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.485Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-CONV-001",
+      "REQ-CONV-002",
+      "REQ-CONV-003",
+      "REQ-API-001"
+    ],
+    "model_id": "data_conversion_flow",
+    "model_element": "receive_ipc_input",
+    "test_id": "data_conversion_flow_transition_receive_ipc_input",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.485Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-CONV-001",
+      "REQ-CONV-002",
+      "REQ-CONV-003",
+      "REQ-API-001"
+    ],
+    "model_id": "data_conversion_flow",
+    "model_element": "start_json_validation",
+    "test_id": "data_conversion_flow_transition_start_json_validation",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.485Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-CONV-001",
+      "REQ-CONV-002",
+      "REQ-CONV-003",
+      "REQ-API-001"
+    ],
+    "model_id": "data_conversion_flow",
+    "model_element": "start_ipc_validation",
+    "test_id": "data_conversion_flow_transition_start_ipc_validation",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.485Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-CONV-001",
+      "REQ-CONV-002",
+      "REQ-CONV-003",
+      "REQ-API-001"
+    ],
+    "model_id": "data_conversion_flow",
+    "model_element": "json_validation_success",
+    "test_id": "data_conversion_flow_transition_json_validation_success",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.485Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-CONV-001",
+      "REQ-CONV-002",
+      "REQ-CONV-003",
+      "REQ-API-001"
+    ],
+    "model_id": "data_conversion_flow",
+    "model_element": "ipc_validation_success",
+    "test_id": "data_conversion_flow_transition_ipc_validation_success",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.485Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-CONV-001",
+      "REQ-CONV-002",
+      "REQ-CONV-003",
+      "REQ-API-001"
+    ],
+    "model_id": "data_conversion_flow",
+    "model_element": "json_validation_failed",
+    "test_id": "data_conversion_flow_transition_json_validation_failed",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.485Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-CONV-001",
+      "REQ-CONV-002",
+      "REQ-CONV-003",
+      "REQ-API-001"
+    ],
+    "model_id": "data_conversion_flow",
+    "model_element": "ipc_validation_failed",
+    "test_id": "data_conversion_flow_transition_ipc_validation_failed",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.485Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-CONV-001",
+      "REQ-CONV-002",
+      "REQ-CONV-003",
+      "REQ-API-001"
+    ],
+    "model_id": "data_conversion_flow",
+    "model_element": "start_schema_inference",
+    "test_id": "data_conversion_flow_transition_start_schema_inference",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.485Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-CONV-001",
+      "REQ-CONV-002",
+      "REQ-CONV-003",
+      "REQ-API-001"
+    ],
+    "model_id": "data_conversion_flow",
+    "model_element": "start_schema_parsing",
+    "test_id": "data_conversion_flow_transition_start_schema_parsing",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.485Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-CONV-001",
+      "REQ-CONV-002",
+      "REQ-CONV-003",
+      "REQ-API-001"
+    ],
+    "model_id": "data_conversion_flow",
+    "model_element": "schema_inference_success",
+    "test_id": "data_conversion_flow_transition_schema_inference_success",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.485Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-CONV-001",
+      "REQ-CONV-002",
+      "REQ-CONV-003",
+      "REQ-API-001"
+    ],
+    "model_id": "data_conversion_flow",
+    "model_element": "schema_parsing_success",
+    "test_id": "data_conversion_flow_transition_schema_parsing_success",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.485Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-CONV-001",
+      "REQ-CONV-002",
+      "REQ-CONV-003",
+      "REQ-API-001"
+    ],
+    "model_id": "data_conversion_flow",
+    "model_element": "start_arrow_conversion",
+    "test_id": "data_conversion_flow_transition_start_arrow_conversion",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.485Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-CONV-001",
+      "REQ-CONV-002",
+      "REQ-CONV-003",
+      "REQ-API-001"
+    ],
+    "model_id": "data_conversion_flow",
+    "model_element": "arrow_conversion_success",
+    "test_id": "data_conversion_flow_transition_arrow_conversion_success",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.485Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-CONV-001",
+      "REQ-CONV-002",
+      "REQ-CONV-003",
+      "REQ-API-001"
+    ],
+    "model_id": "data_conversion_flow",
+    "model_element": "start_js_conversion",
+    "test_id": "data_conversion_flow_transition_start_js_conversion",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.485Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-CONV-001",
+      "REQ-CONV-002",
+      "REQ-CONV-003",
+      "REQ-API-001"
+    ],
+    "model_id": "data_conversion_flow",
+    "model_element": "start_ipc_conversion",
+    "test_id": "data_conversion_flow_transition_start_ipc_conversion",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.485Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-CONV-001",
+      "REQ-CONV-002",
+      "REQ-CONV-003",
+      "REQ-API-001"
+    ],
+    "model_id": "data_conversion_flow",
+    "model_element": "js_conversion_success",
+    "test_id": "data_conversion_flow_transition_js_conversion_success",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.485Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-CONV-001",
+      "REQ-CONV-002",
+      "REQ-CONV-003",
+      "REQ-API-001"
+    ],
+    "model_id": "data_conversion_flow",
+    "model_element": "ipc_conversion_success",
+    "test_id": "data_conversion_flow_transition_ipc_conversion_success",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.485Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-CONV-001",
+      "REQ-CONV-002",
+      "REQ-CONV-003",
+      "REQ-API-001"
+    ],
+    "model_id": "data_conversion_flow",
+    "model_element": "conversion_memory_error",
+    "test_id": "data_conversion_flow_transition_conversion_memory_error",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.485Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-CONV-001",
+      "REQ-CONV-002",
+      "REQ-CONV-003",
+      "REQ-API-001"
+    ],
+    "model_id": "data_conversion_flow",
+    "model_element": "conversion_error_js",
+    "test_id": "data_conversion_flow_transition_conversion_error_js",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.485Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-CONV-001",
+      "REQ-CONV-002",
+      "REQ-CONV-003",
+      "REQ-API-001"
+    ],
+    "model_id": "data_conversion_flow",
+    "model_element": "conversion_error_ipc",
+    "test_id": "data_conversion_flow_transition_conversion_error_ipc",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.485Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "api_interactions_v1",
+    "model_element": "session_start",
+    "test_id": "api_interactions_v1_state_session_start_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.496Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "api_interactions_v1",
+    "model_element": "ready_for_operations",
+    "test_id": "api_interactions_v1_state_ready_for_operations_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.496Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "api_interactions_v1",
+    "model_element": "table_processing",
+    "test_id": "api_interactions_v1_state_table_processing_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.496Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "api_interactions_v1",
+    "model_element": "data_export",
+    "test_id": "api_interactions_v1_state_data_export_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.496Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "api_interactions_v1",
+    "model_element": "session_cleanup",
+    "test_id": "api_interactions_v1_state_session_cleanup_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.496Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "api_interactions_v1",
+    "model_element": "session_end",
+    "test_id": "api_interactions_v1_state_session_end_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.496Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "api_interactions_v1",
+    "model_element": "initialize_module",
+    "test_id": "api_interactions_v1_transition_initialize_module",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.496Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "api_interactions_v1",
+    "model_element": "load_first_table",
+    "test_id": "api_interactions_v1_transition_load_first_table",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.496Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "api_interactions_v1",
+    "model_element": "load_additional_table",
+    "test_id": "api_interactions_v1_transition_load_additional_table",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.496Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "api_interactions_v1",
+    "model_element": "approach_memory_limit",
+    "test_id": "api_interactions_v1_transition_approach_memory_limit",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.496Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "api_interactions_v1",
+    "model_element": "release_memory_pressure",
+    "test_id": "api_interactions_v1_transition_release_memory_pressure",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.496Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "api_interactions_v1",
+    "model_element": "reduce_to_single_table",
+    "test_id": "api_interactions_v1_transition_reduce_to_single_table",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.496Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "api_interactions_v1",
+    "model_element": "reduce_from_pressure",
+    "test_id": "api_interactions_v1_transition_reduce_from_pressure",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.496Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "api_interactions_v1",
+    "model_element": "export_table_data",
+    "test_id": "api_interactions_v1_transition_export_table_data",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.496Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "api_interactions_v1",
+    "model_element": "complete_export",
+    "test_id": "api_interactions_v1_transition_complete_export",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.496Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "api_interactions_v1",
+    "model_element": "start_cleanup",
+    "test_id": "api_interactions_v1_transition_start_cleanup",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.496Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "api_interactions_v1",
+    "model_element": "start_cleanup_from_export",
+    "test_id": "api_interactions_v1_transition_start_cleanup_from_export",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.496Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "api_interactions_v1",
+    "model_element": "start_cleanup_from_ready",
+    "test_id": "api_interactions_v1_transition_start_cleanup_from_ready",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.496Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "api_interactions_v1",
+    "model_element": "complete_cleanup",
+    "test_id": "api_interactions_v1_transition_complete_cleanup",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.496Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "api_interactions_v1",
+    "model_element": "release_all_tables",
+    "test_id": "api_interactions_v1_transition_release_all_tables",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.496Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "memory_management_v1",
+    "model_element": "untracked",
+    "test_id": "memory_management_v1_state_untracked_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.504Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "memory_management_v1",
+    "model_element": "configured",
+    "test_id": "memory_management_v1_state_configured_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.504Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "memory_management_v1",
+    "model_element": "allocated",
+    "test_id": "memory_management_v1_state_allocated_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.504Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "memory_management_v1",
+    "model_element": "at_limit",
+    "test_id": "memory_management_v1_state_at_limit_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.504Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "memory_management_v1",
+    "model_element": "reset",
+    "test_id": "memory_management_v1_state_reset_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.504Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "memory_management_v1",
+    "model_element": "initialize_memory_tracker",
+    "test_id": "memory_management_v1_transition_initialize_memory_tracker",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.504Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "memory_management_v1",
+    "model_element": "first_allocation",
+    "test_id": "memory_management_v1_transition_first_allocation",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.504Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "memory_management_v1",
+    "model_element": "additional_allocation",
+    "test_id": "memory_management_v1_transition_additional_allocation",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.504Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "memory_management_v1",
+    "model_element": "reach_memory_limit",
+    "test_id": "memory_management_v1_transition_reach_memory_limit",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.504Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "memory_management_v1",
+    "model_element": "attempt_allocation_at_limit",
+    "test_id": "memory_management_v1_transition_attempt_allocation_at_limit",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.504Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "memory_management_v1",
+    "model_element": "deallocate_from_allocated",
+    "test_id": "memory_management_v1_transition_deallocate_from_allocated",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.504Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "memory_management_v1",
+    "model_element": "deallocate_from_limit",
+    "test_id": "memory_management_v1_transition_deallocate_from_limit",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.504Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "memory_management_v1",
+    "model_element": "deallocate_last_table",
+    "test_id": "memory_management_v1_transition_deallocate_last_table",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.504Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "memory_management_v1",
+    "model_element": "reset_memory_system",
+    "test_id": "memory_management_v1_transition_reset_memory_system",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.504Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "memory_management_v1",
+    "model_element": "reset_from_allocated",
+    "test_id": "memory_management_v1_transition_reset_from_allocated",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.504Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "memory_management_v1",
+    "model_element": "reset_from_limit",
+    "test_id": "memory_management_v1_transition_reset_from_limit",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.504Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "memory_management_v1",
+    "model_element": "invalid_deallocation",
+    "test_id": "memory_management_v1_transition_invalid_deallocation",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.504Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "memory_management_v1",
+    "model_element": "invalid_deallocation_at_limit",
+    "test_id": "memory_management_v1_transition_invalid_deallocation_at_limit",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.504Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "module_lifecycle_v1_enhanced",
+    "model_element": "uninitialized",
+    "test_id": "module_lifecycle_v1_enhanced_state_uninitialized_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.510Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "module_lifecycle_v1_enhanced",
+    "model_element": "initializing",
+    "test_id": "module_lifecycle_v1_enhanced_state_initializing_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.510Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "module_lifecycle_v1_enhanced",
+    "model_element": "ready",
+    "test_id": "module_lifecycle_v1_enhanced_state_ready_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.510Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "module_lifecycle_v1_enhanced",
+    "model_element": "error",
+    "test_id": "module_lifecycle_v1_enhanced_state_error_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.510Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "module_lifecycle_v1_enhanced",
+    "model_element": "disposed",
+    "test_id": "module_lifecycle_v1_enhanced_state_disposed_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.510Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "module_lifecycle_v1_enhanced",
+    "model_element": "init_start",
+    "test_id": "module_lifecycle_v1_enhanced_transition_init_start",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.510Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "module_lifecycle_v1_enhanced",
+    "model_element": "init_success",
+    "test_id": "module_lifecycle_v1_enhanced_transition_init_success",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.510Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "module_lifecycle_v1_enhanced",
+    "model_element": "init_failure",
+    "test_id": "module_lifecycle_v1_enhanced_transition_init_failure",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.510Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "module_lifecycle_v1_enhanced",
+    "model_element": "double_init_error",
+    "test_id": "module_lifecycle_v1_enhanced_transition_double_init_error",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.510Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "module_lifecycle_v1_enhanced",
+    "model_element": "concurrent_init_error",
+    "test_id": "module_lifecycle_v1_enhanced_transition_concurrent_init_error",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.510Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "module_lifecycle_v1_enhanced",
+    "model_element": "dispose_from_ready",
+    "test_id": "module_lifecycle_v1_enhanced_transition_dispose_from_ready",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.510Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "module_lifecycle_v1_enhanced",
+    "model_element": "dispose_from_error",
+    "test_id": "module_lifecycle_v1_enhanced_transition_dispose_from_error",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.510Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "module_lifecycle_v1_enhanced",
+    "model_element": "dispose_from_initializing",
+    "test_id": "module_lifecycle_v1_enhanced_transition_dispose_from_initializing",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.510Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "module_lifecycle_v1_enhanced",
+    "model_element": "runtime_error",
+    "test_id": "module_lifecycle_v1_enhanced_transition_runtime_error",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.510Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "module_lifecycle_v1_enhanced",
+    "model_element": "memory_limit_error",
+    "test_id": "module_lifecycle_v1_enhanced_transition_memory_limit_error",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.510Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "module_lifecycle_v1_enhanced",
+    "model_element": "api_call_uninitialized",
+    "test_id": "module_lifecycle_v1_enhanced_transition_api_call_uninitialized",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.510Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "module_lifecycle_v1_enhanced",
+    "model_element": "api_call_disposed",
+    "test_id": "module_lifecycle_v1_enhanced_transition_api_call_disposed",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.510Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "module_lifecycle_v1_enhanced",
+    "model_element": "reinit_after_disposal",
+    "test_id": "module_lifecycle_v1_enhanced_transition_reinit_after_disposal",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.510Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "module_lifecycle_v1_enhanced",
+    "model_element": "error_recovery_dispose",
+    "test_id": "module_lifecycle_v1_enhanced_transition_error_recovery_dispose",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.510Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-BUILDER-001",
+      "REQ-BUILDER-002",
+      "REQ-BUILDER-003",
+      "REQ-MEM-003"
+    ],
+    "model_id": "array_builder_lifecycle",
+    "model_element": "uninitialized",
+    "test_id": "array_builder_lifecycle_state_uninitialized_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.516Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-BUILDER-001",
+      "REQ-BUILDER-002",
+      "REQ-BUILDER-003",
+      "REQ-MEM-003"
+    ],
+    "model_id": "array_builder_lifecycle",
+    "model_element": "empty",
+    "test_id": "array_builder_lifecycle_state_empty_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.516Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-BUILDER-001",
+      "REQ-BUILDER-002",
+      "REQ-BUILDER-003",
+      "REQ-MEM-003"
+    ],
+    "model_id": "array_builder_lifecycle",
+    "model_element": "building",
+    "test_id": "array_builder_lifecycle_state_building_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.516Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-BUILDER-001",
+      "REQ-BUILDER-002",
+      "REQ-BUILDER-003",
+      "REQ-MEM-003"
+    ],
+    "model_id": "array_builder_lifecycle",
+    "model_element": "finished",
+    "test_id": "array_builder_lifecycle_state_finished_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.516Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-BUILDER-001",
+      "REQ-BUILDER-002",
+      "REQ-BUILDER-003",
+      "REQ-MEM-003"
+    ],
+    "model_id": "array_builder_lifecycle",
+    "model_element": "cleared",
+    "test_id": "array_builder_lifecycle_state_cleared_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.516Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-BUILDER-001",
+      "REQ-BUILDER-002",
+      "REQ-BUILDER-003",
+      "REQ-MEM-003"
+    ],
+    "model_id": "array_builder_lifecycle",
+    "model_element": "error",
+    "test_id": "array_builder_lifecycle_state_error_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.516Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-BUILDER-001",
+      "REQ-BUILDER-002",
+      "REQ-BUILDER-003",
+      "REQ-MEM-003"
+    ],
+    "model_id": "array_builder_lifecycle",
+    "model_element": "initialize_builder",
+    "test_id": "array_builder_lifecycle_transition_initialize_builder",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.516Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-BUILDER-001",
+      "REQ-BUILDER-002",
+      "REQ-BUILDER-003",
+      "REQ-MEM-003"
+    ],
+    "model_id": "array_builder_lifecycle",
+    "model_element": "append_value",
+    "test_id": "array_builder_lifecycle_transition_append_value",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.516Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-BUILDER-001",
+      "REQ-BUILDER-002",
+      "REQ-BUILDER-003",
+      "REQ-MEM-003"
+    ],
+    "model_id": "array_builder_lifecycle",
+    "model_element": "append_additional_value",
+    "test_id": "array_builder_lifecycle_transition_append_additional_value",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.516Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-BUILDER-001",
+      "REQ-BUILDER-002",
+      "REQ-BUILDER-003",
+      "REQ-MEM-003"
+    ],
+    "model_id": "array_builder_lifecycle",
+    "model_element": "append_null_to_empty",
+    "test_id": "array_builder_lifecycle_transition_append_null_to_empty",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.516Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-BUILDER-001",
+      "REQ-BUILDER-002",
+      "REQ-BUILDER-003",
+      "REQ-MEM-003"
+    ],
+    "model_id": "array_builder_lifecycle",
+    "model_element": "append_null_to_building",
+    "test_id": "array_builder_lifecycle_transition_append_null_to_building",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.516Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-BUILDER-001",
+      "REQ-BUILDER-002",
+      "REQ-BUILDER-003",
+      "REQ-MEM-003"
+    ],
+    "model_id": "array_builder_lifecycle",
+    "model_element": "append_values_to_empty",
+    "test_id": "array_builder_lifecycle_transition_append_values_to_empty",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.516Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-BUILDER-001",
+      "REQ-BUILDER-002",
+      "REQ-BUILDER-003",
+      "REQ-MEM-003"
+    ],
+    "model_id": "array_builder_lifecycle",
+    "model_element": "append_values_to_building",
+    "test_id": "array_builder_lifecycle_transition_append_values_to_building",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.516Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-BUILDER-001",
+      "REQ-BUILDER-002",
+      "REQ-BUILDER-003",
+      "REQ-MEM-003"
+    ],
+    "model_id": "array_builder_lifecycle",
+    "model_element": "finish_from_empty",
+    "test_id": "array_builder_lifecycle_transition_finish_from_empty",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.516Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-BUILDER-001",
+      "REQ-BUILDER-002",
+      "REQ-BUILDER-003",
+      "REQ-MEM-003"
+    ],
+    "model_id": "array_builder_lifecycle",
+    "model_element": "finish_from_building",
+    "test_id": "array_builder_lifecycle_transition_finish_from_building",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.516Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-BUILDER-001",
+      "REQ-BUILDER-002",
+      "REQ-BUILDER-003",
+      "REQ-MEM-003"
+    ],
+    "model_id": "array_builder_lifecycle",
+    "model_element": "clear_from_building",
+    "test_id": "array_builder_lifecycle_transition_clear_from_building",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.516Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-BUILDER-001",
+      "REQ-BUILDER-002",
+      "REQ-BUILDER-003",
+      "REQ-MEM-003"
+    ],
+    "model_id": "array_builder_lifecycle",
+    "model_element": "clear_from_empty",
+    "test_id": "array_builder_lifecycle_transition_clear_from_empty",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.516Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-BUILDER-001",
+      "REQ-BUILDER-002",
+      "REQ-BUILDER-003",
+      "REQ-MEM-003"
+    ],
+    "model_id": "array_builder_lifecycle",
+    "model_element": "append_after_clear",
+    "test_id": "array_builder_lifecycle_transition_append_after_clear",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.516Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-BUILDER-001",
+      "REQ-BUILDER-002",
+      "REQ-BUILDER-003",
+      "REQ-MEM-003"
+    ],
+    "model_id": "array_builder_lifecycle",
+    "model_element": "finish_after_clear",
+    "test_id": "array_builder_lifecycle_transition_finish_after_clear",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.516Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-BUILDER-001",
+      "REQ-BUILDER-002",
+      "REQ-BUILDER-003",
+      "REQ-MEM-003"
+    ],
+    "model_id": "array_builder_lifecycle",
+    "model_element": "type_mismatch_error",
+    "test_id": "array_builder_lifecycle_transition_type_mismatch_error",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.516Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-BUILDER-001",
+      "REQ-BUILDER-002",
+      "REQ-BUILDER-003",
+      "REQ-MEM-003"
+    ],
+    "model_id": "array_builder_lifecycle",
+    "model_element": "invalid_array_error",
+    "test_id": "array_builder_lifecycle_transition_invalid_array_error",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.516Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-BUILDER-001",
+      "REQ-BUILDER-002",
+      "REQ-BUILDER-003",
+      "REQ-MEM-003"
+    ],
+    "model_id": "array_builder_lifecycle",
+    "model_element": "finish_after_error",
+    "test_id": "array_builder_lifecycle_transition_finish_after_error",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.516Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-COLUMN-001",
+      "REQ-COLUMN-002",
+      "REQ-COLUMN-003",
+      "REQ-DATA-001"
+    ],
+    "model_id": "column_lifecycle",
+    "model_element": "nonexistent",
+    "test_id": "column_lifecycle_state_nonexistent_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.522Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-COLUMN-001",
+      "REQ-COLUMN-002",
+      "REQ-COLUMN-003",
+      "REQ-DATA-001"
+    ],
+    "model_id": "column_lifecycle",
+    "model_element": "creating",
+    "test_id": "column_lifecycle_state_creating_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.522Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-COLUMN-001",
+      "REQ-COLUMN-002",
+      "REQ-COLUMN-003",
+      "REQ-DATA-001"
+    ],
+    "model_id": "column_lifecycle",
+    "model_element": "active",
+    "test_id": "column_lifecycle_state_active_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.522Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-COLUMN-001",
+      "REQ-COLUMN-002",
+      "REQ-COLUMN-003",
+      "REQ-DATA-001"
+    ],
+    "model_id": "column_lifecycle",
+    "model_element": "sliced",
+    "test_id": "column_lifecycle_state_sliced_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.522Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-COLUMN-001",
+      "REQ-COLUMN-002",
+      "REQ-COLUMN-003",
+      "REQ-DATA-001"
+    ],
+    "model_id": "column_lifecycle",
+    "model_element": "converted_to_array",
+    "test_id": "column_lifecycle_state_converted_to_array_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.522Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-COLUMN-001",
+      "REQ-COLUMN-002",
+      "REQ-COLUMN-003",
+      "REQ-DATA-001"
+    ],
+    "model_id": "column_lifecycle",
+    "model_element": "statistics_computed",
+    "test_id": "column_lifecycle_state_statistics_computed_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.522Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-COLUMN-001",
+      "REQ-COLUMN-002",
+      "REQ-COLUMN-003",
+      "REQ-DATA-001"
+    ],
+    "model_id": "column_lifecycle",
+    "model_element": "error",
+    "test_id": "column_lifecycle_state_error_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.522Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-COLUMN-001",
+      "REQ-COLUMN-002",
+      "REQ-COLUMN-003",
+      "REQ-DATA-001"
+    ],
+    "model_id": "column_lifecycle",
+    "model_element": "disposed",
+    "test_id": "column_lifecycle_state_disposed_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.522Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-COLUMN-001",
+      "REQ-COLUMN-002",
+      "REQ-COLUMN-003",
+      "REQ-DATA-001"
+    ],
+    "model_id": "column_lifecycle",
+    "model_element": "create_from_table_by_name",
+    "test_id": "column_lifecycle_transition_create_from_table_by_name",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.522Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-COLUMN-001",
+      "REQ-COLUMN-002",
+      "REQ-COLUMN-003",
+      "REQ-DATA-001"
+    ],
+    "model_id": "column_lifecycle",
+    "model_element": "create_from_table_by_index",
+    "test_id": "column_lifecycle_transition_create_from_table_by_index",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.522Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-COLUMN-001",
+      "REQ-COLUMN-002",
+      "REQ-COLUMN-003",
+      "REQ-DATA-001"
+    ],
+    "model_id": "column_lifecycle",
+    "model_element": "creation_success",
+    "test_id": "column_lifecycle_transition_creation_success",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.522Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-COLUMN-001",
+      "REQ-COLUMN-002",
+      "REQ-COLUMN-003",
+      "REQ-DATA-001"
+    ],
+    "model_id": "column_lifecycle",
+    "model_element": "creation_failed",
+    "test_id": "column_lifecycle_transition_creation_failed",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.522Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-COLUMN-001",
+      "REQ-COLUMN-002",
+      "REQ-COLUMN-003",
+      "REQ-DATA-001"
+    ],
+    "model_id": "column_lifecycle",
+    "model_element": "slice_column",
+    "test_id": "column_lifecycle_transition_slice_column",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.522Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-COLUMN-001",
+      "REQ-COLUMN-002",
+      "REQ-COLUMN-003",
+      "REQ-DATA-001"
+    ],
+    "model_id": "column_lifecycle",
+    "model_element": "convert_to_array",
+    "test_id": "column_lifecycle_transition_convert_to_array",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.522Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-COLUMN-001",
+      "REQ-COLUMN-002",
+      "REQ-COLUMN-003",
+      "REQ-DATA-001"
+    ],
+    "model_id": "column_lifecycle",
+    "model_element": "compute_statistics",
+    "test_id": "column_lifecycle_transition_compute_statistics",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.522Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-COLUMN-001",
+      "REQ-COLUMN-002",
+      "REQ-COLUMN-003",
+      "REQ-DATA-001"
+    ],
+    "model_id": "column_lifecycle",
+    "model_element": "access_value",
+    "test_id": "column_lifecycle_transition_access_value",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.522Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-COLUMN-001",
+      "REQ-COLUMN-002",
+      "REQ-COLUMN-003",
+      "REQ-DATA-001"
+    ],
+    "model_id": "column_lifecycle",
+    "model_element": "check_null_status",
+    "test_id": "column_lifecycle_transition_check_null_status",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.522Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-COLUMN-001",
+      "REQ-COLUMN-002",
+      "REQ-COLUMN-003",
+      "REQ-DATA-001"
+    ],
+    "model_id": "column_lifecycle",
+    "model_element": "slice_from_slice",
+    "test_id": "column_lifecycle_transition_slice_from_slice",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.522Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-COLUMN-001",
+      "REQ-COLUMN-002",
+      "REQ-COLUMN-003",
+      "REQ-DATA-001"
+    ],
+    "model_id": "column_lifecycle",
+    "model_element": "operation_error",
+    "test_id": "column_lifecycle_transition_operation_error",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.522Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-COLUMN-001",
+      "REQ-COLUMN-002",
+      "REQ-COLUMN-003",
+      "REQ-DATA-001"
+    ],
+    "model_id": "column_lifecycle",
+    "model_element": "dispose_active",
+    "test_id": "column_lifecycle_transition_dispose_active",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.522Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-COLUMN-001",
+      "REQ-COLUMN-002",
+      "REQ-COLUMN-003",
+      "REQ-DATA-001"
+    ],
+    "model_id": "column_lifecycle",
+    "model_element": "dispose_sliced",
+    "test_id": "column_lifecycle_transition_dispose_sliced",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.522Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-COLUMN-001",
+      "REQ-COLUMN-002",
+      "REQ-COLUMN-003",
+      "REQ-DATA-001"
+    ],
+    "model_id": "column_lifecycle",
+    "model_element": "dispose_converted",
+    "test_id": "column_lifecycle_transition_dispose_converted",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.522Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-COLUMN-001",
+      "REQ-COLUMN-002",
+      "REQ-COLUMN-003",
+      "REQ-DATA-001"
+    ],
+    "model_id": "column_lifecycle",
+    "model_element": "dispose_statistics",
+    "test_id": "column_lifecycle_transition_dispose_statistics",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.522Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-COLUMN-001",
+      "REQ-COLUMN-002",
+      "REQ-COLUMN-003",
+      "REQ-DATA-001"
+    ],
+    "model_id": "column_lifecycle",
+    "model_element": "dispose_error",
+    "test_id": "column_lifecycle_transition_dispose_error",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.522Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-MEM-001",
+      "REQ-MEM-002",
+      "REQ-MEM-003",
+      "REQ-MEM-004"
+    ],
+    "model_id": "memory_management",
+    "model_element": "unallocated",
+    "test_id": "memory_management_state_unallocated_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.528Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-MEM-001",
+      "REQ-MEM-002",
+      "REQ-MEM-003",
+      "REQ-MEM-004"
+    ],
+    "model_id": "memory_management",
+    "model_element": "allocating",
+    "test_id": "memory_management_state_allocating_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.528Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-MEM-001",
+      "REQ-MEM-002",
+      "REQ-MEM-003",
+      "REQ-MEM-004"
+    ],
+    "model_id": "memory_management",
+    "model_element": "allocated",
+    "test_id": "memory_management_state_allocated_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.528Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-MEM-001",
+      "REQ-MEM-002",
+      "REQ-MEM-003",
+      "REQ-MEM-004"
+    ],
+    "model_id": "memory_management",
+    "model_element": "referenced",
+    "test_id": "memory_management_state_referenced_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.528Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-MEM-001",
+      "REQ-MEM-002",
+      "REQ-MEM-003",
+      "REQ-MEM-004"
+    ],
+    "model_id": "memory_management",
+    "model_element": "disposing",
+    "test_id": "memory_management_state_disposing_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.528Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-MEM-001",
+      "REQ-MEM-002",
+      "REQ-MEM-003",
+      "REQ-MEM-004"
+    ],
+    "model_id": "memory_management",
+    "model_element": "disposed",
+    "test_id": "memory_management_state_disposed_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.528Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-MEM-001",
+      "REQ-MEM-002",
+      "REQ-MEM-003",
+      "REQ-MEM-004"
+    ],
+    "model_id": "memory_management",
+    "model_element": "error",
+    "test_id": "memory_management_state_error_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.528Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-MEM-001",
+      "REQ-MEM-002",
+      "REQ-MEM-003",
+      "REQ-MEM-004"
+    ],
+    "model_id": "memory_management",
+    "model_element": "allocate_memory",
+    "test_id": "memory_management_transition_allocate_memory",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.528Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-MEM-001",
+      "REQ-MEM-002",
+      "REQ-MEM-003",
+      "REQ-MEM-004"
+    ],
+    "model_id": "memory_management",
+    "model_element": "allocation_success",
+    "test_id": "memory_management_transition_allocation_success",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.528Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-MEM-001",
+      "REQ-MEM-002",
+      "REQ-MEM-003",
+      "REQ-MEM-004"
+    ],
+    "model_id": "memory_management",
+    "model_element": "allocation_failed",
+    "test_id": "memory_management_transition_allocation_failed",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.528Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-MEM-001",
+      "REQ-MEM-002",
+      "REQ-MEM-003",
+      "REQ-MEM-004"
+    ],
+    "model_id": "memory_management",
+    "model_element": "add_reference",
+    "test_id": "memory_management_transition_add_reference",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.528Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-MEM-001",
+      "REQ-MEM-002",
+      "REQ-MEM-003",
+      "REQ-MEM-004"
+    ],
+    "model_id": "memory_management",
+    "model_element": "add_more_references",
+    "test_id": "memory_management_transition_add_more_references",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.528Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-MEM-001",
+      "REQ-MEM-002",
+      "REQ-MEM-003",
+      "REQ-MEM-004"
+    ],
+    "model_id": "memory_management",
+    "model_element": "remove_reference_to_single",
+    "test_id": "memory_management_transition_remove_reference_to_single",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.528Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-MEM-001",
+      "REQ-MEM-002",
+      "REQ-MEM-003",
+      "REQ-MEM-004"
+    ],
+    "model_id": "memory_management",
+    "model_element": "remove_reference_stay_referenced",
+    "test_id": "memory_management_transition_remove_reference_stay_referenced",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.528Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-MEM-001",
+      "REQ-MEM-002",
+      "REQ-MEM-003",
+      "REQ-MEM-004"
+    ],
+    "model_id": "memory_management",
+    "model_element": "dispose_single_ref",
+    "test_id": "memory_management_transition_dispose_single_ref",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.528Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-MEM-001",
+      "REQ-MEM-002",
+      "REQ-MEM-003",
+      "REQ-MEM-004"
+    ],
+    "model_id": "memory_management",
+    "model_element": "remove_final_reference",
+    "test_id": "memory_management_transition_remove_final_reference",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.528Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-MEM-001",
+      "REQ-MEM-002",
+      "REQ-MEM-003",
+      "REQ-MEM-004"
+    ],
+    "model_id": "memory_management",
+    "model_element": "dispose_completion",
+    "test_id": "memory_management_transition_dispose_completion",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.528Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-MEM-001",
+      "REQ-MEM-002",
+      "REQ-MEM-003",
+      "REQ-MEM-004"
+    ],
+    "model_id": "memory_management",
+    "model_element": "disposal_error",
+    "test_id": "memory_management_transition_disposal_error",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.528Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-MEM-001",
+      "REQ-MEM-002",
+      "REQ-MEM-003",
+      "REQ-MEM-004"
+    ],
+    "model_id": "memory_management",
+    "model_element": "memory_corruption_detected",
+    "test_id": "memory_management_transition_memory_corruption_detected",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.528Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-MEM-001",
+      "REQ-MEM-002",
+      "REQ-MEM-003",
+      "REQ-MEM-004"
+    ],
+    "model_id": "memory_management",
+    "model_element": "referenced_corruption",
+    "test_id": "memory_management_transition_referenced_corruption",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.528Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-MEM-001",
+      "REQ-MEM-002",
+      "REQ-MEM-003",
+      "REQ-MEM-004"
+    ],
+    "model_id": "memory_management",
+    "model_element": "invalid_reference_operation",
+    "test_id": "memory_management_transition_invalid_reference_operation",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.528Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-MEM-001",
+      "REQ-MEM-002",
+      "REQ-MEM-003",
+      "REQ-MEM-004"
+    ],
+    "model_id": "memory_management",
+    "model_element": "force_cleanup",
+    "test_id": "memory_management_transition_force_cleanup",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.528Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-INIT-001",
+      "REQ-INIT-002",
+      "REQ-CORE-001",
+      "REQ-MEM-001"
+    ],
+    "model_id": "module_lifecycle",
+    "model_element": "uninitialized",
+    "test_id": "module_lifecycle_state_uninitialized_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.534Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-INIT-001",
+      "REQ-INIT-002",
+      "REQ-CORE-001",
+      "REQ-MEM-001"
+    ],
+    "model_id": "module_lifecycle",
+    "model_element": "loading",
+    "test_id": "module_lifecycle_state_loading_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.534Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-INIT-001",
+      "REQ-INIT-002",
+      "REQ-CORE-001",
+      "REQ-MEM-001"
+    ],
+    "model_id": "module_lifecycle",
+    "model_element": "initializing",
+    "test_id": "module_lifecycle_state_initializing_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.534Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-INIT-001",
+      "REQ-INIT-002",
+      "REQ-CORE-001",
+      "REQ-MEM-001"
+    ],
+    "model_id": "module_lifecycle",
+    "model_element": "ready",
+    "test_id": "module_lifecycle_state_ready_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.534Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-INIT-001",
+      "REQ-INIT-002",
+      "REQ-CORE-001",
+      "REQ-MEM-001"
+    ],
+    "model_id": "module_lifecycle",
+    "model_element": "operating",
+    "test_id": "module_lifecycle_state_operating_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.534Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-INIT-001",
+      "REQ-INIT-002",
+      "REQ-CORE-001",
+      "REQ-MEM-001"
+    ],
+    "model_id": "module_lifecycle",
+    "model_element": "error",
+    "test_id": "module_lifecycle_state_error_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.534Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-INIT-001",
+      "REQ-INIT-002",
+      "REQ-CORE-001",
+      "REQ-MEM-001"
+    ],
+    "model_id": "module_lifecycle",
+    "model_element": "disposed",
+    "test_id": "module_lifecycle_state_disposed_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.534Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-INIT-001",
+      "REQ-INIT-002",
+      "REQ-CORE-001",
+      "REQ-MEM-001"
+    ],
+    "model_id": "module_lifecycle",
+    "model_element": "start_loading",
+    "test_id": "module_lifecycle_transition_start_loading",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.534Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-INIT-001",
+      "REQ-INIT-002",
+      "REQ-CORE-001",
+      "REQ-MEM-001"
+    ],
+    "model_id": "module_lifecycle",
+    "model_element": "wasm_loaded",
+    "test_id": "module_lifecycle_transition_wasm_loaded",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.534Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-INIT-001",
+      "REQ-INIT-002",
+      "REQ-CORE-001",
+      "REQ-MEM-001"
+    ],
+    "model_id": "module_lifecycle",
+    "model_element": "load_failed",
+    "test_id": "module_lifecycle_transition_load_failed",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.534Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-INIT-001",
+      "REQ-INIT-002",
+      "REQ-CORE-001",
+      "REQ-MEM-001"
+    ],
+    "model_id": "module_lifecycle",
+    "model_element": "initialization_complete",
+    "test_id": "module_lifecycle_transition_initialization_complete",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.534Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-INIT-001",
+      "REQ-INIT-002",
+      "REQ-CORE-001",
+      "REQ-MEM-001"
+    ],
+    "model_id": "module_lifecycle",
+    "model_element": "initialization_failed",
+    "test_id": "module_lifecycle_transition_initialization_failed",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.534Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-INIT-001",
+      "REQ-INIT-002",
+      "REQ-CORE-001",
+      "REQ-MEM-001"
+    ],
+    "model_id": "module_lifecycle",
+    "model_element": "first_operation",
+    "test_id": "module_lifecycle_transition_first_operation",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.534Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-INIT-001",
+      "REQ-INIT-002",
+      "REQ-CORE-001",
+      "REQ-MEM-001"
+    ],
+    "model_id": "module_lifecycle",
+    "model_element": "continue_operation",
+    "test_id": "module_lifecycle_transition_continue_operation",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.534Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-INIT-001",
+      "REQ-INIT-002",
+      "REQ-CORE-001",
+      "REQ-MEM-001"
+    ],
+    "model_id": "module_lifecycle",
+    "model_element": "return_to_ready",
+    "test_id": "module_lifecycle_transition_return_to_ready",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.534Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-INIT-001",
+      "REQ-INIT-002",
+      "REQ-CORE-001",
+      "REQ-MEM-001"
+    ],
+    "model_id": "module_lifecycle",
+    "model_element": "operation_error",
+    "test_id": "module_lifecycle_transition_operation_error",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.534Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-INIT-001",
+      "REQ-INIT-002",
+      "REQ-CORE-001",
+      "REQ-MEM-001"
+    ],
+    "model_id": "module_lifecycle",
+    "model_element": "ready_error",
+    "test_id": "module_lifecycle_transition_ready_error",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.534Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-INIT-001",
+      "REQ-INIT-002",
+      "REQ-CORE-001",
+      "REQ-MEM-001"
+    ],
+    "model_id": "module_lifecycle",
+    "model_element": "error_recovery",
+    "test_id": "module_lifecycle_transition_error_recovery",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.534Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-INIT-001",
+      "REQ-INIT-002",
+      "REQ-CORE-001",
+      "REQ-MEM-001"
+    ],
+    "model_id": "module_lifecycle",
+    "model_element": "dispose_from_ready",
+    "test_id": "module_lifecycle_transition_dispose_from_ready",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.534Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-INIT-001",
+      "REQ-INIT-002",
+      "REQ-CORE-001",
+      "REQ-MEM-001"
+    ],
+    "model_id": "module_lifecycle",
+    "model_element": "dispose_from_operating",
+    "test_id": "module_lifecycle_transition_dispose_from_operating",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.534Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-INIT-001",
+      "REQ-INIT-002",
+      "REQ-CORE-001",
+      "REQ-MEM-001"
+    ],
+    "model_id": "module_lifecycle",
+    "model_element": "dispose_from_error",
+    "test_id": "module_lifecycle_transition_dispose_from_error",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.534Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-TABLE-001",
+      "REQ-TABLE-002",
+      "REQ-TABLE-003",
+      "REQ-MEM-002"
+    ],
+    "model_id": "table_lifecycle",
+    "model_element": "nonexistent",
+    "test_id": "table_lifecycle_state_nonexistent_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.540Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-TABLE-001",
+      "REQ-TABLE-002",
+      "REQ-TABLE-003",
+      "REQ-MEM-002"
+    ],
+    "model_id": "table_lifecycle",
+    "model_element": "creating_from_json",
+    "test_id": "table_lifecycle_state_creating_from_json_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.540Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-TABLE-001",
+      "REQ-TABLE-002",
+      "REQ-TABLE-003",
+      "REQ-MEM-002"
+    ],
+    "model_id": "table_lifecycle",
+    "model_element": "creating_from_ipc",
+    "test_id": "table_lifecycle_state_creating_from_ipc_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.540Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-TABLE-001",
+      "REQ-TABLE-002",
+      "REQ-TABLE-003",
+      "REQ-MEM-002"
+    ],
+    "model_id": "table_lifecycle",
+    "model_element": "active",
+    "test_id": "table_lifecycle_state_active_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.540Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-TABLE-001",
+      "REQ-TABLE-002",
+      "REQ-TABLE-003",
+      "REQ-MEM-002"
+    ],
+    "model_id": "table_lifecycle",
+    "model_element": "sliced",
+    "test_id": "table_lifecycle_state_sliced_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.540Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-TABLE-001",
+      "REQ-TABLE-002",
+      "REQ-TABLE-003",
+      "REQ-MEM-002"
+    ],
+    "model_id": "table_lifecycle",
+    "model_element": "filtered",
+    "test_id": "table_lifecycle_state_filtered_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.540Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-TABLE-001",
+      "REQ-TABLE-002",
+      "REQ-TABLE-003",
+      "REQ-MEM-002"
+    ],
+    "model_id": "table_lifecycle",
+    "model_element": "selected",
+    "test_id": "table_lifecycle_state_selected_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.540Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-TABLE-001",
+      "REQ-TABLE-002",
+      "REQ-TABLE-003",
+      "REQ-MEM-002"
+    ],
+    "model_id": "table_lifecycle",
+    "model_element": "error",
+    "test_id": "table_lifecycle_state_error_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.540Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-TABLE-001",
+      "REQ-TABLE-002",
+      "REQ-TABLE-003",
+      "REQ-MEM-002"
+    ],
+    "model_id": "table_lifecycle",
+    "model_element": "disposed",
+    "test_id": "table_lifecycle_state_disposed_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.540Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-TABLE-001",
+      "REQ-TABLE-002",
+      "REQ-TABLE-003",
+      "REQ-MEM-002"
+    ],
+    "model_id": "table_lifecycle",
+    "model_element": "create_from_json",
+    "test_id": "table_lifecycle_transition_create_from_json",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.540Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-TABLE-001",
+      "REQ-TABLE-002",
+      "REQ-TABLE-003",
+      "REQ-MEM-002"
+    ],
+    "model_id": "table_lifecycle",
+    "model_element": "create_from_ipc",
+    "test_id": "table_lifecycle_transition_create_from_ipc",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.540Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-TABLE-001",
+      "REQ-TABLE-002",
+      "REQ-TABLE-003",
+      "REQ-MEM-002"
+    ],
+    "model_id": "table_lifecycle",
+    "model_element": "json_creation_success",
+    "test_id": "table_lifecycle_transition_json_creation_success",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.540Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-TABLE-001",
+      "REQ-TABLE-002",
+      "REQ-TABLE-003",
+      "REQ-MEM-002"
+    ],
+    "model_id": "table_lifecycle",
+    "model_element": "ipc_creation_success",
+    "test_id": "table_lifecycle_transition_ipc_creation_success",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.540Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-TABLE-001",
+      "REQ-TABLE-002",
+      "REQ-TABLE-003",
+      "REQ-MEM-002"
+    ],
+    "model_id": "table_lifecycle",
+    "model_element": "json_creation_failed",
+    "test_id": "table_lifecycle_transition_json_creation_failed",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.540Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-TABLE-001",
+      "REQ-TABLE-002",
+      "REQ-TABLE-003",
+      "REQ-MEM-002"
+    ],
+    "model_id": "table_lifecycle",
+    "model_element": "ipc_creation_failed",
+    "test_id": "table_lifecycle_transition_ipc_creation_failed",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.540Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-TABLE-001",
+      "REQ-TABLE-002",
+      "REQ-TABLE-003",
+      "REQ-MEM-002"
+    ],
+    "model_id": "table_lifecycle",
+    "model_element": "slice_table",
+    "test_id": "table_lifecycle_transition_slice_table",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.540Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-TABLE-001",
+      "REQ-TABLE-002",
+      "REQ-TABLE-003",
+      "REQ-MEM-002"
+    ],
+    "model_id": "table_lifecycle",
+    "model_element": "filter_table",
+    "test_id": "table_lifecycle_transition_filter_table",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.540Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-TABLE-001",
+      "REQ-TABLE-002",
+      "REQ-TABLE-003",
+      "REQ-MEM-002"
+    ],
+    "model_id": "table_lifecycle",
+    "model_element": "select_columns",
+    "test_id": "table_lifecycle_transition_select_columns",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.540Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-TABLE-001",
+      "REQ-TABLE-002",
+      "REQ-TABLE-003",
+      "REQ-MEM-002"
+    ],
+    "model_id": "table_lifecycle",
+    "model_element": "slice_from_slice",
+    "test_id": "table_lifecycle_transition_slice_from_slice",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.540Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-TABLE-001",
+      "REQ-TABLE-002",
+      "REQ-TABLE-003",
+      "REQ-MEM-002"
+    ],
+    "model_id": "table_lifecycle",
+    "model_element": "operation_error",
+    "test_id": "table_lifecycle_transition_operation_error",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.540Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-TABLE-001",
+      "REQ-TABLE-002",
+      "REQ-TABLE-003",
+      "REQ-MEM-002"
+    ],
+    "model_id": "table_lifecycle",
+    "model_element": "dispose_active",
+    "test_id": "table_lifecycle_transition_dispose_active",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.540Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-TABLE-001",
+      "REQ-TABLE-002",
+      "REQ-TABLE-003",
+      "REQ-MEM-002"
+    ],
+    "model_id": "table_lifecycle",
+    "model_element": "dispose_sliced",
+    "test_id": "table_lifecycle_transition_dispose_sliced",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.540Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-TABLE-001",
+      "REQ-TABLE-002",
+      "REQ-TABLE-003",
+      "REQ-MEM-002"
+    ],
+    "model_id": "table_lifecycle",
+    "model_element": "dispose_filtered",
+    "test_id": "table_lifecycle_transition_dispose_filtered",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.540Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-TABLE-001",
+      "REQ-TABLE-002",
+      "REQ-TABLE-003",
+      "REQ-MEM-002"
+    ],
+    "model_id": "table_lifecycle",
+    "model_element": "dispose_selected",
+    "test_id": "table_lifecycle_transition_dispose_selected",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.540Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-TABLE-001",
+      "REQ-TABLE-002",
+      "REQ-TABLE-003",
+      "REQ-MEM-002"
+    ],
+    "model_id": "table_lifecycle",
+    "model_element": "dispose_error",
+    "test_id": "table_lifecycle_transition_dispose_error",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.540Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "table_lifecycle_v1",
+    "model_element": "non_existent",
+    "test_id": "table_lifecycle_v1_state_non_existent_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.547Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "table_lifecycle_v1",
+    "model_element": "loading",
+    "test_id": "table_lifecycle_v1_state_loading_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.547Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "table_lifecycle_v1",
+    "model_element": "active",
+    "test_id": "table_lifecycle_v1_state_active_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.547Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "table_lifecycle_v1",
+    "model_element": "derived",
+    "test_id": "table_lifecycle_v1_state_derived_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.547Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "table_lifecycle_v1",
+    "model_element": "disposed",
+    "test_id": "table_lifecycle_v1_state_disposed_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.547Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "table_lifecycle_v1",
+    "model_element": "start_table_creation",
+    "test_id": "table_lifecycle_v1_transition_start_table_creation",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.547Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "table_lifecycle_v1",
+    "model_element": "complete_table_creation",
+    "test_id": "table_lifecycle_v1_transition_complete_table_creation",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.547Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "table_lifecycle_v1",
+    "model_element": "create_slice",
+    "test_id": "table_lifecycle_v1_transition_create_slice",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.547Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "table_lifecycle_v1",
+    "model_element": "create_filtered",
+    "test_id": "table_lifecycle_v1_transition_create_filtered",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.547Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "table_lifecycle_v1",
+    "model_element": "create_projection",
+    "test_id": "table_lifecycle_v1_transition_create_projection",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.547Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "table_lifecycle_v1",
+    "model_element": "create_projection_by_name",
+    "test_id": "table_lifecycle_v1_transition_create_projection_by_name",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.547Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "table_lifecycle_v1",
+    "model_element": "derived_slice",
+    "test_id": "table_lifecycle_v1_transition_derived_slice",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.547Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "table_lifecycle_v1",
+    "model_element": "derived_filter",
+    "test_id": "table_lifecycle_v1_transition_derived_filter",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.547Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "table_lifecycle_v1",
+    "model_element": "derived_projection",
+    "test_id": "table_lifecycle_v1_transition_derived_projection",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.547Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "table_lifecycle_v1",
+    "model_element": "dispose_active",
+    "test_id": "table_lifecycle_v1_transition_dispose_active",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.547Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "table_lifecycle_v1",
+    "model_element": "dispose_derived",
+    "test_id": "table_lifecycle_v1_transition_dispose_derived",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.547Z"
+  },
+  {
+    "requirement_ids": [],
+    "model_id": "table_lifecycle_v1",
+    "model_element": "fail_during_loading",
+    "test_id": "table_lifecycle_v1_transition_fail_during_loading",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.547Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-ERROR-001",
+      "REQ-ERROR-002",
+      "REQ-ERROR-003",
+      "REQ-ERROR-004"
+    ],
+    "model_id": "error_handling_flow",
+    "model_element": "normal_operation",
+    "test_id": "error_handling_flow_state_normal_operation_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.552Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-ERROR-001",
+      "REQ-ERROR-002",
+      "REQ-ERROR-003",
+      "REQ-ERROR-004"
+    ],
+    "model_id": "error_handling_flow",
+    "model_element": "operation_executing",
+    "test_id": "error_handling_flow_state_operation_executing_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.552Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-ERROR-001",
+      "REQ-ERROR-002",
+      "REQ-ERROR-003",
+      "REQ-ERROR-004"
+    ],
+    "model_id": "error_handling_flow",
+    "model_element": "error_detected",
+    "test_id": "error_handling_flow_state_error_detected_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.552Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-ERROR-001",
+      "REQ-ERROR-002",
+      "REQ-ERROR-003",
+      "REQ-ERROR-004"
+    ],
+    "model_id": "error_handling_flow",
+    "model_element": "error_classifying",
+    "test_id": "error_handling_flow_state_error_classifying_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.552Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-ERROR-001",
+      "REQ-ERROR-002",
+      "REQ-ERROR-003",
+      "REQ-ERROR-004"
+    ],
+    "model_id": "error_handling_flow",
+    "model_element": "recoverable_error",
+    "test_id": "error_handling_flow_state_recoverable_error_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.552Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-ERROR-001",
+      "REQ-ERROR-002",
+      "REQ-ERROR-003",
+      "REQ-ERROR-004"
+    ],
+    "model_id": "error_handling_flow",
+    "model_element": "critical_error",
+    "test_id": "error_handling_flow_state_critical_error_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.552Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-ERROR-001",
+      "REQ-ERROR-002",
+      "REQ-ERROR-003",
+      "REQ-ERROR-004"
+    ],
+    "model_id": "error_handling_flow",
+    "model_element": "recovering",
+    "test_id": "error_handling_flow_state_recovering_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.552Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-ERROR-001",
+      "REQ-ERROR-002",
+      "REQ-ERROR-003",
+      "REQ-ERROR-004"
+    ],
+    "model_id": "error_handling_flow",
+    "model_element": "cleanup_required",
+    "test_id": "error_handling_flow_state_cleanup_required_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.552Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-ERROR-001",
+      "REQ-ERROR-002",
+      "REQ-ERROR-003",
+      "REQ-ERROR-004"
+    ],
+    "model_id": "error_handling_flow",
+    "model_element": "cleaning_up",
+    "test_id": "error_handling_flow_state_cleaning_up_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.552Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-ERROR-001",
+      "REQ-ERROR-002",
+      "REQ-ERROR-003",
+      "REQ-ERROR-004"
+    ],
+    "model_id": "error_handling_flow",
+    "model_element": "error_reported",
+    "test_id": "error_handling_flow_state_error_reported_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.552Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-ERROR-001",
+      "REQ-ERROR-002",
+      "REQ-ERROR-003",
+      "REQ-ERROR-004"
+    ],
+    "model_id": "error_handling_flow",
+    "model_element": "recovery_successful",
+    "test_id": "error_handling_flow_state_recovery_successful_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.552Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-ERROR-001",
+      "REQ-ERROR-002",
+      "REQ-ERROR-003",
+      "REQ-ERROR-004"
+    ],
+    "model_id": "error_handling_flow",
+    "model_element": "recovery_failed",
+    "test_id": "error_handling_flow_state_recovery_failed_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.553Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-ERROR-001",
+      "REQ-ERROR-002",
+      "REQ-ERROR-003",
+      "REQ-ERROR-004"
+    ],
+    "model_id": "error_handling_flow",
+    "model_element": "system_shutdown",
+    "test_id": "error_handling_flow_state_system_shutdown_validation",
+    "test_type": "state_validation",
+    "generated_at": "2025-09-28T11:18:56.553Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-ERROR-001",
+      "REQ-ERROR-002",
+      "REQ-ERROR-003",
+      "REQ-ERROR-004"
+    ],
+    "model_id": "error_handling_flow",
+    "model_element": "start_operation",
+    "test_id": "error_handling_flow_transition_start_operation",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.553Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-ERROR-001",
+      "REQ-ERROR-002",
+      "REQ-ERROR-003",
+      "REQ-ERROR-004"
+    ],
+    "model_id": "error_handling_flow",
+    "model_element": "operation_success",
+    "test_id": "error_handling_flow_transition_operation_success",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.553Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-ERROR-001",
+      "REQ-ERROR-002",
+      "REQ-ERROR-003",
+      "REQ-ERROR-004"
+    ],
+    "model_id": "error_handling_flow",
+    "model_element": "detect_validation_error",
+    "test_id": "error_handling_flow_transition_detect_validation_error",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.553Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-ERROR-001",
+      "REQ-ERROR-002",
+      "REQ-ERROR-003",
+      "REQ-ERROR-004"
+    ],
+    "model_id": "error_handling_flow",
+    "model_element": "detect_memory_error",
+    "test_id": "error_handling_flow_transition_detect_memory_error",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.553Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-ERROR-001",
+      "REQ-ERROR-002",
+      "REQ-ERROR-003",
+      "REQ-ERROR-004"
+    ],
+    "model_id": "error_handling_flow",
+    "model_element": "detect_conversion_error",
+    "test_id": "error_handling_flow_transition_detect_conversion_error",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.553Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-ERROR-001",
+      "REQ-ERROR-002",
+      "REQ-ERROR-003",
+      "REQ-ERROR-004"
+    ],
+    "model_id": "error_handling_flow",
+    "model_element": "start_error_classification",
+    "test_id": "error_handling_flow_transition_start_error_classification",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.553Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-ERROR-001",
+      "REQ-ERROR-002",
+      "REQ-ERROR-003",
+      "REQ-ERROR-004"
+    ],
+    "model_id": "error_handling_flow",
+    "model_element": "classify_as_recoverable",
+    "test_id": "error_handling_flow_transition_classify_as_recoverable",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.553Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-ERROR-001",
+      "REQ-ERROR-002",
+      "REQ-ERROR-003",
+      "REQ-ERROR-004"
+    ],
+    "model_id": "error_handling_flow",
+    "model_element": "classify_as_critical",
+    "test_id": "error_handling_flow_transition_classify_as_critical",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.553Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-ERROR-001",
+      "REQ-ERROR-002",
+      "REQ-ERROR-003",
+      "REQ-ERROR-004"
+    ],
+    "model_id": "error_handling_flow",
+    "model_element": "attempt_recovery",
+    "test_id": "error_handling_flow_transition_attempt_recovery",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.553Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-ERROR-001",
+      "REQ-ERROR-002",
+      "REQ-ERROR-003",
+      "REQ-ERROR-004"
+    ],
+    "model_id": "error_handling_flow",
+    "model_element": "recovery_succeeded",
+    "test_id": "error_handling_flow_transition_recovery_succeeded",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.553Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-ERROR-001",
+      "REQ-ERROR-002",
+      "REQ-ERROR-003",
+      "REQ-ERROR-004"
+    ],
+    "model_id": "error_handling_flow",
+    "model_element": "recovery_failed_attempt",
+    "test_id": "error_handling_flow_transition_recovery_failed_attempt",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.553Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-ERROR-001",
+      "REQ-ERROR-002",
+      "REQ-ERROR-003",
+      "REQ-ERROR-004"
+    ],
+    "model_id": "error_handling_flow",
+    "model_element": "require_cleanup_from_critical",
+    "test_id": "error_handling_flow_transition_require_cleanup_from_critical",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.553Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-ERROR-001",
+      "REQ-ERROR-002",
+      "REQ-ERROR-003",
+      "REQ-ERROR-004"
+    ],
+    "model_id": "error_handling_flow",
+    "model_element": "require_cleanup_from_recovery_failed",
+    "test_id": "error_handling_flow_transition_require_cleanup_from_recovery_failed",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.553Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-ERROR-001",
+      "REQ-ERROR-002",
+      "REQ-ERROR-003",
+      "REQ-ERROR-004"
+    ],
+    "model_id": "error_handling_flow",
+    "model_element": "start_cleanup",
+    "test_id": "error_handling_flow_transition_start_cleanup",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.553Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-ERROR-001",
+      "REQ-ERROR-002",
+      "REQ-ERROR-003",
+      "REQ-ERROR-004"
+    ],
+    "model_id": "error_handling_flow",
+    "model_element": "report_recoverable_error",
+    "test_id": "error_handling_flow_transition_report_recoverable_error",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.553Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-ERROR-001",
+      "REQ-ERROR-002",
+      "REQ-ERROR-003",
+      "REQ-ERROR-004"
+    ],
+    "model_id": "error_handling_flow",
+    "model_element": "report_critical_error",
+    "test_id": "error_handling_flow_transition_report_critical_error",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.553Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-ERROR-001",
+      "REQ-ERROR-002",
+      "REQ-ERROR-003",
+      "REQ-ERROR-004"
+    ],
+    "model_id": "error_handling_flow",
+    "model_element": "cleanup_successful",
+    "test_id": "error_handling_flow_transition_cleanup_successful",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.553Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-ERROR-001",
+      "REQ-ERROR-002",
+      "REQ-ERROR-003",
+      "REQ-ERROR-004"
+    ],
+    "model_id": "error_handling_flow",
+    "model_element": "cleanup_failed_shutdown",
+    "test_id": "error_handling_flow_transition_cleanup_failed_shutdown",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.553Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-ERROR-001",
+      "REQ-ERROR-002",
+      "REQ-ERROR-003",
+      "REQ-ERROR-004"
+    ],
+    "model_id": "error_handling_flow",
+    "model_element": "return_to_normal",
+    "test_id": "error_handling_flow_transition_return_to_normal",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.553Z"
+  },
+  {
+    "requirement_ids": [
+      "REQ-ERROR-001",
+      "REQ-ERROR-002",
+      "REQ-ERROR-003",
+      "REQ-ERROR-004"
+    ],
+    "model_id": "error_handling_flow",
+    "model_element": "shutdown_from_critical",
+    "test_id": "error_handling_flow_transition_shutdown_from_critical",
+    "test_type": "transition_test",
+    "generated_at": "2025-09-28T11:18:56.553Z"
+  }
+]

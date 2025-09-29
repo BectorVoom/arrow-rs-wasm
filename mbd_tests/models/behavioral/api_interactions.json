@@ -1,0 +1,303 @@
+{
+  "model_id": "api_interactions_v1",
+  "model_type": "statechart",
+  "version": "1.0.0",
+  "description": "Statechart model for API interaction sequences including data conversion, table operations, and error handling flows",
+  "states": [
+    {
+      "id": "session_start",
+      "name": "Session Start",
+      "type": "initial",
+      "properties": {
+        "module_loaded": true,
+        "module_initialized": false,
+        "tables_created": 0
+      },
+      "invariants": [
+        "WASM module is loaded in browser/Node.js",
+        "No API calls should succeed except init_wasm_module",
+        "Module state is uninitialized"
+      ]
+    },
+    {
+      "id": "ready_for_operations",
+      "name": "Ready for Operations",
+      "type": "normal",
+      "properties": {
+        "module_loaded": true,
+        "module_initialized": true,
+        "tables_created": 0,
+        "can_accept_tables": true
+      },
+      "invariants": [
+        "Module is successfully initialized",
+        "All API calls should work",
+        "Memory management is active",
+        "No tables currently loaded"
+      ]
+    },
+    {
+      "id": "table_processing",
+      "name": "Table Processing",
+      "type": "composite",
+      "properties": {
+        "module_initialized": true,
+        "tables_created": "> 0",
+        "active_operations": "configurable"
+      },
+      "invariants": [
+        "At least one table is loaded",
+        "Table operations are available",
+        "Memory is being actively managed"
+      ],
+      "substates": [
+        {
+          "id": "single_table_ops",
+          "name": "Single Table Operations",
+          "type": "normal",
+          "properties": {
+            "current_table_count": 1,
+            "can_read_data": true,
+            "can_manipulate": true
+          },
+          "invariants": [
+            "Exactly one table is loaded",
+            "Schema operations work",
+            "Column operations work",
+            "Table manipulation operations work"
+          ]
+        },
+        {
+          "id": "multiple_table_ops",
+          "name": "Multiple Table Operations",
+          "type": "normal",
+          "properties": {
+            "current_table_count": "> 1",
+            "can_read_data": true,
+            "can_manipulate": true,
+            "can_cross_reference": true
+          },
+          "invariants": [
+            "Multiple tables are loaded simultaneously",
+            "Each table can be operated on independently",
+            "Memory limits are respected across all tables",
+            "Handle management works correctly"
+          ]
+        },
+        {
+          "id": "memory_pressure",
+          "name": "Memory Pressure",
+          "type": "normal", 
+          "properties": {
+            "current_table_count": "> 1",
+            "memory_usage_high": true,
+            "new_allocations_restricted": true
+          },
+          "invariants": [
+            "Memory usage is near the configured limit",
+            "New table creation may fail",
+            "Existing tables continue to work",
+            "Memory cleanup operations work"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "data_export",
+      "name": "Data Export",
+      "type": "normal",
+      "properties": {
+        "module_initialized": true,
+        "tables_available": true,
+        "export_in_progress": true
+      },
+      "invariants": [
+        "write_table_to_buffer operations work",
+        "Compression options are respected",
+        "Original table remains unchanged",
+        "Export format is correct"
+      ]
+    },
+    {
+      "id": "session_cleanup",
+      "name": "Session Cleanup",
+      "type": "normal",
+      "properties": {
+        "module_initialized": true,
+        "cleanup_in_progress": true
+      },
+      "invariants": [
+        "Tables are being released",
+        "Memory is being freed",
+        "Resources are being cleaned up"
+      ]
+    },
+    {
+      "id": "session_end",
+      "name": "Session End",
+      "type": "final",
+      "properties": {
+        "module_loaded": true,
+        "module_initialized": false,
+        "tables_created": 0,
+        "all_resources_cleaned": true
+      },
+      "invariants": [
+        "Module is disposed",
+        "All memory is released",
+        "All table handles are invalid",
+        "System is ready for reinitialization"
+      ]
+    }
+  ],
+  "transitions": [
+    {
+      "id": "initialize_module",
+      "from": "session_start",
+      "to": "ready_for_operations",
+      "trigger": "init_wasm_module_success",
+      "guard": "valid_initialization_options",
+      "action": "configure_memory_limits, setup_logging, enable_apis",
+      "requirements": ["REQ-301", "REQ-302"]
+    },
+    {
+      "id": "load_first_table",
+      "from": "ready_for_operations", 
+      "to": "table_processing.single_table_ops",
+      "trigger": "read_table_from_buffer_success",
+      "guard": "valid_buffer_format AND memory_available",
+      "action": "parse_buffer, allocate_table, return_handle",
+      "requirements": ["REQ-303", "REQ-304"]
+    },
+    {
+      "id": "load_additional_table",
+      "from": "table_processing.single_table_ops",
+      "to": "table_processing.multiple_table_ops",
+      "trigger": "read_table_from_buffer_success",
+      "guard": "valid_buffer_format AND memory_available",
+      "action": "parse_buffer, allocate_table, return_handle",
+      "requirements": ["REQ-303", "REQ-304"]
+    },
+    {
+      "id": "approach_memory_limit",
+      "from": "table_processing.multiple_table_ops",
+      "to": "table_processing.memory_pressure",
+      "trigger": "memory_usage_high",
+      "guard": "memory_used > 80% of limit",
+      "action": "restrict_new_allocations, log_memory_warning",
+      "requirements": ["REQ-305"]
+    },
+    {
+      "id": "release_memory_pressure",
+      "from": "table_processing.memory_pressure",
+      "to": "table_processing.multiple_table_ops",
+      "trigger": "release_table_success",
+      "guard": "memory_used < 70% of limit",
+      "action": "enable_new_allocations, update_memory_stats",
+      "requirements": ["REQ-306"]
+    },
+    {
+      "id": "reduce_to_single_table",
+      "from": "table_processing.multiple_table_ops",
+      "to": "table_processing.single_table_ops",
+      "trigger": "release_table_success",
+      "guard": "table_count == 1",
+      "action": "update_table_count, free_memory",
+      "requirements": ["REQ-306"]
+    },
+    {
+      "id": "reduce_from_pressure",
+      "from": "table_processing.memory_pressure",
+      "to": "table_processing.single_table_ops",
+      "trigger": "release_table_success",
+      "guard": "table_count == 1",
+      "action": "update_table_count, free_memory, enable_allocations",
+      "requirements": ["REQ-306"]
+    },
+    {
+      "id": "export_table_data",
+      "from": "table_processing",
+      "to": "data_export",
+      "trigger": "write_table_to_buffer",
+      "guard": "valid_table_handle AND valid_write_options",
+      "action": "serialize_table, apply_compression, return_buffer",
+      "requirements": ["REQ-307", "REQ-308"]
+    },
+    {
+      "id": "complete_export",
+      "from": "data_export",
+      "to": "table_processing",
+      "trigger": "export_complete",
+      "guard": "none",
+      "action": "return_to_normal_operations",
+      "requirements": ["REQ-309"]
+    },
+    {
+      "id": "start_cleanup",
+      "from": "table_processing",
+      "to": "session_cleanup",
+      "trigger": "dispose_wasm_module",
+      "guard": "none",
+      "action": "begin_resource_cleanup",
+      "requirements": ["REQ-310"]
+    },
+    {
+      "id": "start_cleanup_from_export",
+      "from": "data_export",
+      "to": "session_cleanup",
+      "trigger": "dispose_wasm_module",
+      "guard": "none",
+      "action": "cancel_export, begin_resource_cleanup",
+      "requirements": ["REQ-310"]
+    },
+    {
+      "id": "start_cleanup_from_ready",
+      "from": "ready_for_operations",
+      "to": "session_cleanup",
+      "trigger": "dispose_wasm_module",
+      "guard": "none",
+      "action": "begin_resource_cleanup",
+      "requirements": ["REQ-310"]
+    },
+    {
+      "id": "complete_cleanup",
+      "from": "session_cleanup",
+      "to": "session_end",
+      "trigger": "cleanup_complete",
+      "guard": "all_resources_released",
+      "action": "finalize_disposal, reset_module_state",
+      "requirements": ["REQ-311"]
+    },
+    {
+      "id": "release_all_tables",
+      "from": "table_processing",
+      "to": "ready_for_operations",
+      "trigger": "release_all_tables",
+      "guard": "none",
+      "action": "release_each_table, free_all_memory, reset_counters",
+      "requirements": ["REQ-306"]
+    }
+  ],
+  "metadata": {
+    "created": "2025-09-28",
+    "author": "Claude Code MBD System",
+    "requirements": [
+      "REQ-301: Module initialization must be successful before operations",
+      "REQ-302: API access must be enabled after successful initialization",
+      "REQ-303: Table loading must validate buffer format and content",
+      "REQ-304: Table allocation must respect memory limits",
+      "REQ-305: Memory pressure conditions must be detected and handled",
+      "REQ-306: Table release must free memory and update tracking",
+      "REQ-307: Table export must serialize to requested format",
+      "REQ-308: Compression options must be applied during export",
+      "REQ-309: Export operations must not affect source tables",
+      "REQ-310: Module disposal must begin systematic cleanup",
+      "REQ-311: Cleanup must release all resources completely"
+    ],
+    "test_coverage_targets": {
+      "state_coverage": "100%",
+      "transition_coverage": "95%",
+      "path_coverage": "90%"
+    }
+  }
+}
