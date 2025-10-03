@@ -5,7 +5,7 @@
  * with zero-copy semantics and LZ4 compression support.
  */
 // Re-export the WASM module initialization function
-import init, * as wasm from '../pkg/arrow_wasm';
+import init, * as wasm from '../pkg/arrow_rs_wasm.js';
 // Helper functions for creating Result types
 function createOk(value) {
     return { ok: true, value };
@@ -121,5 +121,71 @@ export async function registerPlugin(pluginId) {
         return createErr(`Plugin registration failed: ${error}`);
     }
 }
-// Types are already exported above with their declarations
+/**
+ * Get the number of rows in a table
+ */
+export async function getTableRowCount(handle) {
+    try {
+        const wasm = ensureInitialized();
+        const count = wasm.get_table_row_count(handle);
+        return createOk(count);
+    }
+    catch (error) {
+        return createErr(`Failed to get table row count: ${error}`);
+    }
+}
+/**
+ * Export a named column as transferable buffers plus metadata
+ */
+export async function exportColumnByName(handle, columnName) {
+    try {
+        const wasm = ensureInitialized();
+        const columnData = wasm.export_column_by_name(handle, columnName);
+        // Convert the WASM result to ColumnExport interface
+        const result = {
+            arrowType: columnData.arrow_type,
+            length: columnData.length,
+            data: columnData.data.buffer,
+            nullBitmap: columnData.null_bitmap ? columnData.null_bitmap.buffer : undefined,
+            extraBuffers: columnData.extra_buffers ?
+                columnData.extra_buffers.map((buf) => buf.buffer) : undefined
+        };
+        return createOk(result);
+    }
+    catch (error) {
+        return createErr(`Failed to export column: ${error}`);
+    }
+}
+// Utility Functions
+/**
+ * Check if a table handle is valid
+ */
+export function isValidHandle(handle) {
+    if (!isWasmInitialized())
+        return false;
+    const wasm = wasmModule;
+    return wasm.is_valid_handle(handle);
+}
+/**
+ * Get memory usage statistics
+ */
+export async function getMemoryStats() {
+    try {
+        const wasm = ensureInitialized();
+        const stats = wasm.get_memory_stats();
+        return createOk(stats);
+    }
+    catch (error) {
+        return createErr(`Failed to get memory stats: ${error}`);
+    }
+}
+/**
+ * Clear all tables (useful for testing)
+ */
+export function clearAllTables() {
+    if (!isWasmInitialized())
+        return;
+    // This would need to be implemented in the WASM module if needed
+    console.warn('clearAllTables not implemented in WASM module');
+}
 //# sourceMappingURL=index.js.map

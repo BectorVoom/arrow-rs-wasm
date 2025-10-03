@@ -1,0 +1,1264 @@
+{
+  "model_id": "enhanced_memory_management",
+  "model_type": "state_machine",
+  "generated_at": "2025-10-01T12:12:34.552Z",
+  "test_cases": [
+    {
+      "test_id": "enhanced_memory_management_state_memory_uninitialized_validation",
+      "test_name": "Validate Memory Manager Uninitialized state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "memory_uninitialized",
+      "requirements": [
+        "REQ-MEM-001",
+        "REQ-MEM-002",
+        "REQ-MEM-003",
+        "REQ-HANDLE-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Memory Manager Uninitialized state",
+          "expected": "System reaches Memory Manager Uninitialized state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"registry_initialized\":false,\"handle_counter\":0,\"active_tables\":0,\"memory_tracking_enabled\":false}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for enhanced_memory_management_state_memory_uninitialized_validation\n// Model: enhanced_memory_management, Element: memory_uninitialized\n\ndescribe('enhanced_memory_management_state_memory_uninitialized_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Memory Manager Uninitialized state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "enhanced_memory_management_state_memory_ready_validation",
+      "test_name": "Validate Memory Manager Ready state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "memory_ready",
+      "requirements": [
+        "REQ-MEM-001",
+        "REQ-MEM-002",
+        "REQ-MEM-003",
+        "REQ-HANDLE-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Memory Manager Ready state",
+          "expected": "System reaches Memory Manager Ready state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"registry_initialized\":true,\"handle_counter\":0,\"active_tables\":0,\"memory_tracking_enabled\":true,\"can_create_handles\":true}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for enhanced_memory_management_state_memory_ready_validation\n// Model: enhanced_memory_management, Element: memory_ready\n\ndescribe('enhanced_memory_management_state_memory_ready_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Memory Manager Ready state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "enhanced_memory_management_state_handle_active_validation",
+      "test_name": "Validate Handles Active state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "handle_active",
+      "requirements": [
+        "REQ-MEM-001",
+        "REQ-MEM-002",
+        "REQ-MEM-003",
+        "REQ-HANDLE-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Handles Active state",
+          "expected": "System reaches Handles Active state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"registry_initialized\":true,\"handle_counter\":\">0\",\"active_tables\":\">0\",\"memory_tracking_enabled\":true,\"can_create_handles\":true,\"memory_usage_tracked\":true}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for enhanced_memory_management_state_handle_active_validation\n// Model: enhanced_memory_management, Element: handle_active\n\ndescribe('enhanced_memory_management_state_handle_active_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Handles Active state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "enhanced_memory_management_state_handle_creating_validation",
+      "test_name": "Validate Creating New Handle state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "handle_creating",
+      "requirements": [
+        "REQ-MEM-001",
+        "REQ-MEM-002",
+        "REQ-MEM-003",
+        "REQ-HANDLE-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Creating New Handle state",
+          "expected": "System reaches Creating New Handle state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"registry_initialized\":true,\"handle_creation_in_progress\":true,\"new_handle_id\":\">0\",\"table_data_prepared\":true}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for enhanced_memory_management_state_handle_creating_validation\n// Model: enhanced_memory_management, Element: handle_creating\n\ndescribe('enhanced_memory_management_state_handle_creating_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Creating New Handle state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "enhanced_memory_management_state_handle_disposing_validation",
+      "test_name": "Validate Disposing Handle state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "handle_disposing",
+      "requirements": [
+        "REQ-MEM-001",
+        "REQ-MEM-002",
+        "REQ-MEM-003",
+        "REQ-HANDLE-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Disposing Handle state",
+          "expected": "System reaches Disposing Handle state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"registry_initialized\":true,\"disposal_in_progress\":true,\"target_handle_id\":\">0\",\"cleanup_started\":true}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for enhanced_memory_management_state_handle_disposing_validation\n// Model: enhanced_memory_management, Element: handle_disposing\n\ndescribe('enhanced_memory_management_state_handle_disposing_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Disposing Handle state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "enhanced_memory_management_state_memory_cleanup_validation",
+      "test_name": "Validate Memory Cleanup in Progress state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "memory_cleanup",
+      "requirements": [
+        "REQ-MEM-001",
+        "REQ-MEM-002",
+        "REQ-MEM-003",
+        "REQ-HANDLE-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Memory Cleanup in Progress state",
+          "expected": "System reaches Memory Cleanup in Progress state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"registry_initialized\":true,\"cleanup_in_progress\":true,\"handles_being_freed\":\">=1\",\"memory_being_released\":true}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for enhanced_memory_management_state_memory_cleanup_validation\n// Model: enhanced_memory_management, Element: memory_cleanup\n\ndescribe('enhanced_memory_management_state_memory_cleanup_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Memory Cleanup in Progress state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "enhanced_memory_management_state_memory_leak_detected_validation",
+      "test_name": "Validate Memory Leak Detected state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "memory_leak_detected",
+      "requirements": [
+        "REQ-MEM-001",
+        "REQ-MEM-002",
+        "REQ-MEM-003",
+        "REQ-HANDLE-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Memory Leak Detected state",
+          "expected": "System reaches Memory Leak Detected state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"leak_detected\":true,\"leaked_handles\":\">=1\",\"leak_detection_time\":\"timestamp\",\"automatic_cleanup_possible\":\"boolean\",\"error_type\":\"memory_leak\"}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for enhanced_memory_management_state_memory_leak_detected_validation\n// Model: enhanced_memory_management, Element: memory_leak_detected\n\ndescribe('enhanced_memory_management_state_memory_leak_detected_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Memory Leak Detected state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "enhanced_memory_management_state_handle_corruption_detected_validation",
+      "test_name": "Validate Handle Corruption Detected state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "handle_corruption_detected",
+      "requirements": [
+        "REQ-MEM-001",
+        "REQ-MEM-002",
+        "REQ-MEM-003",
+        "REQ-HANDLE-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Handle Corruption Detected state",
+          "expected": "System reaches Handle Corruption Detected state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"corruption_detected\":true,\"corrupted_handle_id\":\">0\",\"corruption_type\":\"string\",\"recovery_possible\":false,\"error_type\":\"handle_corruption\"}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for enhanced_memory_management_state_handle_corruption_detected_validation\n// Model: enhanced_memory_management, Element: handle_corruption_detected\n\ndescribe('enhanced_memory_management_state_handle_corruption_detected_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Handle Corruption Detected state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "enhanced_memory_management_state_memory_exhausted_validation",
+      "test_name": "Validate Memory Exhausted state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "memory_exhausted",
+      "requirements": [
+        "REQ-MEM-001",
+        "REQ-MEM-002",
+        "REQ-MEM-003",
+        "REQ-HANDLE-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Memory Exhausted state",
+          "expected": "System reaches Memory Exhausted state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"memory_exhausted\":true,\"current_memory_usage\":\"number\",\"memory_limit_reached\":true,\"new_allocations_blocked\":true,\"error_type\":\"memory_exhausted\"}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for enhanced_memory_management_state_memory_exhausted_validation\n// Model: enhanced_memory_management, Element: memory_exhausted\n\ndescribe('enhanced_memory_management_state_memory_exhausted_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Memory Exhausted state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "enhanced_memory_management_state_memory_disposed_validation",
+      "test_name": "Validate Memory Manager Disposed state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "memory_disposed",
+      "requirements": [
+        "REQ-MEM-001",
+        "REQ-MEM-002",
+        "REQ-MEM-003",
+        "REQ-HANDLE-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Memory Manager Disposed state",
+          "expected": "System reaches Memory Manager Disposed state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"registry_initialized\":false,\"handle_counter\":0,\"active_tables\":0,\"all_handles_freed\":true,\"memory_released\":true,\"disposed\":true}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for enhanced_memory_management_state_memory_disposed_validation\n// Model: enhanced_memory_management, Element: memory_disposed\n\ndescribe('enhanced_memory_management_state_memory_disposed_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Memory Manager Disposed state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "enhanced_memory_management_transition_initialize_memory_manager",
+      "test_name": "Test transition: Memory Manager Uninitialized → Memory Manager Ready",
+      "test_type": "transition_test",
+      "model_element": "initialize_memory_manager",
+      "requirements": [
+        "REQ-MEM-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Memory Manager Uninitialized state",
+          "expected": "System state is memory_uninitialized"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: wasm_memory_available",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: init_memory_system",
+          "expected": "Event init_memory_system is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: setup_table_registry",
+          "expected": "Action setup_table_registry completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Memory Manager Ready state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "initialization_steps": [
+          "create_registry",
+          "setup_mutex",
+          "enable_tracking"
+        ],
+        "expected_timing": "< 10ms",
+        "memory_overhead": "< 1MB"
+      },
+      "browser_test_code": "\n// Generated test for enhanced_memory_management_transition_initialize_memory_manager\n// Model: enhanced_memory_management, Element: initialize_memory_manager\n\ndescribe('enhanced_memory_management_transition_initialize_memory_manager', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: memory_uninitialized\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "enhanced_memory_management_transition_create_new_handle",
+      "test_name": "Test transition: Memory Manager Ready → Creating New Handle",
+      "test_type": "transition_test",
+      "model_element": "create_new_handle",
+      "requirements": [
+        "REQ-HANDLE-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Memory Manager Ready state",
+          "expected": "System state is memory_ready"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: memory_available && schema_valid && batches_valid",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: create_table_from_batches|create_table_with_metadata",
+          "expected": "Event create_table_from_batches|create_table_with_metadata is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: begin_handle_creation",
+          "expected": "Action begin_handle_creation completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Creating New Handle state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "creation_scenarios": [
+          "small_table",
+          "large_table",
+          "empty_table",
+          "complex_schema"
+        ],
+        "expected_timing": "< 50ms",
+        "memory_allocation": "proportional_to_data_size"
+      },
+      "browser_test_code": "\n// Generated test for enhanced_memory_management_transition_create_new_handle\n// Model: enhanced_memory_management, Element: create_new_handle\n\ndescribe('enhanced_memory_management_transition_create_new_handle', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: memory_ready\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "enhanced_memory_management_transition_create_additional_handle",
+      "test_name": "Test transition: Handles Active → Creating New Handle",
+      "test_type": "transition_test",
+      "model_element": "create_additional_handle",
+      "requirements": [
+        "REQ-HANDLE-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Handles Active state",
+          "expected": "System state is handle_active"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: memory_available && schema_valid && batches_valid && handle_limit_not_reached",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: create_table_from_batches|create_table_with_metadata",
+          "expected": "Event create_table_from_batches|create_table_with_metadata is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: begin_handle_creation",
+          "expected": "Action begin_handle_creation completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Creating New Handle state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "concurrent_creation": [
+          "multiple_handles",
+          "rapid_creation",
+          "interleaved_operations"
+        ],
+        "handle_limits": [
+          "max_1000_handles",
+          "memory_based_limits"
+        ],
+        "expected_timing": "< 50ms per handle"
+      },
+      "browser_test_code": "\n// Generated test for enhanced_memory_management_transition_create_additional_handle\n// Model: enhanced_memory_management, Element: create_additional_handle\n\ndescribe('enhanced_memory_management_transition_create_additional_handle', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: handle_active\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "enhanced_memory_management_transition_handle_creation_complete",
+      "test_name": "Test transition: Creating New Handle → Handles Active",
+      "test_type": "transition_test",
+      "model_element": "handle_creation_complete",
+      "requirements": [
+        "REQ-HANDLE-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Creating New Handle state",
+          "expected": "System state is handle_creating"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: handle_id_unique && table_data_stored",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: handle_registered",
+          "expected": "Event handle_registered is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: complete_handle_registration",
+          "expected": "Action complete_handle_registration completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Handles Active state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "validation_checks": [
+          "handle_unique",
+          "handle_retrievable",
+          "data_accessible",
+          "memory_tracked"
+        ],
+        "post_creation_state": [
+          "handle_counter_incremented",
+          "active_tables_incremented"
+        ],
+        "expected_timing": "< 5ms"
+      },
+      "browser_test_code": "\n// Generated test for enhanced_memory_management_transition_handle_creation_complete\n// Model: enhanced_memory_management, Element: handle_creation_complete\n\ndescribe('enhanced_memory_management_transition_handle_creation_complete', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: handle_creating\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "enhanced_memory_management_transition_dispose_single_handle",
+      "test_name": "Test transition: Handles Active → Disposing Handle",
+      "test_type": "transition_test",
+      "model_element": "dispose_single_handle",
+      "requirements": [
+        "REQ-MEM-002"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Handles Active state",
+          "expected": "System state is handle_active"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: handle_exists && handle_valid",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: free_table",
+          "expected": "Event free_table is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: begin_handle_disposal",
+          "expected": "Action begin_handle_disposal completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Disposing Handle state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "disposal_scenarios": [
+          "valid_handle",
+          "last_handle",
+          "middle_handle"
+        ],
+        "validation_steps": [
+          "handle_exists",
+          "handle_not_disposed",
+          "cleanup_possible"
+        ],
+        "expected_timing": "< 20ms"
+      },
+      "browser_test_code": "\n// Generated test for enhanced_memory_management_transition_dispose_single_handle\n// Model: enhanced_memory_management, Element: dispose_single_handle\n\ndescribe('enhanced_memory_management_transition_dispose_single_handle', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: handle_active\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "enhanced_memory_management_transition_handle_disposal_complete",
+      "test_name": "Test transition: Disposing Handle → Handles Active",
+      "test_type": "transition_test",
+      "model_element": "handle_disposal_complete",
+      "requirements": [
+        "REQ-MEM-002"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Disposing Handle state",
+          "expected": "System state is handle_disposing"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: cleanup_successful && other_handles_remain",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: disposal_finished",
+          "expected": "Event disposal_finished is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: finalize_disposal_with_active_handles",
+          "expected": "Action finalize_disposal_with_active_handles completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Handles Active state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "cleanup_validation": [
+          "memory_freed",
+          "handle_removed",
+          "counters_decremented"
+        ],
+        "remaining_handles": [
+          "still_accessible",
+          "unaffected_by_disposal"
+        ],
+        "expected_timing": "< 10ms"
+      },
+      "browser_test_code": "\n// Generated test for enhanced_memory_management_transition_handle_disposal_complete\n// Model: enhanced_memory_management, Element: handle_disposal_complete\n\ndescribe('enhanced_memory_management_transition_handle_disposal_complete', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: handle_disposing\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "enhanced_memory_management_transition_last_handle_disposal_complete",
+      "test_name": "Test transition: Disposing Handle → Memory Manager Ready",
+      "test_type": "transition_test",
+      "model_element": "last_handle_disposal_complete",
+      "requirements": [
+        "REQ-MEM-002"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Disposing Handle state",
+          "expected": "System state is handle_disposing"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: cleanup_successful && no_handles_remain",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: disposal_finished",
+          "expected": "Event disposal_finished is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: return_to_ready_state",
+          "expected": "Action return_to_ready_state completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Memory Manager Ready state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "final_cleanup": [
+          "all_memory_freed",
+          "counters_reset",
+          "registry_clean"
+        ],
+        "state_validation": [
+          "ready_for_new_handles",
+          "memory_baseline_restored"
+        ],
+        "expected_timing": "< 15ms"
+      },
+      "browser_test_code": "\n// Generated test for enhanced_memory_management_transition_last_handle_disposal_complete\n// Model: enhanced_memory_management, Element: last_handle_disposal_complete\n\ndescribe('enhanced_memory_management_transition_last_handle_disposal_complete', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: handle_disposing\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "enhanced_memory_management_transition_cleanup_all_handles",
+      "test_name": "Test transition: Handles Active → Memory Cleanup in Progress",
+      "test_type": "transition_test",
+      "model_element": "cleanup_all_handles",
+      "requirements": [
+        "REQ-MEM-003"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Handles Active state",
+          "expected": "System state is handle_active"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: handles_exist",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: clear_all_tables|dispose_all",
+          "expected": "Event clear_all_tables|dispose_all is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: begin_mass_cleanup",
+          "expected": "Action begin_mass_cleanup completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Memory Cleanup in Progress state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "cleanup_scenarios": [
+          "few_handles",
+          "many_handles",
+          "mixed_table_sizes"
+        ],
+        "cleanup_strategy": [
+          "sequential_disposal",
+          "batch_disposal"
+        ],
+        "expected_timing": "< 100ms for 100 handles"
+      },
+      "browser_test_code": "\n// Generated test for enhanced_memory_management_transition_cleanup_all_handles\n// Model: enhanced_memory_management, Element: cleanup_all_handles\n\ndescribe('enhanced_memory_management_transition_cleanup_all_handles', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: handle_active\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "enhanced_memory_management_transition_mass_cleanup_complete",
+      "test_name": "Test transition: Memory Cleanup in Progress → Memory Manager Ready",
+      "test_type": "transition_test",
+      "model_element": "mass_cleanup_complete",
+      "requirements": [
+        "REQ-MEM-003"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Memory Cleanup in Progress state",
+          "expected": "System state is memory_cleanup"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: cleanup_successful",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: all_handles_freed",
+          "expected": "Event all_handles_freed is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: reset_to_clean_state",
+          "expected": "Action reset_to_clean_state completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Memory Manager Ready state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "validation_checks": [
+          "all_memory_freed",
+          "counters_zeroed",
+          "registry_empty"
+        ],
+        "performance_validation": [
+          "cleanup_efficient",
+          "no_memory_leaks"
+        ]
+      },
+      "browser_test_code": "\n// Generated test for enhanced_memory_management_transition_mass_cleanup_complete\n// Model: enhanced_memory_management, Element: mass_cleanup_complete\n\ndescribe('enhanced_memory_management_transition_mass_cleanup_complete', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: memory_cleanup\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "enhanced_memory_management_transition_detect_memory_leak",
+      "test_name": "Test transition: Handles Active → Memory Leak Detected",
+      "test_type": "transition_test",
+      "model_element": "detect_memory_leak",
+      "requirements": [
+        "REQ-MEM-004"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Handles Active state",
+          "expected": "System state is handle_active"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: unreachable_handles_detected || memory_usage_excessive",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: leak_detection_triggered",
+          "expected": "Event leak_detection_triggered is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: capture_leak_information",
+          "expected": "Action capture_leak_information completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Memory Leak Detected state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "leak_scenarios": [
+          "unreferenced_handles",
+          "circular_references",
+          "forgotten_cleanup"
+        ],
+        "detection_methods": [
+          "usage_threshold",
+          "periodic_scan",
+          "explicit_check"
+        ],
+        "leak_information": [
+          "handle_ids",
+          "creation_time",
+          "memory_usage"
+        ]
+      },
+      "browser_test_code": "\n// Generated test for enhanced_memory_management_transition_detect_memory_leak\n// Model: enhanced_memory_management, Element: detect_memory_leak\n\ndescribe('enhanced_memory_management_transition_detect_memory_leak', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: handle_active\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "enhanced_memory_management_transition_automatic_leak_recovery",
+      "test_name": "Test transition: Memory Leak Detected → Memory Cleanup in Progress",
+      "test_type": "transition_test",
+      "model_element": "automatic_leak_recovery",
+      "requirements": [
+        "REQ-MEM-004"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Memory Leak Detected state",
+          "expected": "System state is memory_leak_detected"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: automatic_cleanup_possible && safe_to_recover",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: automatic_cleanup",
+          "expected": "Event automatic_cleanup is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: force_cleanup_leaked_handles",
+          "expected": "Action force_cleanup_leaked_handles completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Memory Cleanup in Progress state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "recovery_scenarios": [
+          "recoverable_leaks",
+          "safe_cleanup_conditions"
+        ],
+        "cleanup_validation": [
+          "leaked_handles_freed",
+          "memory_reclaimed"
+        ],
+        "side_effects": [
+          "minimal_disruption",
+          "state_consistency_maintained"
+        ]
+      },
+      "browser_test_code": "\n// Generated test for enhanced_memory_management_transition_automatic_leak_recovery\n// Model: enhanced_memory_management, Element: automatic_leak_recovery\n\ndescribe('enhanced_memory_management_transition_automatic_leak_recovery', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: memory_leak_detected\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "enhanced_memory_management_transition_detect_handle_corruption",
+      "test_name": "Test transition: Handles Active → Handle Corruption Detected",
+      "test_type": "transition_test",
+      "model_element": "detect_handle_corruption",
+      "requirements": [
+        "REQ-MEM-005"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Handles Active state",
+          "expected": "System state is handle_active"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: corruption_detected",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: invalid_handle_access|corrupted_table_data",
+          "expected": "Event invalid_handle_access|corrupted_table_data is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: capture_corruption_details",
+          "expected": "Action capture_corruption_details completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Handle Corruption Detected state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "corruption_types": [
+          "invalid_handle_id",
+          "corrupted_table_data",
+          "memory_overwrites"
+        ],
+        "detection_triggers": [
+          "handle_validation_failed",
+          "data_integrity_check_failed"
+        ],
+        "captured_info": [
+          "handle_id",
+          "corruption_type",
+          "call_stack",
+          "memory_state"
+        ]
+      },
+      "browser_test_code": "\n// Generated test for enhanced_memory_management_transition_detect_handle_corruption\n// Model: enhanced_memory_management, Element: detect_handle_corruption\n\ndescribe('enhanced_memory_management_transition_detect_handle_corruption', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: handle_active\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "enhanced_memory_management_transition_memory_exhaustion",
+      "test_name": "Test transition: Creating New Handle → Memory Exhausted",
+      "test_type": "transition_test",
+      "model_element": "memory_exhaustion",
+      "requirements": [
+        "REQ-MEM-006"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Creating New Handle state",
+          "expected": "System state is handle_creating"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: memory_limit_exceeded",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: allocation_failed",
+          "expected": "Event allocation_failed is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: block_new_allocations",
+          "expected": "Action block_new_allocations completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Memory Exhausted state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "exhaustion_scenarios": [
+          "large_table_creation",
+          "many_small_tables",
+          "memory_fragmentation"
+        ],
+        "memory_thresholds": [
+          "browser_memory_limits",
+          "wasm_memory_limits"
+        ],
+        "error_information": [
+          "current_usage",
+          "requested_size",
+          "available_memory"
+        ]
+      },
+      "browser_test_code": "\n// Generated test for enhanced_memory_management_transition_memory_exhaustion\n// Model: enhanced_memory_management, Element: memory_exhaustion\n\ndescribe('enhanced_memory_management_transition_memory_exhaustion', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: handle_creating\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "enhanced_memory_management_transition_memory_recovery_after_exhaustion",
+      "test_name": "Test transition: Memory Exhausted → Memory Cleanup in Progress",
+      "test_type": "transition_test",
+      "model_element": "memory_recovery_after_exhaustion",
+      "requirements": [
+        "REQ-MEM-006"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Memory Exhausted state",
+          "expected": "System state is memory_exhausted"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: cleanup_can_free_memory",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: force_cleanup_for_recovery",
+          "expected": "Event force_cleanup_for_recovery is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: emergency_cleanup",
+          "expected": "Action emergency_cleanup completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Memory Cleanup in Progress state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "recovery_strategies": [
+          "free_oldest_handles",
+          "free_largest_tables",
+          "user_guided_cleanup"
+        ],
+        "cleanup_effectiveness": [
+          "memory_freed",
+          "allocation_unblocked"
+        ],
+        "recovery_validation": [
+          "system_functional",
+          "performance_restored"
+        ]
+      },
+      "browser_test_code": "\n// Generated test for enhanced_memory_management_transition_memory_recovery_after_exhaustion\n// Model: enhanced_memory_management, Element: memory_recovery_after_exhaustion\n\ndescribe('enhanced_memory_management_transition_memory_recovery_after_exhaustion', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: memory_exhausted\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "enhanced_memory_management_transition_dispose_memory_manager",
+      "test_name": "Test transition: Memory Manager Ready → Memory Manager Disposed",
+      "test_type": "transition_test",
+      "model_element": "dispose_memory_manager",
+      "requirements": [
+        "REQ-MEM-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Memory Manager Ready state",
+          "expected": "System state is memory_ready"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: no_active_handles",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: dispose_system",
+          "expected": "Event dispose_system is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: shutdown_memory_manager",
+          "expected": "Action shutdown_memory_manager completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Memory Manager Disposed state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "shutdown_steps": [
+          "verify_no_handles",
+          "cleanup_registry",
+          "release_system_memory"
+        ],
+        "validation_checks": [
+          "all_resources_freed",
+          "registry_destroyed"
+        ],
+        "expected_timing": "< 20ms"
+      },
+      "browser_test_code": "\n// Generated test for enhanced_memory_management_transition_dispose_memory_manager\n// Model: enhanced_memory_management, Element: dispose_memory_manager\n\ndescribe('enhanced_memory_management_transition_dispose_memory_manager', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: memory_ready\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "enhanced_memory_management_transition_force_dispose_with_cleanup",
+      "test_name": "Test transition: Handles Active → Memory Manager Disposed",
+      "test_type": "transition_test",
+      "model_element": "force_dispose_with_cleanup",
+      "requirements": [
+        "REQ-MEM-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Handles Active state",
+          "expected": "System state is handle_active"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: true",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: force_dispose_system",
+          "expected": "Event force_dispose_system is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: emergency_shutdown_with_cleanup",
+          "expected": "Action emergency_shutdown_with_cleanup completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Memory Manager Disposed state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "emergency_shutdown": [
+          "force_free_all_handles",
+          "emergency_cleanup",
+          "system_shutdown"
+        ],
+        "cleanup_thoroughness": [
+          "all_memory_freed",
+          "no_dangling_references"
+        ],
+        "expected_timing": "< 100ms regardless of handle count"
+      },
+      "browser_test_code": "\n// Generated test for enhanced_memory_management_transition_force_dispose_with_cleanup\n// Model: enhanced_memory_management, Element: force_dispose_with_cleanup\n\ndescribe('enhanced_memory_management_transition_force_dispose_with_cleanup', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: handle_active\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    }
+  ]
+}

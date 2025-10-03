@@ -135,15 +135,17 @@ class ModelTestGenerator {
         };
 
         // Generate state validation tests
-        for (const state of model.states) {
+        const states = Array.isArray(model.states) ? model.states : Object.values(model.states || {});
+        for (const state of states) {
             const stateTest = this.generateStateValidationTest(model, state);
             testSuite.test_cases.push(stateTest);
             this.addToTraceability(model, stateTest, 'state_validation');
         }
 
         // Generate transition tests
-        for (const transition of model.transitions) {
-            const transitionTest = this.generateTransitionTest(model, transition);
+        const transitions = Array.isArray(model.transitions) ? model.transitions : Object.values(model.transitions || {});
+        for (const transition of transitions) {
+            const transitionTest = this.generateTransitionTest(model, transition, states);
             testSuite.test_cases.push(transitionTest);
             this.addToTraceability(model, transitionTest, 'transition_test');
         }
@@ -198,11 +200,11 @@ class ModelTestGenerator {
     /**
      * Generate transition test
      */
-    generateTransitionTest(model, transition) {
+    generateTransitionTest(model, transition, states) {
         const testId = `${model.model_id}_transition_${transition.id}`;
         
-        const fromState = model.states.find(s => s.id === transition.from);
-        const toState = model.states.find(s => s.id === transition.to);
+        const fromState = states.find(s => s.id === transition.from);
+        const toState = states.find(s => s.id === transition.to);
         
         return {
             test_id: testId,

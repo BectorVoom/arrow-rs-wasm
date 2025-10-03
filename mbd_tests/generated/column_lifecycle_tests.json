@@ -1,7 +1,7 @@
 {
   "model_id": "column_lifecycle",
   "model_type": "state_machine",
-  "generated_at": "2025-09-28T11:18:56.522Z",
+  "generated_at": "2025-10-01T12:12:34.550Z",
   "test_cases": [
     {
       "test_id": "column_lifecycle_state_nonexistent_validation",

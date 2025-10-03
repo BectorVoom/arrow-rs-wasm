@@ -72,6 +72,16 @@ export interface BuildInfo {
     compressionTypes: string[];
 }
 /**
+ * Column export data
+ */
+export interface ColumnExport {
+    arrowType: string;
+    length: number;
+    data: ArrayBuffer;
+    nullBitmap?: ArrayBuffer;
+    extraBuffers?: ArrayBuffer[];
+}
+/**
  * WASM initialization options
  */
 export interface WasmInitOptions {
@@ -106,4 +116,24 @@ export declare function freeTable(handle: TableHandle): Promise<Result<void>>;
  * Register a plugin by id
  */
 export declare function registerPlugin(pluginId: string): Promise<Result<void>>;
+/**
+ * Get the number of rows in a table
+ */
+export declare function getTableRowCount(handle: TableHandle): Promise<Result<number>>;
+/**
+ * Export a named column as transferable buffers plus metadata
+ */
+export declare function exportColumnByName(handle: TableHandle, columnName: string): Promise<Result<ColumnExport>>;
+/**
+ * Check if a table handle is valid
+ */
+export declare function isValidHandle(handle: TableHandle): boolean;
+/**
+ * Get memory usage statistics
+ */
+export declare function getMemoryStats(): Promise<Result<MemoryStats>>;
+/**
+ * Clear all tables (useful for testing)
+ */
+export declare function clearAllTables(): void;
 //# sourceMappingURL=index.d.ts.map

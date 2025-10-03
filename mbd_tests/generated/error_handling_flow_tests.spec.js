@@ -1,6 +1,6 @@
 
 // Generated test suite for error_handling_flow
-// Generated at: 2025-09-28T11:18:56.552Z
+// Generated at: 2025-10-01T12:12:34.557Z
 
 import { expect } from 'chai';
 import { initializeWasmModule, TestHelpers } from '../harness/test_helpers.js';
@@ -1587,5 +1587,5 @@ describe('error_handling_flow_transition_shutdown_from_critical', () => {
 export const testSuiteInfo = {
   "model_id": "error_handling_flow",
   "test_count": 33,
-  "generated_at": "2025-09-28T11:18:56.552Z"
+  "generated_at": "2025-10-01T12:12:34.557Z"
 };

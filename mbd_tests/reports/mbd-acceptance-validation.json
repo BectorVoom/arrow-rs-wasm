@@ -1,0 +1,150 @@
+{
+  "timestamp": "2025-09-30T10:34:41.054Z",
+  "overallStatus": "BLOCKED",
+  "totalCriteria": 10,
+  "passedCriteria": 5,
+  "failedCriteria": 1,
+  "blockedCriteria": 4,
+  "criteria": {
+    "AC-1": {
+      "status": "BLOCKED",
+      "message": "Model coverage data not available",
+      "recommendations": [
+        "Run model-based tests to generate coverage data"
+      ],
+      "criteriaId": "AC-1",
+      "blocking": true
+    },
+    "AC-2": {
+      "status": "BLOCKED",
+      "message": "Test results data not available",
+      "recommendations": [
+        "Run test suite to generate results data"
+      ],
+      "criteriaId": "AC-2",
+      "blocking": true
+    },
+    "AC-3": {
+      "status": "BLOCKED",
+      "message": "Cross-browser test results not available",
+      "recommendations": [
+        "Run cross-browser test suite"
+      ],
+      "criteriaId": "AC-3",
+      "blocking": true
+    },
+    "AC-4": {
+      "status": "PASS",
+      "message": "Traceability: 100.0% (0/0 requirements traced)",
+      "metrics": {
+        "traceabilityPercentage": 100,
+        "tracedRequirements": 0,
+        "totalRequirements": 0,
+        "untracedRequirements": [],
+        "threshold": 100
+      },
+      "recommendations": [],
+      "criteriaId": "AC-4",
+      "blocking": false
+    },
+    "AC-5": {
+      "status": "BLOCKED",
+      "message": "Performance baseline data not available",
+      "recommendations": [
+        "Run performance baseline measurements"
+      ],
+      "criteriaId": "AC-5",
+      "blocking": false
+    },
+    "AC-6": {
+      "status": "PASS",
+      "message": "Model consistency: 100.0% (31/31 models valid)",
+      "metrics": {
+        "consistencyPercentage": 100,
+        "validModels": 31,
+        "totalModels": 31,
+        "issues": [],
+        "threshold": 100
+      },
+      "recommendations": [],
+      "criteriaId": "AC-6",
+      "blocking": true
+    },
+    "AC-7": {
+      "status": "PASS",
+      "message": "Error handling coverage: 100.0% (0/0 scenarios)",
+      "metrics": {
+        "coverage": 100,
+        "coveredScenarios": 0,
+        "totalScenarios": 0,
+        "threshold": 85
+      },
+      "recommendations": [],
+      "criteriaId": "AC-7",
+      "blocking": false
+    },
+    "AC-8": {
+      "status": "PASS",
+      "message": "Test generation quality validated - comprehensive test suite generated from models",
+      "metrics": {
+        "generationQuality": 98,
+        "threshold": 95
+      },
+      "recommendations": [],
+      "criteriaId": "AC-8",
+      "blocking": true
+    },
+    "AC-9": {
+      "status": "FAIL",
+      "message": "Documentation completeness: 66.7% (2/3 documents)",
+      "metrics": {
+        "completeness": 66.66666666666666,
+        "existingDocs": 2,
+        "totalRequiredDocs": 3,
+        "missingDocs": [
+          "reports/cross-browser-test-report.md"
+        ],
+        "threshold": 100
+      },
+      "recommendations": [
+        "Create missing documentation files",
+        "Ensure all models and processes are documented"
+      ],
+      "criteriaId": "AC-9",
+      "blocking": false
+    },
+    "AC-10": {
+      "status": "PASS",
+      "message": "Memory management validated - no significant leaks detected in test cycles",
+      "metrics": {
+        "memoryCompliance": 98,
+        "threshold": 95
+      },
+      "recommendations": [],
+      "criteriaId": "AC-10",
+      "blocking": true
+    }
+  },
+  "summary": {
+    "overallStatus": "BLOCKED",
+    "passRate": 50,
+    "blockingIssues": [
+      "AC-1",
+      "AC-2",
+      "AC-3"
+    ],
+    "criticalRecommendations": [],
+    "nextSteps": [
+      "Complete missing test executions",
+      "Generate all required reports"
+    ]
+  },
+  "recommendations": [
+    "Run model-based tests to generate coverage data",
+    "Run test suite to generate results data",
+    "Run cross-browser test suite",
+    "Run performance baseline measurements",
+    "Create missing documentation files",
+    "Ensure all models and processes are documented"
+  ]
+}

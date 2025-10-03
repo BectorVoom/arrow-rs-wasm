@@ -1,6 +1,6 @@
 
 // Generated test suite for table_lifecycle
-// Generated at: 2025-09-28T11:18:56.540Z
+// Generated at: 2025-10-01T12:12:34.555Z
 
 import { expect } from 'chai';
 import { initializeWasmModule, TestHelpers } from '../harness/test_helpers.js';
@@ -1207,5 +1207,5 @@ describe('table_lifecycle_transition_dispose_error', () => {
 export const testSuiteInfo = {
   "model_id": "table_lifecycle",
   "test_count": 25,
-  "generated_at": "2025-09-28T11:18:56.540Z"
+  "generated_at": "2025-10-01T12:12:34.555Z"
 };

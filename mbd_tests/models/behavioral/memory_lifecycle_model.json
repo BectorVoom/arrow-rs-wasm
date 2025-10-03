@@ -1,0 +1,254 @@
+{
+  "model_id": "memory_lifecycle_v1",
+  "model_type": "state_machine",
+  "description": "Memory management and table handle lifecycle in Arrow WASM",
+  "version": "1.0", 
+  "created": "2025-09-30T00:00:00Z",
+  "requirements_mapping": [
+    "REQ-010: Zero-copy memory semantics",
+    "REQ-011: Handle lifecycle management",
+    "REQ-012: Memory leak prevention",
+    "REQ-013: Concurrent access safety"
+  ],
+  "handle_lifecycle": {
+    "states": {
+      "unallocated": {
+        "id": "H0",
+        "description": "Handle not yet allocated",
+        "type": "initial",
+        "invariants": [
+          "handle does not exist in registry",
+          "no memory allocated for this handle"
+        ]
+      },
+      "allocated": {
+        "id": "H1", 
+        "description": "Handle allocated but table not loaded",
+        "type": "intermediate",
+        "invariants": [
+          "handle exists in registry", 
+          "handle points to valid memory location",
+          "table data not yet loaded"
+        ]
+      },
+      "loaded": {
+        "id": "H2",
+        "description": "Handle points to loaded table with data",
+        "type": "normal",
+        "invariants": [
+          "handle is valid",
+          "table data is accessible",
+          "memory contains valid Arrow data",
+          "schema is available"
+        ]
+      },
+      "in_use": {
+        "id": "H3",
+        "description": "Handle being used for operations",
+        "type": "active",
+        "invariants": [
+          "handle is locked for operation",
+          "operation in progress",
+          "memory is stable during operation"
+        ]
+      },
+      "freed": {
+        "id": "H4",
+        "description": "Handle has been freed",
+        "type": "final",
+        "invariants": [
+          "handle removed from registry",
+          "memory deallocated",
+          "handle no longer valid"
+        ]
+      },
+      "leaked": {
+        "id": "H5",
+        "description": "Handle not properly freed (error state)",
+        "type": "error",
+        "invariants": [
+          "handle still in registry but not accessible",
+          "memory still allocated but unreachable"
+        ]
+      }
+    },
+    "transitions": {
+      "allocate": {
+        "from": "unallocated",
+        "to": "allocated", 
+        "trigger": "create_table_handle_request",
+        "condition": "memory available",
+        "action": "allocate_handle_id"
+      },
+      "load_data": {
+        "from": "allocated",
+        "to": "loaded",
+        "trigger": "table_data_ready",
+        "condition": "valid table data provided",
+        "action": "store_table_data"
+      },
+      "start_operation": {
+        "from": "loaded",
+        "to": "in_use",
+        "trigger": "table_operation_start",
+        "condition": "handle is valid",
+        "action": "lock_handle_for_operation"
+      },
+      "complete_operation": {
+        "from": "in_use", 
+        "to": "loaded",
+        "trigger": "operation_complete",
+        "condition": "operation successful",
+        "action": "unlock_handle"
+      },
+      "free_handle": {
+        "from": "loaded",
+        "to": "freed",
+        "trigger": "free_table(handle)",
+        "condition": "handle is valid and not in use",
+        "action": "deallocate_memory_and_remove_handle"
+      },
+      "free_from_use": {
+        "from": "in_use",
+        "to": "freed", 
+        "trigger": "force_free_table(handle)",
+        "condition": "forced cleanup requested",
+        "action": "abort_operation_and_deallocate"
+      },
+      "leak_detection": {
+        "from": "loaded",
+        "to": "leaked",
+        "trigger": "page_unload | reference_lost",
+        "condition": "handle not explicitly freed",
+        "action": "mark_as_leaked"
+      }
+    }
+  },
+  "memory_management": {
+    "allocation_patterns": {
+      "zero_copy_read": {
+        "description": "Zero-copy reading from ArrayBuffer",
+        "steps": [
+          "receive_array_buffer_from_js",
+          "map_memory_without_copy",
+          "create_arrow_views_over_buffer", 
+          "return_handle_to_js"
+        ],
+        "memory_impact": "minimal - only metadata allocation"
+      },
+      "copy_on_write": {
+        "description": "Copy data when modifications needed",
+        "steps": [
+          "detect_modification_request",
+          "copy_affected_buffers",
+          "modify_copied_data",
+          "update_handle_to_point_to_copy"
+        ],
+        "memory_impact": "significant - full data copy"
+      },
+      "column_export": {
+        "description": "Export column data to JS",
+        "steps": [
+          "identify_column_buffers",
+          "create_owned_copies_for_js_transfer",
+          "serialize_metadata",
+          "transfer_ownership_to_js"
+        ],
+        "memory_impact": "moderate - column-specific copy"
+      }
+    },
+    "garbage_collection_integration": {
+      "js_side": {
+        "handle_references": "weak references where possible",
+        "finalizers": "register finalizers for handle cleanup",
+        "leak_detection": "warn on leaked handles during GC"
+      },
+      "wasm_side": {
+        "memory_pools": "use memory pools for frequent allocations", 
+        "reference_counting": "track references to shared data",
+        "periodic_cleanup": "periodic cleanup of unused handles"
+      }
+    }
+  },
+  "concurrency_model": {
+    "thread_safety": {
+      "registry_access": "mutex-protected table registry",
+      "handle_operations": "per-handle locking for operations",
+      "memory_allocation": "thread-safe allocators"
+    },
+    "race_conditions": {
+      "handle_use_after_free": {
+        "detection": "check handle validity before each operation",
+        "prevention": "reference counting or tombstone handles"
+      },
+      "concurrent_modifications": {
+        "detection": "operation locks on handles",
+        "prevention": "serialize operations on same handle"
+      },
+      "memory_corruption": {
+        "detection": "guard pages and checksums",
+        "prevention": "immutable views where possible"
+      }
+    }
+  },
+  "test_scenarios": {
+    "normal_lifecycle": {
+      "description": "Normal handle creation and cleanup",
+      "path": ["unallocated", "allocated", "loaded", "in_use", "loaded", "freed"],
+      "operations": ["create", "load_data", "get_row_count", "complete", "free"]
+    },
+    "immediate_free": {
+      "description": "Free handle immediately after creation",
+      "path": ["unallocated", "allocated", "loaded", "freed"],
+      "operations": ["create", "load_data", "free"]
+    },
+    "operation_interrupted": {
+      "description": "Handle freed during operation",
+      "path": ["unallocated", "allocated", "loaded", "in_use", "freed"],
+      "operations": ["create", "load_data", "start_export", "force_free"]
+    },
+    "memory_leak_detection": {
+      "description": "Handle not freed before page unload",
+      "path": ["unallocated", "allocated", "loaded", "leaked"],
+      "operations": ["create", "load_data", "page_unload"]
+    },
+    "multiple_handles": {
+      "description": "Managing multiple handles concurrently",
+      "handles": ["H1", "H2", "H3"],
+      "operations": [
+        "create_H1", "create_H2", "load_H1", "load_H2", "create_H3", "load_H3",
+        "operation_H1", "operation_H2", "free_H1", "operation_H3", "free_H2", "free_H3"
+      ]
+    }
+  },
+  "memory_invariants": {
+    "global": [
+      "total_allocated_memory <= max_memory_limit",
+      "active_handles.length == tables_in_registry.length",
+      "no_dangling_pointers_exist"
+    ],
+    "per_handle": [
+      "handle.valid() implies handle.memory != null",
+      "handle.in_use() implies handle.locked == true",
+      "handle.freed() implies handle not in registry"
+    ]
+  },
+  "performance_metrics": {
+    "allocation_time": {
+      "target": "< 1ms per handle",
+      "measurement": "time from create_handle to handle_ready"
+    },
+    "deallocation_time": {
+      "target": "< 0.5ms per handle",
+      "measurement": "time from free_table to memory_released"
+    },
+    "memory_overhead": {
+      "target": "< 5% of table data size",
+      "measurement": "metadata_size / total_table_size"
+    },
+    "max_concurrent_handles": {
+      "target": "> 1000 handles",
+      "measurement": "number of handles before performance degradation"
+    }
+  }
+}

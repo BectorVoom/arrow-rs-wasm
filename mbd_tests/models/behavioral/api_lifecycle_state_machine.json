@@ -1,0 +1,191 @@
+{
+  "model_id": "api_lifecycle_v1",
+  "model_type": "state_machine",
+  "description": "API lifecycle state machine for Arrow WASM library",
+  "version": "1.0",
+  "created": "2025-09-30T00:00:00Z",
+  "requirements_mapping": [
+    "REQ-001: WASM module initialization",
+    "REQ-002: Table handle lifecycle",
+    "REQ-003: Memory management",
+    "REQ-004: Error handling"
+  ],
+  "states": {
+    "uninitialized": {
+      "id": "S0",
+      "description": "WASM module not yet initialized",
+      "type": "initial",
+      "invariants": [
+        "module === null",
+        "no tables exist",
+        "no memory allocated"
+      ]
+    },
+    "initialized": {
+      "id": "S1", 
+      "description": "WASM module initialized and ready",
+      "type": "normal",
+      "invariants": [
+        "module !== null",
+        "init functions available",
+        "memory manager active"
+      ]
+    },
+    "table_loaded": {
+      "id": "S2",
+      "description": "One or more tables loaded with valid handles",
+      "type": "normal",
+      "invariants": [
+        "table_count >= 1",
+        "all handles are valid",
+        "memory allocated for tables"
+      ]
+    },
+    "table_processing": {
+      "id": "S3",
+      "description": "Operations being performed on loaded tables",
+      "type": "normal",
+      "invariants": [
+        "table_count >= 1",
+        "operation in progress",
+        "memory stable during operation"
+      ]
+    },
+    "error_state": {
+      "id": "S4",
+      "description": "System in error state requiring recovery",
+      "type": "error",
+      "invariants": [
+        "error condition present",
+        "system state may be inconsistent"
+      ]
+    },
+    "memory_cleanup": {
+      "id": "S5", 
+      "description": "Cleaning up tables and freeing memory",
+      "type": "cleanup",
+      "invariants": [
+        "cleanup operation in progress",
+        "some tables may be freed"
+      ]
+    },
+    "shutdown": {
+      "id": "S6",
+      "description": "System shutdown or page unload",
+      "type": "final",
+      "invariants": [
+        "all tables freed",
+        "memory cleaned up"
+      ]
+    }
+  },
+  "transitions": {
+    "T1": {
+      "from": "uninitialized",
+      "to": "initialized",
+      "trigger": "init()",
+      "condition": "WASM module loads successfully",
+      "action": "initialize_module",
+      "priority": "mandatory"
+    },
+    "T2": {
+      "from": "initialized", 
+      "to": "table_loaded",
+      "trigger": "read_table_from_array_buffer(data)",
+      "condition": "valid Arrow data provided",
+      "action": "create_table_handle",
+      "priority": "mandatory"
+    },
+    "T3": {
+      "from": "table_loaded",
+      "to": "table_processing", 
+      "trigger": "get_table_row_count(handle) | export_column_by_name(handle, name)",
+      "condition": "valid handle provided",
+      "action": "perform_table_operation",
+      "priority": "mandatory"
+    },
+    "T4": {
+      "from": "table_processing",
+      "to": "table_loaded",
+      "trigger": "operation_complete",
+      "condition": "operation succeeds",
+      "action": "return_result",
+      "priority": "mandatory"
+    },
+    "T5": {
+      "from": "table_loaded",
+      "to": "memory_cleanup",
+      "trigger": "free_table(handle)",
+      "condition": "valid handle provided",
+      "action": "free_table_memory",
+      "priority": "mandatory"
+    },
+    "T6": {
+      "from": "memory_cleanup",
+      "to": "initialized",
+      "trigger": "cleanup_complete",
+      "condition": "table count > 0",
+      "action": "update_table_registry",
+      "priority": "mandatory"
+    },
+    "T7": {
+      "from": "memory_cleanup", 
+      "to": "initialized",
+      "trigger": "cleanup_complete",
+      "condition": "table_count == 0",
+      "action": "reset_to_clean_state",
+      "priority": "mandatory"
+    },
+    "T8": {
+      "from": "*",
+      "to": "error_state",
+      "trigger": "error_condition",
+      "condition": "any error occurs",
+      "action": "capture_error_state",
+      "priority": "mandatory"
+    },
+    "T9": {
+      "from": "error_state",
+      "to": "initialized",
+      "trigger": "error_recovery",
+      "condition": "recoverable error",
+      "action": "reset_to_known_good_state",
+      "priority": "optional"
+    },
+    "T10": {
+      "from": "*",
+      "to": "shutdown",
+      "trigger": "page_unload | clear_all_tables()",
+      "condition": "system shutdown requested",
+      "action": "cleanup_all_resources",
+      "priority": "mandatory"
+    }
+  },
+  "test_scenarios": {
+    "happy_path": {
+      "description": "Normal API usage flow",
+      "path": ["S0", "S1", "S2", "S3", "S2", "S5", "S1"],
+      "transitions": ["T1", "T2", "T3", "T4", "T5", "T6"]
+    },
+    "error_recovery": {
+      "description": "Error handling and recovery",
+      "path": ["S0", "S1", "S2", "S4", "S1"],
+      "transitions": ["T1", "T2", "T8", "T9"]
+    },
+    "multiple_tables": {
+      "description": "Managing multiple tables",
+      "path": ["S0", "S1", "S2", "S2", "S3", "S2", "S5", "S1"],
+      "transitions": ["T1", "T2", "T2", "T3", "T4", "T5", "T7"]
+    },
+    "shutdown_cleanup": {
+      "description": "Proper cleanup on shutdown",
+      "path": ["S0", "S1", "S2", "S6"],
+      "transitions": ["T1", "T2", "T10"]
+    }
+  },
+  "coverage_requirements": {
+    "mandatory_states": ["uninitialized", "initialized", "table_loaded", "table_processing"],
+    "mandatory_transitions": ["T1", "T2", "T3", "T4", "T5", "T6", "T8"],
+    "target_coverage": 90
+  }
+}

@@ -1,0 +1,1094 @@
+{
+  "model_id": "enhanced_api_lifecycle",
+  "model_type": "state_machine",
+  "generated_at": "2025-10-01T12:12:34.552Z",
+  "test_cases": [
+    {
+      "test_id": "enhanced_api_lifecycle_state_uninitialized_validation",
+      "test_name": "Validate Uninitialized state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "uninitialized",
+      "requirements": [
+        "REQ-INIT-001",
+        "REQ-INIT-002",
+        "REQ-CORE-001",
+        "REQ-FORMAT-001",
+        "REQ-PLUGIN-001",
+        "REQ-MEM-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Uninitialized state",
+          "expected": "System reaches Uninitialized state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"wasm_loaded\":false,\"memory_ready\":false,\"api_available\":false,\"plugin_registry_ready\":false}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for enhanced_api_lifecycle_state_uninitialized_validation\n// Model: enhanced_api_lifecycle, Element: uninitialized\n\ndescribe('enhanced_api_lifecycle_state_uninitialized_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Uninitialized state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "enhanced_api_lifecycle_state_initializing_validation",
+      "test_name": "Validate Initializing Runtime state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "initializing",
+      "requirements": [
+        "REQ-INIT-001",
+        "REQ-INIT-002",
+        "REQ-CORE-001",
+        "REQ-FORMAT-001",
+        "REQ-PLUGIN-001",
+        "REQ-MEM-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Initializing Runtime state",
+          "expected": "System reaches Initializing Runtime state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"wasm_loaded\":true,\"memory_ready\":false,\"api_available\":false,\"plugin_registry_ready\":false,\"initialization_started\":true}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for enhanced_api_lifecycle_state_initializing_validation\n// Model: enhanced_api_lifecycle, Element: initializing\n\ndescribe('enhanced_api_lifecycle_state_initializing_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Initializing Runtime state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "enhanced_api_lifecycle_state_ready_validation",
+      "test_name": "Validate Ready for Operations state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "ready",
+      "requirements": [
+        "REQ-INIT-001",
+        "REQ-INIT-002",
+        "REQ-CORE-001",
+        "REQ-FORMAT-001",
+        "REQ-PLUGIN-001",
+        "REQ-MEM-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Ready for Operations state",
+          "expected": "System reaches Ready for Operations state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"wasm_loaded\":true,\"memory_ready\":true,\"api_available\":true,\"plugin_registry_ready\":true,\"can_create_tables\":true,\"supported_formats\":[\"arrow_ipc\",\"arrow_stream\",\"parquet\",\"feather\"]}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for enhanced_api_lifecycle_state_ready_validation\n// Model: enhanced_api_lifecycle, Element: ready\n\ndescribe('enhanced_api_lifecycle_state_ready_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Ready for Operations state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "enhanced_api_lifecycle_state_processing_file_validation",
+      "test_name": "Validate Processing File Data state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "processing_file",
+      "requirements": [
+        "REQ-INIT-001",
+        "REQ-INIT-002",
+        "REQ-CORE-001",
+        "REQ-FORMAT-001",
+        "REQ-PLUGIN-001",
+        "REQ-MEM-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Processing File Data state",
+          "expected": "System reaches Processing File Data state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"wasm_loaded\":true,\"memory_ready\":true,\"api_available\":true,\"current_operation\":\"read|write\",\"current_format\":\"arrow_ipc|parquet|feather\",\"active_handles\":\">=1\"}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for enhanced_api_lifecycle_state_processing_file_validation\n// Model: enhanced_api_lifecycle, Element: processing_file\n\ndescribe('enhanced_api_lifecycle_state_processing_file_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Processing File Data state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "enhanced_api_lifecycle_state_plugin_operations_validation",
+      "test_name": "Validate Plugin Operations Active state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "plugin_operations",
+      "requirements": [
+        "REQ-INIT-001",
+        "REQ-INIT-002",
+        "REQ-CORE-001",
+        "REQ-FORMAT-001",
+        "REQ-PLUGIN-001",
+        "REQ-MEM-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Plugin Operations Active state",
+          "expected": "System reaches Plugin Operations Active state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"wasm_loaded\":true,\"memory_ready\":true,\"api_available\":true,\"plugin_registry_ready\":true,\"active_plugins\":\">=1\",\"plugin_operation_active\":true}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for enhanced_api_lifecycle_state_plugin_operations_validation\n// Model: enhanced_api_lifecycle, Element: plugin_operations\n\ndescribe('enhanced_api_lifecycle_state_plugin_operations_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Plugin Operations Active state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "enhanced_api_lifecycle_state_format_error_validation",
+      "test_name": "Validate File Format Error state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "format_error",
+      "requirements": [
+        "REQ-INIT-001",
+        "REQ-INIT-002",
+        "REQ-CORE-001",
+        "REQ-FORMAT-001",
+        "REQ-PLUGIN-001",
+        "REQ-MEM-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to File Format Error state",
+          "expected": "System reaches File Format Error state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"error_occurred\":true,\"error_type\":\"format_error\",\"error_code\":\"string\",\"error_message\":\"string\",\"detected_format\":\"string|null\",\"recovery_possible\":true}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for enhanced_api_lifecycle_state_format_error_validation\n// Model: enhanced_api_lifecycle, Element: format_error\n\ndescribe('enhanced_api_lifecycle_state_format_error_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to File Format Error state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "enhanced_api_lifecycle_state_plugin_error_validation",
+      "test_name": "Validate Plugin Error state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "plugin_error",
+      "requirements": [
+        "REQ-INIT-001",
+        "REQ-INIT-002",
+        "REQ-CORE-001",
+        "REQ-FORMAT-001",
+        "REQ-PLUGIN-001",
+        "REQ-MEM-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Plugin Error state",
+          "expected": "System reaches Plugin Error state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"error_occurred\":true,\"error_type\":\"plugin_error\",\"error_code\":\"string\",\"error_message\":\"string\",\"failed_plugin\":\"string\",\"recovery_possible\":true}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for enhanced_api_lifecycle_state_plugin_error_validation\n// Model: enhanced_api_lifecycle, Element: plugin_error\n\ndescribe('enhanced_api_lifecycle_state_plugin_error_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Plugin Error state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "enhanced_api_lifecycle_state_memory_error_validation",
+      "test_name": "Validate Memory Management Error state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "memory_error",
+      "requirements": [
+        "REQ-INIT-001",
+        "REQ-INIT-002",
+        "REQ-CORE-001",
+        "REQ-FORMAT-001",
+        "REQ-PLUGIN-001",
+        "REQ-MEM-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Memory Management Error state",
+          "expected": "System reaches Memory Management Error state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"error_occurred\":true,\"error_type\":\"memory_error\",\"error_code\":\"string\",\"error_message\":\"string\",\"memory_state\":\"string\",\"recovery_possible\":false}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for enhanced_api_lifecycle_state_memory_error_validation\n// Model: enhanced_api_lifecycle, Element: memory_error\n\ndescribe('enhanced_api_lifecycle_state_memory_error_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Memory Management Error state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "enhanced_api_lifecycle_state_disposed_validation",
+      "test_name": "Validate Disposed state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "disposed",
+      "requirements": [
+        "REQ-INIT-001",
+        "REQ-INIT-002",
+        "REQ-CORE-001",
+        "REQ-FORMAT-001",
+        "REQ-PLUGIN-001",
+        "REQ-MEM-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to Disposed state",
+          "expected": "System reaches Disposed state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: {\"wasm_loaded\":false,\"memory_ready\":false,\"api_available\":false,\"plugin_registry_ready\":false,\"disposed\":true,\"all_handles_freed\":true}",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for enhanced_api_lifecycle_state_disposed_validation\n// Model: enhanced_api_lifecycle, Element: disposed\n\ndescribe('enhanced_api_lifecycle_state_disposed_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to Disposed state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "enhanced_api_lifecycle_transition_initialize_system",
+      "test_name": "Test transition: Uninitialized → Initializing Runtime",
+      "test_type": "transition_test",
+      "model_element": "initialize_system",
+      "requirements": [
+        "REQ-INIT-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Uninitialized state",
+          "expected": "System state is uninitialized"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: wasm_binary_available",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: init|init_with_options",
+          "expected": "Event init|init_with_options is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: start_wasm_initialization",
+          "expected": "Action start_wasm_initialization completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Initializing Runtime state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "api_calls": [
+          "init()",
+          "init_with_options({enable_console_logs: true})"
+        ],
+        "expected_timing": "< 100ms",
+        "browser_compatibility": [
+          "chrome",
+          "firefox",
+          "safari",
+          "edge"
+        ]
+      },
+      "browser_test_code": "\n// Generated test for enhanced_api_lifecycle_transition_initialize_system\n// Model: enhanced_api_lifecycle, Element: initialize_system\n\ndescribe('enhanced_api_lifecycle_transition_initialize_system', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: uninitialized\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "enhanced_api_lifecycle_transition_initialization_complete",
+      "test_name": "Test transition: Initializing Runtime → Ready for Operations",
+      "test_type": "transition_test",
+      "model_element": "initialization_complete",
+      "requirements": [
+        "REQ-INIT-002",
+        "REQ-PLUGIN-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Initializing Runtime state",
+          "expected": "System state is initializing"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: memory_setup_successful && plugin_registry_initialized",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: initialization_success",
+          "expected": "Event initialization_success is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: enable_full_api",
+          "expected": "Action enable_full_api completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Ready for Operations state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "expected_timing": "< 50ms",
+        "memory_threshold": "< 5MB",
+        "api_availability": [
+          "all_core_functions",
+          "all_format_functions",
+          "all_plugin_functions"
+        ]
+      },
+      "browser_test_code": "\n// Generated test for enhanced_api_lifecycle_transition_initialization_complete\n// Model: enhanced_api_lifecycle, Element: initialization_complete\n\ndescribe('enhanced_api_lifecycle_transition_initialization_complete', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: initializing\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "enhanced_api_lifecycle_transition_read_file_data",
+      "test_name": "Test transition: Ready for Operations → Processing File Data",
+      "test_type": "transition_test",
+      "model_element": "read_file_data",
+      "requirements": [
+        "REQ-FORMAT-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Ready for Operations state",
+          "expected": "System state is ready"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: api_available && data_valid",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: read_table_from_bytes|read_table_from_array_buffer",
+          "expected": "Event read_table_from_bytes|read_table_from_array_buffer is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: detect_format_and_parse",
+          "expected": "Action detect_format_and_parse completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Processing File Data state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "valid_formats": [
+          "arrow_ipc",
+          "arrow_stream",
+          "parquet",
+          "feather_v1",
+          "feather_v2"
+        ],
+        "file_sizes": [
+          "1KB",
+          "1MB",
+          "10MB",
+          "100MB"
+        ],
+        "expected_format_detection": "< 10ms"
+      },
+      "browser_test_code": "\n// Generated test for enhanced_api_lifecycle_transition_read_file_data\n// Model: enhanced_api_lifecycle, Element: read_file_data\n\ndescribe('enhanced_api_lifecycle_transition_read_file_data', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: ready\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "enhanced_api_lifecycle_transition_write_file_data",
+      "test_name": "Test transition: Ready for Operations → Processing File Data",
+      "test_type": "transition_test",
+      "model_element": "write_file_data",
+      "requirements": [
+        "REQ-FORMAT-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Ready for Operations state",
+          "expected": "System state is ready"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: api_available && handle_valid",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: write_table_to_ipc|write_table_to_parquet|write_table_to_feather",
+          "expected": "Event write_table_to_ipc|write_table_to_parquet|write_table_to_feather is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: serialize_to_format",
+          "expected": "Action serialize_to_format completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Processing File Data state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "output_formats": [
+          "arrow_ipc",
+          "arrow_ipc_lz4",
+          "parquet",
+          "feather"
+        ],
+        "compression_options": [
+          "none",
+          "lz4"
+        ],
+        "expected_timing": "< 100ms per MB"
+      },
+      "browser_test_code": "\n// Generated test for enhanced_api_lifecycle_transition_write_file_data\n// Model: enhanced_api_lifecycle, Element: write_file_data\n\ndescribe('enhanced_api_lifecycle_transition_write_file_data', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: ready\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "enhanced_api_lifecycle_transition_register_plugin",
+      "test_name": "Test transition: Ready for Operations → Plugin Operations Active",
+      "test_type": "transition_test",
+      "model_element": "register_plugin",
+      "requirements": [
+        "REQ-PLUGIN-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Ready for Operations state",
+          "expected": "System state is ready"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: plugin_registry_ready && plugin_id_valid",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: register_plugin",
+          "expected": "Event register_plugin is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: create_and_register_plugin_instance",
+          "expected": "Action create_and_register_plugin_instance completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Plugin Operations Active state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "valid_plugin_ids": [
+          "geometry",
+          "io.arrow.plugin.geo.v1",
+          "demo",
+          "io.arrow.plugin.demo.v1"
+        ],
+        "invalid_plugin_ids": [
+          "",
+          "invalid",
+          "missing.plugin.v1"
+        ],
+        "expected_timing": "< 20ms"
+      },
+      "browser_test_code": "\n// Generated test for enhanced_api_lifecycle_transition_register_plugin\n// Model: enhanced_api_lifecycle, Element: register_plugin\n\ndescribe('enhanced_api_lifecycle_transition_register_plugin', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: ready\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "enhanced_api_lifecycle_transition_file_processing_complete",
+      "test_name": "Test transition: Processing File Data → Ready for Operations",
+      "test_type": "transition_test",
+      "model_element": "file_processing_complete",
+      "requirements": [
+        "REQ-CORE-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Processing File Data state",
+          "expected": "System state is processing_file"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: no_errors",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: operation_complete",
+          "expected": "Event operation_complete is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: return_result_and_cleanup",
+          "expected": "Action return_result_and_cleanup completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Ready for Operations state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "success_indicators": [
+          "valid_handle_returned",
+          "no_memory_leaks",
+          "format_preserved"
+        ]
+      },
+      "browser_test_code": "\n// Generated test for enhanced_api_lifecycle_transition_file_processing_complete\n// Model: enhanced_api_lifecycle, Element: file_processing_complete\n\ndescribe('enhanced_api_lifecycle_transition_file_processing_complete', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: processing_file\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "enhanced_api_lifecycle_transition_plugin_operation_complete",
+      "test_name": "Test transition: Plugin Operations Active → Ready for Operations",
+      "test_type": "transition_test",
+      "model_element": "plugin_operation_complete",
+      "requirements": [
+        "REQ-PLUGIN-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Plugin Operations Active state",
+          "expected": "System state is plugin_operations"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: plugin_validation_successful",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: plugin_operation_complete",
+          "expected": "Event plugin_operation_complete is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: finalize_plugin_operation",
+          "expected": "Action finalize_plugin_operation completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Ready for Operations state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "success_indicators": [
+          "plugin_registered",
+          "plugin_validated",
+          "plugin_operational"
+        ]
+      },
+      "browser_test_code": "\n// Generated test for enhanced_api_lifecycle_transition_plugin_operation_complete\n// Model: enhanced_api_lifecycle, Element: plugin_operation_complete\n\ndescribe('enhanced_api_lifecycle_transition_plugin_operation_complete', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: plugin_operations\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "enhanced_api_lifecycle_transition_format_detection_failed",
+      "test_name": "Test transition: Processing File Data → File Format Error",
+      "test_type": "transition_test",
+      "model_element": "format_detection_failed",
+      "requirements": [
+        "REQ-FORMAT-002"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Processing File Data state",
+          "expected": "System state is processing_file"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: format_detection_failed",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: unknown_format|corrupted_data",
+          "expected": "Event unknown_format|corrupted_data is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: set_format_error_state",
+          "expected": "Action set_format_error_state completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to File Format Error state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "error_conditions": [
+          "unknown_magic_bytes",
+          "corrupted_header",
+          "invalid_metadata",
+          "unsupported_version"
+        ],
+        "error_messages": [
+          "comprehensive_format_help",
+          "detection_details",
+          "recovery_suggestions"
+        ]
+      },
+      "browser_test_code": "\n// Generated test for enhanced_api_lifecycle_transition_format_detection_failed\n// Model: enhanced_api_lifecycle, Element: format_detection_failed\n\ndescribe('enhanced_api_lifecycle_transition_format_detection_failed', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: processing_file\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "enhanced_api_lifecycle_transition_plugin_registration_failed",
+      "test_name": "Test transition: Plugin Operations Active → Plugin Error",
+      "test_type": "transition_test",
+      "model_element": "plugin_registration_failed",
+      "requirements": [
+        "REQ-PLUGIN-002"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Plugin Operations Active state",
+          "expected": "System state is plugin_operations"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: plugin_operation_failed",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: plugin_error|validation_failed",
+          "expected": "Event plugin_error|validation_failed is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: set_plugin_error_state",
+          "expected": "Action set_plugin_error_state completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Plugin Error state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "error_conditions": [
+          "invalid_plugin_id",
+          "plugin_not_found",
+          "validation_failed",
+          "factory_error"
+        ],
+        "error_recovery": [
+          "suggest_valid_plugins",
+          "show_available_types"
+        ]
+      },
+      "browser_test_code": "\n// Generated test for enhanced_api_lifecycle_transition_plugin_registration_failed\n// Model: enhanced_api_lifecycle, Element: plugin_registration_failed\n\ndescribe('enhanced_api_lifecycle_transition_plugin_registration_failed', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: plugin_operations\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "enhanced_api_lifecycle_transition_memory_corruption",
+      "test_name": "Test transition: Processing File Data → Memory Management Error",
+      "test_type": "transition_test",
+      "model_element": "memory_corruption",
+      "requirements": [
+        "REQ-MEM-002"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Processing File Data state",
+          "expected": "System state is processing_file"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: critical_memory_error",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: memory_corruption|invalid_handle|wasm_trap",
+          "expected": "Event memory_corruption|invalid_handle|wasm_trap is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: set_critical_error_state",
+          "expected": "Action set_critical_error_state completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Memory Management Error state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "error_conditions": [
+          "invalid_table_handle",
+          "memory_leak_detected",
+          "buffer_overflow",
+          "use_after_free"
+        ],
+        "recovery_impossible": true
+      },
+      "browser_test_code": "\n// Generated test for enhanced_api_lifecycle_transition_memory_corruption\n// Model: enhanced_api_lifecycle, Element: memory_corruption\n\ndescribe('enhanced_api_lifecycle_transition_memory_corruption', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: processing_file\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "enhanced_api_lifecycle_transition_recover_from_format_error",
+      "test_name": "Test transition: File Format Error → Ready for Operations",
+      "test_type": "transition_test",
+      "model_element": "recover_from_format_error",
+      "requirements": [
+        "REQ-ERROR-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in File Format Error state",
+          "expected": "System state is format_error"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: recovery_possible",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: error_acknowledged",
+          "expected": "Event error_acknowledged is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: clear_error_state_and_reset",
+          "expected": "Action clear_error_state_and_reset completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Ready for Operations state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "recovery_steps": [
+          "clear_error",
+          "reset_state",
+          "validate_ready"
+        ]
+      },
+      "browser_test_code": "\n// Generated test for enhanced_api_lifecycle_transition_recover_from_format_error\n// Model: enhanced_api_lifecycle, Element: recover_from_format_error\n\ndescribe('enhanced_api_lifecycle_transition_recover_from_format_error', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: format_error\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "enhanced_api_lifecycle_transition_recover_from_plugin_error",
+      "test_name": "Test transition: Plugin Error → Ready for Operations",
+      "test_type": "transition_test",
+      "model_element": "recover_from_plugin_error",
+      "requirements": [
+        "REQ-ERROR-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Plugin Error state",
+          "expected": "System state is plugin_error"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: recovery_possible",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: error_acknowledged",
+          "expected": "Event error_acknowledged is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: clear_error_state_and_reset",
+          "expected": "Action clear_error_state_and_reset completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Ready for Operations state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "recovery_steps": [
+          "clear_plugin_error",
+          "reset_plugin_registry",
+          "validate_ready"
+        ]
+      },
+      "browser_test_code": "\n// Generated test for enhanced_api_lifecycle_transition_recover_from_plugin_error\n// Model: enhanced_api_lifecycle, Element: recover_from_plugin_error\n\ndescribe('enhanced_api_lifecycle_transition_recover_from_plugin_error', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: plugin_error\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "enhanced_api_lifecycle_transition_cleanup_and_dispose",
+      "test_name": "Test transition: Ready for Operations → Disposed",
+      "test_type": "transition_test",
+      "model_element": "cleanup_and_dispose",
+      "requirements": [
+        "REQ-MEM-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Ready for Operations state",
+          "expected": "System state is ready"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: true",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: dispose|cleanup",
+          "expected": "Event dispose|cleanup is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: cleanup_all_resources",
+          "expected": "Action cleanup_all_resources completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Disposed state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "cleanup_verification": [
+          "all_handles_freed",
+          "memory_released",
+          "plugins_unregistered"
+        ]
+      },
+      "browser_test_code": "\n// Generated test for enhanced_api_lifecycle_transition_cleanup_and_dispose\n// Model: enhanced_api_lifecycle, Element: cleanup_and_dispose\n\ndescribe('enhanced_api_lifecycle_transition_cleanup_and_dispose', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: ready\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "enhanced_api_lifecycle_transition_force_dispose_from_error",
+      "test_name": "Test transition: Memory Management Error → Disposed",
+      "test_type": "transition_test",
+      "model_element": "force_dispose_from_error",
+      "requirements": [
+        "REQ-MEM-001"
+      ],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in Memory Management Error state",
+          "expected": "System state is memory_error"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: true",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: dispose",
+          "expected": "Event dispose is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: emergency_cleanup",
+          "expected": "Action emergency_cleanup completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to Disposed state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {
+        "emergency_cleanup": [
+          "force_free_handles",
+          "reset_wasm_memory",
+          "clear_all_state"
+        ]
+      },
+      "browser_test_code": "\n// Generated test for enhanced_api_lifecycle_transition_force_dispose_from_error\n// Model: enhanced_api_lifecycle, Element: force_dispose_from_error\n\ndescribe('enhanced_api_lifecycle_transition_force_dispose_from_error', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: memory_error\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    }
+  ]
+}

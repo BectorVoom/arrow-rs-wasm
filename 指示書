@@ -2,7 +2,7 @@
 ### Block requirements
 
 1. Begin with a minimal implementation following the API specification at
-    `/Users/ods/Documents/arrow-rs-wasm/.serena/memories/wasm-arrow-api-definition.md`, and implement it step by step. Test each stage of the implementation sequence. If the implementation approach is unclear, consult the **References**. Use the **brave-search-dev** MCP server.
+    `/Users/ods/Documents/arrow-rs-wasm/.serena/memories/arrow-rs-wasm-requirement-definition.md`, and implement it step by step. Test each stage of the implementation sequence. If the implementation approach is unclear, consult the **References**. Use the **brave-search-dev** MCP server.
 
 2. Produce a WASM build and test it in a web browser.
 
@@ -14,7 +14,7 @@
 
             - API-level behavior (calls, expected returned values/errors, state transitions).
 
-            - UI/browser interactions necessary to exercise the module (page load, initialization, file inputs, drag/drop, worker messages, fetch/XHR, event sequences).
+            - UI/browser interactions necessary to exercise the module (page load, initialization, file inputs, drag/drop, worker messages, fetch/XHR, event sequences,write(write options lz4 compression)/read).
 
             - Error and edge cases (partial/corrupt input, concurrency, network failures).
 
@@ -44,8 +44,6 @@
 
     - **Non-functional checks:**
 
-        - Include performance smoke tests (module init time, essential API call latencies) and resource checks (memory usage trends during repetitive calls).
-
         - Include cross-browser sanity: ensure at minimum that tests run successfully in the primary browsers used by the team (document the matrix and execution results).
 
     - **Failure analysis & debugging support:**
@@ -65,7 +63,7 @@
 
 5. Ensure tests are performed with the explicit goal of verifying conformance to the requirements specification and the API definition.
 
-6. **(New)** Iteratively revise the model(s) and the generated test suites until all of the following MBD acceptance criteria are met:
+6. Iteratively revise the model(s) and the generated test suites until all of the following MBD acceptance criteria are met:
 
     - The **traceability matrix** mapping requirement ↔ model element ↔ test case is complete and up to date.
 
@@ -76,7 +74,9 @@
     - All blocking tests (as defined in the test suite) pass in both local and CI browser runs.
 
     - Non-functional smoke checks (init time, basic latency) remain within agreed benchmarks (benchmarks to be recorded in a `mbd_tests/performance/README`).
+7. Iteratively revise until the module runs in a vite and node without errors.
 
+8.Iteratively revise until tests that demonstrate zero-copy behavior (measure copy counts, validate handle-backed references).
 
 ### MCP servers
 
@@ -101,9 +101,8 @@ All test deliverables must be placed under the repository root `/Users/ods/Docum
 
 - `/Users/ods/Documents/arrow-rs-wasm/mbd_tests/traceability_matrix.csv` — mapping: requirement id ⇄ model id ⇄ test id ⇄ test result.
 
-- `/Users/ods/Documents/arrow-rs-wasm/mbd_tests/performance/README` — recorded baseline metrics and instructions to run the performance smoke tests.
 
-- **(New, mandatory)** `/Users/ods/Documents/arrow-rs-wasm/.serena/memories/progress_report.md` — centralized, fact-based progress report that must be updated after every significant test run, iteration, or CI job. See the required template below.
+- `/Users/ods/Documents/arrow-rs-wasm/.serena/memories/progress_report.md` — centralized, fact-based progress report that must be updated after every significant test run, iteration, or CI job. See the required template below.
 
 
 ### `progress_report.md` (required — fact-based progress management)

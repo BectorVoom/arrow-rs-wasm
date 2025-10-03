@@ -1,7 +1,7 @@
 {
   "model_id": "module_lifecycle_v1_enhanced",
   "model_type": "state_machine",
-  "generated_at": "2025-09-28T11:18:56.510Z",
+  "generated_at": "2025-10-01T12:12:34.548Z",
   "test_cases": [
     {
       "test_id": "module_lifecycle_v1_enhanced_state_uninitialized_validation",

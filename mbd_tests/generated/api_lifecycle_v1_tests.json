@@ -1,0 +1,633 @@
+{
+  "model_id": "api_lifecycle_v1",
+  "model_type": "state_machine",
+  "generated_at": "2025-10-01T12:12:34.546Z",
+  "test_cases": [
+    {
+      "test_id": "api_lifecycle_v1_state_S0_validation",
+      "test_name": "Validate undefined state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "S0",
+      "requirements": [],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to undefined state",
+          "expected": "System reaches undefined state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: undefined",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for api_lifecycle_v1_state_S0_validation\n// Model: api_lifecycle_v1, Element: S0\n\ndescribe('api_lifecycle_v1_state_S0_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to undefined state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "high"
+    },
+    {
+      "test_id": "api_lifecycle_v1_state_S1_validation",
+      "test_name": "Validate undefined state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "S1",
+      "requirements": [],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to undefined state",
+          "expected": "System reaches undefined state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: undefined",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for api_lifecycle_v1_state_S1_validation\n// Model: api_lifecycle_v1, Element: S1\n\ndescribe('api_lifecycle_v1_state_S1_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to undefined state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "api_lifecycle_v1_state_S2_validation",
+      "test_name": "Validate undefined state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "S2",
+      "requirements": [],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to undefined state",
+          "expected": "System reaches undefined state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: undefined",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for api_lifecycle_v1_state_S2_validation\n// Model: api_lifecycle_v1, Element: S2\n\ndescribe('api_lifecycle_v1_state_S2_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to undefined state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "api_lifecycle_v1_state_S3_validation",
+      "test_name": "Validate undefined state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "S3",
+      "requirements": [],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to undefined state",
+          "expected": "System reaches undefined state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: undefined",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for api_lifecycle_v1_state_S3_validation\n// Model: api_lifecycle_v1, Element: S3\n\ndescribe('api_lifecycle_v1_state_S3_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to undefined state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "api_lifecycle_v1_state_S4_validation",
+      "test_name": "Validate undefined state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "S4",
+      "requirements": [],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to undefined state",
+          "expected": "System reaches undefined state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: undefined",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for api_lifecycle_v1_state_S4_validation\n// Model: api_lifecycle_v1, Element: S4\n\ndescribe('api_lifecycle_v1_state_S4_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to undefined state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "api_lifecycle_v1_state_S5_validation",
+      "test_name": "Validate undefined state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "S5",
+      "requirements": [],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to undefined state",
+          "expected": "System reaches undefined state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: undefined",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for api_lifecycle_v1_state_S5_validation\n// Model: api_lifecycle_v1, Element: S5\n\ndescribe('api_lifecycle_v1_state_S5_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to undefined state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "api_lifecycle_v1_state_S6_validation",
+      "test_name": "Validate undefined state properties and invariants",
+      "test_type": "state_validation",
+      "model_element": "S6",
+      "requirements": [],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Navigate system to undefined state",
+          "expected": "System reaches undefined state"
+        },
+        {
+          "step": 2,
+          "action": "Validate state properties",
+          "expected": "Properties match: undefined",
+          "validation_code": "// Property validation code"
+        },
+        {
+          "step": 3,
+          "action": "Check state invariants",
+          "expected": "All invariants hold true",
+          "validation_code": "// Invariant validation code"
+        }
+      ],
+      "browser_test_code": "\n// Generated test for api_lifecycle_v1_state_S6_validation\n// Model: api_lifecycle_v1, Element: S6\n\ndescribe('api_lifecycle_v1_state_S6_validation', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should validate state properties', async () => {\n        \n        // Navigate to undefined state\n        // Navigation code to be implemented\n        \n        // Validate state properties\n        // State property validation\n        \n        // Check invariants\n        // State invariant checks\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "api_lifecycle_v1_transition_undefined",
+      "test_name": "Test transition: undefined → undefined",
+      "test_type": "transition_test",
+      "requirements": [],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in undefined state",
+          "expected": "System state is uninitialized"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: undefined",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: init()",
+          "expected": "Event init() is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: initialize_module",
+          "expected": "Action initialize_module completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to undefined state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {},
+      "browser_test_code": "\n// Generated test for api_lifecycle_v1_transition_undefined\n// Model: api_lifecycle_v1, Element: undefined\n\ndescribe('api_lifecycle_v1_transition_undefined', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: uninitialized\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "api_lifecycle_v1_transition_undefined",
+      "test_name": "Test transition: undefined → undefined",
+      "test_type": "transition_test",
+      "requirements": [],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in undefined state",
+          "expected": "System state is initialized"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: undefined",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: read_table_from_array_buffer(data)",
+          "expected": "Event read_table_from_array_buffer(data) is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: create_table_handle",
+          "expected": "Action create_table_handle completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to undefined state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {},
+      "browser_test_code": "\n// Generated test for api_lifecycle_v1_transition_undefined\n// Model: api_lifecycle_v1, Element: undefined\n\ndescribe('api_lifecycle_v1_transition_undefined', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: initialized\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "api_lifecycle_v1_transition_undefined",
+      "test_name": "Test transition: undefined → undefined",
+      "test_type": "transition_test",
+      "requirements": [],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in undefined state",
+          "expected": "System state is table_loaded"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: undefined",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: get_table_row_count(handle) | export_column_by_name(handle, name)",
+          "expected": "Event get_table_row_count(handle) | export_column_by_name(handle, name) is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: perform_table_operation",
+          "expected": "Action perform_table_operation completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to undefined state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {},
+      "browser_test_code": "\n// Generated test for api_lifecycle_v1_transition_undefined\n// Model: api_lifecycle_v1, Element: undefined\n\ndescribe('api_lifecycle_v1_transition_undefined', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: table_loaded\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "api_lifecycle_v1_transition_undefined",
+      "test_name": "Test transition: undefined → undefined",
+      "test_type": "transition_test",
+      "requirements": [],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in undefined state",
+          "expected": "System state is table_processing"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: undefined",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: operation_complete",
+          "expected": "Event operation_complete is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: return_result",
+          "expected": "Action return_result completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to undefined state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {},
+      "browser_test_code": "\n// Generated test for api_lifecycle_v1_transition_undefined\n// Model: api_lifecycle_v1, Element: undefined\n\ndescribe('api_lifecycle_v1_transition_undefined', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: table_processing\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "api_lifecycle_v1_transition_undefined",
+      "test_name": "Test transition: undefined → undefined",
+      "test_type": "transition_test",
+      "requirements": [],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in undefined state",
+          "expected": "System state is table_loaded"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: undefined",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: free_table(handle)",
+          "expected": "Event free_table(handle) is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: free_table_memory",
+          "expected": "Action free_table_memory completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to undefined state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {},
+      "browser_test_code": "\n// Generated test for api_lifecycle_v1_transition_undefined\n// Model: api_lifecycle_v1, Element: undefined\n\ndescribe('api_lifecycle_v1_transition_undefined', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: table_loaded\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "api_lifecycle_v1_transition_undefined",
+      "test_name": "Test transition: undefined → undefined",
+      "test_type": "transition_test",
+      "requirements": [],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in undefined state",
+          "expected": "System state is memory_cleanup"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: undefined",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: cleanup_complete",
+          "expected": "Event cleanup_complete is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: update_table_registry",
+          "expected": "Action update_table_registry completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to undefined state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {},
+      "browser_test_code": "\n// Generated test for api_lifecycle_v1_transition_undefined\n// Model: api_lifecycle_v1, Element: undefined\n\ndescribe('api_lifecycle_v1_transition_undefined', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: memory_cleanup\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "api_lifecycle_v1_transition_undefined",
+      "test_name": "Test transition: undefined → undefined",
+      "test_type": "transition_test",
+      "requirements": [],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in undefined state",
+          "expected": "System state is memory_cleanup"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: undefined",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: cleanup_complete",
+          "expected": "Event cleanup_complete is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: reset_to_clean_state",
+          "expected": "Action reset_to_clean_state completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to undefined state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {},
+      "browser_test_code": "\n// Generated test for api_lifecycle_v1_transition_undefined\n// Model: api_lifecycle_v1, Element: undefined\n\ndescribe('api_lifecycle_v1_transition_undefined', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: memory_cleanup\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "api_lifecycle_v1_transition_undefined",
+      "test_name": "Test transition: undefined → undefined",
+      "test_type": "transition_test",
+      "requirements": [],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in undefined state",
+          "expected": "System state is *"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: undefined",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: error_condition",
+          "expected": "Event error_condition is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: capture_error_state",
+          "expected": "Action capture_error_state completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to undefined state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {},
+      "browser_test_code": "\n// Generated test for api_lifecycle_v1_transition_undefined\n// Model: api_lifecycle_v1, Element: undefined\n\ndescribe('api_lifecycle_v1_transition_undefined', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: *\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "api_lifecycle_v1_transition_undefined",
+      "test_name": "Test transition: undefined → undefined",
+      "test_type": "transition_test",
+      "requirements": [],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in undefined state",
+          "expected": "System state is error_state"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: undefined",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: error_recovery",
+          "expected": "Event error_recovery is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: reset_to_known_good_state",
+          "expected": "Action reset_to_known_good_state completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to undefined state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {},
+      "browser_test_code": "\n// Generated test for api_lifecycle_v1_transition_undefined\n// Model: api_lifecycle_v1, Element: undefined\n\ndescribe('api_lifecycle_v1_transition_undefined', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: error_state\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    },
+    {
+      "test_id": "api_lifecycle_v1_transition_undefined",
+      "test_name": "Test transition: undefined → undefined",
+      "test_type": "transition_test",
+      "requirements": [],
+      "test_steps": [
+        {
+          "step": 1,
+          "action": "Ensure system is in undefined state",
+          "expected": "System state is *"
+        },
+        {
+          "step": 2,
+          "action": "Validate guard condition: undefined",
+          "expected": "Guard condition evaluates to true",
+          "validation_code": "// Guard validation code"
+        },
+        {
+          "step": 3,
+          "action": "Trigger event: page_unload | clear_all_tables()",
+          "expected": "Event page_unload | clear_all_tables() is processed"
+        },
+        {
+          "step": 4,
+          "action": "Execute action: cleanup_all_resources",
+          "expected": "Action cleanup_all_resources completes successfully"
+        },
+        {
+          "step": 5,
+          "action": "Verify state transition",
+          "expected": "System transitions to undefined state"
+        },
+        {
+          "step": 6,
+          "action": "Validate target state properties",
+          "expected": "Target state properties are correct",
+          "validation_code": "// Property validation code"
+        }
+      ],
+      "test_data": {},
+      "browser_test_code": "\n// Generated test for api_lifecycle_v1_transition_undefined\n// Model: api_lifecycle_v1, Element: undefined\n\ndescribe('api_lifecycle_v1_transition_undefined', () => {\n    let wasmModule = null;\n    \n    beforeEach(async () => {\n        // Initialize WASM module\n        wasmModule = await initializeWasmModule();\n    });\n    \n    afterEach(async () => {\n        // Cleanup\n        if (wasmModule) {\n            await wasmModule.dispose();\n        }\n    });\n    \n    it('should execute transition successfully', async () => {\n        \n        // Setup initial state: *\n        // State setup code\n        \n        // Verify guard condition\n        // Guard condition check\n        \n        // Trigger transition\n        // Transition trigger code\n        \n        // Verify target state\n        // Target state validation\n        \n    });\n    \n    \n    describe('Error Cases', () => {\n        // Error condition tests\n    });\n    \n    \n    describe('Performance', () => {\n        it('should meet timing requirements', async () => {\n            // Performance test code\n        });\n    });\n});\n",
+      "priority": "medium"
+    }
+  ]
+}

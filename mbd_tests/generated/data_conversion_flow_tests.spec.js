@@ -1,6 +1,6 @@
 
 // Generated test suite for data_conversion_flow
-// Generated at: 2025-09-28T11:18:56.483Z
+// Generated at: 2025-10-01T12:12:34.543Z
 
 import { expect } from 'chai';
 import { initializeWasmModule, TestHelpers } from '../harness/test_helpers.js';
@@ -1912,5 +1912,5 @@ describe('data_conversion_flow_transition_conversion_error_ipc', () => {
 export const testSuiteInfo = {
   "model_id": "data_conversion_flow",
   "test_count": 40,
-  "generated_at": "2025-09-28T11:18:56.483Z"
+  "generated_at": "2025-10-01T12:12:34.543Z"
 };

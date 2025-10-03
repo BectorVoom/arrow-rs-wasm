@@ -1,0 +1,302 @@
+{
+  "model_id": "file_format_workflows_v1",
+  "model_type": "workflow_state_machine",
+  "description": "File format processing workflows for Arrow WASM library",
+  "version": "1.0",
+  "created": "2025-09-30T00:00:00Z",
+  "requirements_mapping": [
+    "REQ-005: Arrow IPC file support",
+    "REQ-006: Parquet file support", 
+    "REQ-007: Feather file support",
+    "REQ-008: LZ4 compression support",
+    "REQ-009: Format detection"
+  ],
+  "workflows": {
+    "arrow_ipc_read": {
+      "id": "WF1",
+      "description": "Reading Arrow IPC files (with/without LZ4)",
+      "states": {
+        "detect_format": {
+          "id": "F1",
+          "description": "Detect if data is Arrow IPC format",
+          "type": "initial"
+        },
+        "validate_headers": {
+          "id": "F2", 
+          "description": "Validate Arrow IPC headers and metadata",
+          "type": "normal"
+        },
+        "check_compression": {
+          "id": "F3",
+          "description": "Check for LZ4 or other compression",
+          "type": "normal"
+        },
+        "decompress": {
+          "id": "F4",
+          "description": "Decompress LZ4 data if present",
+          "type": "conditional"
+        },
+        "parse_schema": {
+          "id": "F5",
+          "description": "Parse Arrow schema from metadata",
+          "type": "normal"
+        },
+        "read_batches": {
+          "id": "F6",
+          "description": "Read record batches sequentially",
+          "type": "normal"
+        },
+        "create_table": {
+          "id": "F7",
+          "description": "Create managed table from batches",
+          "type": "final"
+        },
+        "format_error": {
+          "id": "F8",
+          "description": "Invalid format detected",
+          "type": "error"
+        }
+      },
+      "transitions": [
+        {
+          "from": "detect_format",
+          "to": "validate_headers",
+          "condition": "magic_bytes == 'ARROW1'",
+          "action": "proceed_with_arrow_ipc"
+        },
+        {
+          "from": "detect_format", 
+          "to": "format_error",
+          "condition": "magic_bytes != 'ARROW1'",
+          "action": "report_invalid_format"
+        },
+        {
+          "from": "validate_headers",
+          "to": "check_compression",
+          "condition": "headers_valid",
+          "action": "extract_metadata"
+        },
+        {
+          "from": "check_compression",
+          "to": "decompress",
+          "condition": "compression_detected && compression_type == 'LZ4'",
+          "action": "prepare_decompression"
+        },
+        {
+          "from": "check_compression",
+          "to": "parse_schema",
+          "condition": "no_compression",
+          "action": "proceed_to_schema"
+        },
+        {
+          "from": "decompress",
+          "to": "parse_schema", 
+          "condition": "decompression_success",
+          "action": "use_decompressed_data"
+        },
+        {
+          "from": "parse_schema",
+          "to": "read_batches",
+          "condition": "schema_valid",
+          "action": "initialize_batch_reader"
+        },
+        {
+          "from": "read_batches",
+          "to": "create_table",
+          "condition": "all_batches_read",
+          "action": "assemble_table"
+        }
+      ]
+    },
+    "arrow_ipc_write": {
+      "id": "WF2", 
+      "description": "Writing Arrow IPC files (with/without LZ4)",
+      "states": {
+        "validate_table": {
+          "id": "W1",
+          "description": "Validate input table structure",
+          "type": "initial"
+        },
+        "create_schema": {
+          "id": "W2",
+          "description": "Create Arrow schema metadata", 
+          "type": "normal"
+        },
+        "configure_compression": {
+          "id": "W3",
+          "description": "Configure LZ4 compression if requested",
+          "type": "conditional"
+        },
+        "write_headers": {
+          "id": "W4",
+          "description": "Write Arrow IPC headers",
+          "type": "normal"
+        },
+        "write_batches": {
+          "id": "W5",
+          "description": "Write record batches (with compression)",
+          "type": "normal"
+        },
+        "finalize_file": {
+          "id": "W6",
+          "description": "Finalize IPC file structure",
+          "type": "final"
+        }
+      },
+      "transitions": [
+        {
+          "from": "validate_table",
+          "to": "create_schema", 
+          "condition": "table_valid",
+          "action": "extract_schema_info"
+        },
+        {
+          "from": "create_schema",
+          "to": "configure_compression",
+          "condition": "lz4_requested",
+          "action": "setup_lz4_writer"
+        },
+        {
+          "from": "create_schema",
+          "to": "write_headers",
+          "condition": "no_compression_requested",
+          "action": "setup_plain_writer"
+        },
+        {
+          "from": "configure_compression",
+          "to": "write_headers",
+          "condition": "compression_configured",
+          "action": "proceed_with_compressed_writer"
+        },
+        {
+          "from": "write_headers",
+          "to": "write_batches",
+          "condition": "headers_written",
+          "action": "start_batch_writing"
+        },
+        {
+          "from": "write_batches",
+          "to": "finalize_file",
+          "condition": "all_batches_written",
+          "action": "complete_ipc_file"
+        }
+      ]
+    },
+    "parquet_read": {
+      "id": "WF3",
+      "description": "Reading Parquet files",
+      "states": {
+        "detect_parquet": {
+          "id": "P1",
+          "description": "Detect Parquet format",
+          "type": "initial"
+        },
+        "read_metadata": {
+          "id": "P2",
+          "description": "Read Parquet metadata and schema",
+          "type": "normal"
+        },
+        "create_arrow_schema": {
+          "id": "P3",
+          "description": "Convert Parquet schema to Arrow",
+          "type": "normal"
+        },
+        "read_row_groups": {
+          "id": "P4",
+          "description": "Read Parquet row groups",
+          "type": "normal"
+        },
+        "convert_to_arrow": {
+          "id": "P5",
+          "description": "Convert Parquet data to Arrow batches",
+          "type": "normal"
+        },
+        "create_table": {
+          "id": "P6",
+          "description": "Create managed table from Arrow batches",
+          "type": "final"
+        }
+      }
+    },
+    "feather_read": {
+      "id": "WF4",
+      "description": "Reading Feather files (Arrow IPC variant)",
+      "states": {
+        "detect_feather": {
+          "id": "FE1",
+          "description": "Detect Feather format",
+          "type": "initial"
+        },
+        "validate_feather_metadata": {
+          "id": "FE2",
+          "description": "Validate Feather-specific metadata",
+          "type": "normal"
+        },
+        "convert_to_ipc": {
+          "id": "FE3",
+          "description": "Convert Feather to Arrow IPC processing",
+          "type": "normal"
+        },
+        "delegate_to_ipc": {
+          "id": "FE4",
+          "description": "Use Arrow IPC workflow",
+          "type": "final"
+        }
+      }
+    }
+  },
+  "error_handling": {
+    "compression_errors": {
+      "states": ["decompress_failed", "compression_not_supported"],
+      "recovery_actions": ["fallback_to_uncompressed", "report_compression_error"]
+    },
+    "format_errors": {
+      "states": ["invalid_magic_bytes", "corrupted_metadata", "unsupported_version"],
+      "recovery_actions": ["try_alternative_format", "report_format_error"]
+    },
+    "io_errors": {
+      "states": ["read_timeout", "insufficient_data", "buffer_overflow"],
+      "recovery_actions": ["retry_with_backoff", "request_more_data", "increase_buffer"]
+    }
+  },
+  "test_scenarios": {
+    "arrow_ipc_uncompressed": {
+      "workflow": "arrow_ipc_read",
+      "path": ["detect_format", "validate_headers", "check_compression", "parse_schema", "read_batches", "create_table"],
+      "test_data": "arrow_ipc_simple.arrow"
+    },
+    "arrow_ipc_lz4_compressed": {
+      "workflow": "arrow_ipc_read", 
+      "path": ["detect_format", "validate_headers", "check_compression", "decompress", "parse_schema", "read_batches", "create_table"],
+      "test_data": "arrow_ipc_lz4.arrow"
+    },
+    "arrow_ipc_write_with_lz4": {
+      "workflow": "arrow_ipc_write",
+      "path": ["validate_table", "create_schema", "configure_compression", "write_headers", "write_batches", "finalize_file"],
+      "test_data": "generated_table_with_lz4"
+    },
+    "parquet_to_arrow": {
+      "workflow": "parquet_read",
+      "path": ["detect_parquet", "read_metadata", "create_arrow_schema", "read_row_groups", "convert_to_arrow", "create_table"],
+      "test_data": "sample.parquet"
+    },
+    "feather_to_arrow": {
+      "workflow": "feather_read",
+      "path": ["detect_feather", "validate_feather_metadata", "convert_to_ipc", "delegate_to_ipc"],
+      "test_data": "sample.feather"
+    }
+  },
+  "performance_requirements": {
+    "arrow_ipc_read": {
+      "max_init_time_ms": 100,
+      "max_read_time_per_mb": 50
+    },
+    "lz4_decompression": {
+      "max_decompress_time_per_mb": 20
+    },
+    "parquet_read": {
+      "max_schema_parse_time_ms": 200,
+      "max_conversion_time_per_mb": 100
+    }
+  }
+}

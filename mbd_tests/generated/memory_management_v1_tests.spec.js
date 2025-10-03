@@ -1,6 +1,6 @@
 
 // Generated test suite for memory_management_v1
-// Generated at: 2025-09-28T11:18:56.504Z
+// Generated at: 2025-10-01T12:12:34.547Z
 
 import { expect } from 'chai';
 import { initializeWasmModule, TestHelpers } from '../harness/test_helpers.js';
@@ -876,5 +876,5 @@ describe('memory_management_v1_transition_invalid_deallocation_at_limit', () => 
 export const testSuiteInfo = {
   "model_id": "memory_management_v1",
   "test_count": 18,
-  "generated_at": "2025-09-28T11:18:56.504Z"
+  "generated_at": "2025-10-01T12:12:34.547Z"
 };

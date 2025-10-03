@@ -23,6 +23,22 @@ const testSuites = [
     ]
   },
   {
+    "model_id": "api_lifecycle_v1",
+    "test_count": 17,
+    "output_files": [
+      "/Users/ods/Documents/arrow-rs-wasm/mbd_tests/generated/api_lifecycle_v1_tests.json",
+      "/Users/ods/Documents/arrow-rs-wasm/mbd_tests/generated/api_lifecycle_v1_tests.spec.js"
+    ]
+  },
+  {
+    "model_id": "memory_lifecycle_v1",
+    "test_count": 0,
+    "output_files": [
+      "/Users/ods/Documents/arrow-rs-wasm/mbd_tests/generated/memory_lifecycle_v1_tests.json",
+      "/Users/ods/Documents/arrow-rs-wasm/mbd_tests/generated/memory_lifecycle_v1_tests.spec.js"
+    ]
+  },
+  {
     "model_id": "memory_management_v1",
     "test_count": 18,
     "output_files": [
@@ -52,6 +68,22 @@ const testSuites = [
     "output_files": [
       "/Users/ods/Documents/arrow-rs-wasm/mbd_tests/generated/column_lifecycle_tests.json",
       "/Users/ods/Documents/arrow-rs-wasm/mbd_tests/generated/column_lifecycle_tests.spec.js"
+    ]
+  },
+  {
+    "model_id": "enhanced_api_lifecycle",
+    "test_count": 23,
+    "output_files": [
+      "/Users/ods/Documents/arrow-rs-wasm/mbd_tests/generated/enhanced_api_lifecycle_tests.json",
+      "/Users/ods/Documents/arrow-rs-wasm/mbd_tests/generated/enhanced_api_lifecycle_tests.spec.js"
+    ]
+  },
+  {
+    "model_id": "enhanced_memory_management",
+    "test_count": 26,
+    "output_files": [
+      "/Users/ods/Documents/arrow-rs-wasm/mbd_tests/generated/enhanced_memory_management_tests.json",
+      "/Users/ods/Documents/arrow-rs-wasm/mbd_tests/generated/enhanced_memory_management_tests.spec.js"
     ]
   },
   {

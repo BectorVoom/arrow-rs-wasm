@@ -1,6 +1,6 @@
 
 // Generated test suite for module_lifecycle
-// Generated at: 2025-09-28T11:18:56.534Z
+// Generated at: 2025-10-01T12:12:34.554Z
 
 import { expect } from 'chai';
 import { initializeWasmModule, TestHelpers } from '../harness/test_helpers.js';
@@ -1017,5 +1017,5 @@ describe('module_lifecycle_transition_dispose_from_error', () => {
 export const testSuiteInfo = {
   "model_id": "module_lifecycle",
   "test_count": 21,
-  "generated_at": "2025-09-28T11:18:56.534Z"
+  "generated_at": "2025-10-01T12:12:34.554Z"
 };

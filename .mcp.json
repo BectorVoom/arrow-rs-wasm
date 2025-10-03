@@ -21,6 +21,10 @@
       "env": {
         "BRAVE_API_KEY": "BSAOjSwHkofBw2zUgCqO0P2G28_F0gp"
       }
+    },
+    "chrome-devtools": {
+      "command": "npx",
+      "args": ["chrome-devtools-mcp@latest"]
     }
   }
 }

@@ -1,0 +1,406 @@
+{
+  "model_id": "architecture_v1",
+  "model_type": "component_architecture",
+  "description": "System architecture model for Arrow WASM library",
+  "version": "1.0",
+  "created": "2025-09-30T00:00:00Z",
+  "requirements_mapping": [
+    "REQ-018: Modular design and tree-shaking",
+    "REQ-019: Plugin-first architecture",
+    "REQ-020: Zero-copy semantics", 
+    "REQ-021: Clean separation of concerns"
+  ],
+  "layers": {
+    "presentation": {
+      "layer_id": "L1",
+      "description": "JavaScript/TypeScript façade and browser interface",
+      "components": {
+        "js_facade": {
+          "id": "C1",
+          "name": "JavaScript Façade",
+          "responsibilities": [
+            "High-level API exposed to users",
+            "Result<T> error handling",
+            "ArrayBuffer/TypedArray conversions",
+            "Promise-based async interface"
+          ],
+          "dependencies": ["wasm_bindings"],
+          "exports": [
+            "initWasm()",
+            "readTableFromArrayBuffer()",
+            "getSchemaSummary()",
+            "getTableRowCount()",
+            "exportColumnByName()",
+            "freeTable()"
+          ]
+        },
+        "type_definitions": {
+          "id": "C2",
+          "name": "TypeScript Definitions",
+          "responsibilities": [
+            "Strong typing for API",
+            "Result<T> type definitions",
+            "Interface definitions",
+            "No 'any' types in public API"
+          ],
+          "dependencies": [],
+          "exports": ["types.d.ts"]
+        }
+      }
+    },
+    "interface": {
+      "layer_id": "L2", 
+      "description": "WASM bindings and interop layer",
+      "components": {
+        "wasm_bindings": {
+          "id": "C3",
+          "name": "WASM Bindings",
+          "responsibilities": [
+            "wasm-bindgen generated bindings",
+            "Type conversions Rust ↔ JS",
+            "Memory management coordination",
+            "Error serialization"
+          ],
+          "dependencies": ["core_lib"],
+          "exports": ["arrow_wasm.js", "arrow_wasm.wasm"]
+        },
+        "memory_interface": {
+          "id": "C4",
+          "name": "Memory Interface",
+          "responsibilities": [
+            "ArrayBuffer ↔ WASM memory mapping",
+            "Zero-copy buffer management",
+            "Handle ID generation and mapping",
+            "Memory ownership tracking"
+          ],
+          "dependencies": ["memory_manager"],
+          "provides": ["zero_copy_semantics"]
+        }
+      }
+    },
+    "core": {
+      "layer_id": "L3",
+      "description": "Core Rust library with Arrow processing",
+      "components": {
+        "core_lib": {
+          "id": "C5",
+          "name": "Core Library (lib.rs)",
+          "responsibilities": [
+            "Main API exports with wasm-bindgen",
+            "Coordinate between modules",
+            "Error aggregation and reporting",
+            "Version and build info"
+          ],
+          "dependencies": ["memory_manager", "file_system", "ipc_handler", "plugin_manager"],
+          "exports": ["all WASM-exported functions"]
+        },
+        "memory_manager": {
+          "id": "C6",
+          "name": "Memory Manager (mem.rs)",
+          "responsibilities": [
+            "TableHandle lifecycle management",
+            "ManagedTable storage and retrieval",
+            "Memory statistics and monitoring",
+            "Table registry operations"
+          ],
+          "dependencies": ["arrow_core"],
+          "provides": ["table_handles", "memory_safety"]
+        },
+        "file_system": {
+          "id": "C7",
+          "name": "File System Handler (fs.rs)",
+          "responsibilities": [
+            "Multi-format file reading (Arrow/Parquet/Feather)",
+            "Format detection and validation",
+            "File writing with format-specific options",
+            "Schema extraction and conversion"
+          ],
+          "dependencies": ["arrow_core", "ipc_handler"],
+          "provides": ["format_support"]
+        },
+        "ipc_handler": {
+          "id": "C8",
+          "name": "IPC Handler (ipc.rs)",
+          "responsibilities": [
+            "Arrow IPC reading and writing",
+            "LZ4 compression/decompression",
+            "IPC options configuration",
+            "Stream vs file format handling"
+          ],
+          "dependencies": ["arrow_ipc", "lz4_flex"],
+          "provides": ["ipc_processing", "compression_support"]
+        },
+        "plugin_manager": {
+          "id": "C9",
+          "name": "Plugin Manager (plugin.rs)",
+          "responsibilities": [
+            "Plugin registration and validation",
+            "Plugin factory pattern implementation",
+            "Dynamic plugin discovery",
+            "Geometry plugin example implementation"
+          ],
+          "dependencies": ["arrow_core"],
+          "provides": ["extensibility"]
+        },
+        "error_handler": {
+          "id": "C10",
+          "name": "Error Handler (errors.rs)",
+          "responsibilities": [
+            "Centralized error types",
+            "Error categorization and codes",
+            "Error message formatting",
+            "Recovery strategy coordination"
+          ],
+          "dependencies": [],
+          "provides": ["error_management"]
+        }
+      }
+    },
+    "foundation": {
+      "layer_id": "L4",
+      "description": "External dependencies and Arrow ecosystem",
+      "components": {
+        "arrow_core": {
+          "id": "C11",
+          "name": "Arrow Rust Libraries",
+          "responsibilities": [
+            "Core Arrow data structures",
+            "Schema definitions and validation",
+            "RecordBatch operations",
+            "Type system and casting"
+          ],
+          "external": true,
+          "version": "56.1.0"
+        },
+        "arrow_ipc": {
+          "id": "C12",
+          "name": "Arrow IPC Library",
+          "responsibilities": [
+            "IPC format reading/writing",
+            "Compression integration",
+            "Stream and file formats",
+            "Metadata handling"
+          ],
+          "external": true,
+          "version": "56.1.0"
+        },
+        "parquet": {
+          "id": "C13",
+          "name": "Parquet Library",
+          "responsibilities": [
+            "Parquet file format support",
+            "Schema mapping Parquet ↔ Arrow",
+            "Column-based reading/writing",
+            "Compression codecs"
+          ],
+          "external": true,
+          "version": "56.1.0"
+        },
+        "wasm_runtime": {
+          "id": "C14",
+          "name": "WASM Runtime", 
+          "responsibilities": [
+            "WASM module execution",
+            "Memory management",
+            "Browser integration",
+            "JavaScript interop"
+          ],
+          "external": true,
+          "environment": "browser"
+        }
+      }
+    }
+  },
+  "data_flow": {
+    "read_operation": {
+      "description": "Reading Arrow data from ArrayBuffer",
+      "flow": [
+        {
+          "step": 1,
+          "from": "User Code",
+          "to": "js_facade",
+          "data": "ArrayBuffer",
+          "operation": "readTableFromArrayBuffer(buffer)"
+        },
+        {
+          "step": 2,
+          "from": "js_facade",
+          "to": "wasm_bindings",
+          "data": "Uint8Array view",
+          "operation": "convert ArrayBuffer to WASM memory"
+        },
+        {
+          "step": 3,
+          "from": "wasm_bindings",
+          "to": "core_lib",
+          "data": "&[u8] slice",
+          "operation": "read_table_from_array_buffer()"
+        },
+        {
+          "step": 4,
+          "from": "core_lib",
+          "to": "file_system",
+          "data": "&[u8] slice",
+          "operation": "detect format and delegate"
+        },
+        {
+          "step": 5,
+          "from": "file_system",
+          "to": "ipc_handler",
+          "data": "&[u8] slice",
+          "operation": "parse Arrow IPC format"
+        },
+        {
+          "step": 6,
+          "from": "ipc_handler",
+          "to": "arrow_ipc",
+          "data": "IPC bytes",
+          "operation": "decode RecordBatch"
+        },
+        {
+          "step": 7,
+          "from": "ipc_handler",
+          "to": "memory_manager",
+          "data": "RecordBatch + Schema",
+          "operation": "store in ManagedTable"
+        },
+        {
+          "step": 8,
+          "from": "memory_manager",
+          "to": "core_lib",
+          "data": "TableHandle",
+          "operation": "return handle ID"
+        },
+        {
+          "step": 9,
+          "from": "core_lib",
+          "to": "js_facade",
+          "data": "u32 handle",
+          "operation": "convert to Result<number>"
+        },
+        {
+          "step": 10,
+          "from": "js_facade",
+          "to": "User Code",
+          "data": "Promise<Result<TableHandle>>",
+          "operation": "return wrapped result"
+        }
+      ]
+    },
+    "column_export": {
+      "description": "Exporting column data to JavaScript",
+      "flow": [
+        {
+          "step": 1,
+          "from": "User Code",
+          "to": "js_facade", 
+          "data": "handle + column_name",
+          "operation": "exportColumnByName(handle, name)"
+        },
+        {
+          "step": 2,
+          "from": "js_facade",
+          "to": "core_lib",
+          "data": "u32 + &str",
+          "operation": "export_column_by_name()"
+        },
+        {
+          "step": 3,
+          "from": "core_lib",
+          "to": "memory_manager",
+          "data": "TableHandle + column_name",
+          "operation": "find column in ManagedTable"
+        },
+        {
+          "step": 4,
+          "from": "memory_manager",
+          "to": "arrow_core",
+          "data": "Array reference",
+          "operation": "extract column data"
+        },
+        {
+          "step": 5,
+          "from": "memory_manager",
+          "to": "core_lib",
+          "data": "ColumnExport struct",
+          "operation": "serialize buffers to Vec<u8>"
+        },
+        {
+          "step": 6,
+          "from": "core_lib",
+          "to": "js_facade",
+          "data": "serialized ColumnExport",
+          "operation": "convert to JsValue"
+        },
+        {
+          "step": 7,
+          "from": "js_facade",
+          "to": "User Code",
+          "data": "Promise<Result<ColumnExport>>",
+          "operation": "deserialize to JS object"
+        }
+      ]
+    }
+  },
+  "interfaces": {
+    "js_to_wasm": {
+      "protocol": "wasm-bindgen",
+      "data_types": ["primitives", "strings", "arrays", "objects via serde"],
+      "error_handling": "Result<T, JsValue>",
+      "memory_model": "WASM owns data, JS receives copies"
+    },
+    "wasm_to_arrow": {
+      "protocol": "direct function calls",
+      "data_types": ["Arrow native types", "RecordBatch", "Schema"],
+      "error_handling": "Result<T, CoreError>",
+      "memory_model": "shared ownership via Arc<>"
+    },
+    "plugin_interface": {
+      "protocol": "trait objects",
+      "data_types": ["Arrow Field", "Array references"],
+      "error_handling": "Result<T, CoreError>", 
+      "memory_model": "read-only access to Arrow data"
+    }
+  },
+  "deployment_model": {
+    "packaging": {
+      "wasm_module": "arrow_wasm.wasm - compiled Rust code",
+      "js_bindings": "arrow_wasm.js - wasm-bindgen generated",
+      "type_definitions": "arrow_wasm.d.ts - TypeScript definitions",
+      "package_format": "NPM package with ESM exports"
+    },
+    "loading": {
+      "module_init": "async WASM module initialization",
+      "memory_allocation": "dynamic memory growth enabled",
+      "tree_shaking": "dead code elimination supported",
+      "size_optimization": "release profile with opt-level='s'"
+    },
+    "runtime_requirements": {
+      "browser_support": "modern browsers with WASM support",
+      "memory_requirements": "64MB minimum, grows as needed",
+      "features_required": ["BigInt", "ArrayBuffer", "Proxy"]
+    }
+  },
+  "quality_attributes": {
+    "performance": {
+      "zero_copy_reads": "minimize memory copies",
+      "lazy_loading": "load data on demand",
+      "streaming": "support streaming operations"
+    },
+    "reliability": {
+      "error_isolation": "errors don't crash system",
+      "memory_safety": "no memory leaks or corruption",
+      "graceful_degradation": "continue with reduced functionality"
+    },
+    "maintainability": {
+      "modular_design": "clear separation of concerns",
+      "plugin_system": "extensible without core changes",
+      "comprehensive_testing": "model-based test coverage"
+    },
+    "usability": {
+      "typed_api": "strong TypeScript typing",
+      "clear_errors": "actionable error messages",
+      "consistent_patterns": "uniform API design"
+    }
+  }
+}

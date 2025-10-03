@@ -1,0 +1,377 @@
+{
+  "model_id": "data_flow_v1",
+  "model_type": "data_flow_diagram",
+  "description": "Data flow patterns and transformations in Arrow WASM library",
+  "version": "1.0",
+  "created": "2025-09-30T00:00:00Z",
+  "requirements_mapping": [
+    "REQ-022: Zero-copy data transfer semantics",
+    "REQ-023: Efficient data transformations",
+    "REQ-024: Memory-conscious operations",
+    "REQ-025: Type-safe data handling"
+  ],
+  "data_entities": {
+    "raw_file_data": {
+      "id": "D1",
+      "description": "Raw file bytes from user",
+      "format": "ArrayBuffer | Uint8Array",
+      "source": "User file upload or fetch",
+      "size_range": "1KB - 1GB+",
+      "characteristics": ["immutable", "browser-managed memory"]
+    },
+    "wasm_memory_view": {
+      "id": "D2", 
+      "description": "WASM memory view of file data",
+      "format": "&[u8] slice",
+      "source": "ArrayBuffer mapped to WASM memory",
+      "size_range": "same as raw_file_data",
+      "characteristics": ["zero-copy view", "WASM-managed memory"]
+    },
+    "arrow_record_batches": {
+      "id": "D3",
+      "description": "Parsed Arrow RecordBatch objects",
+      "format": "Vec<RecordBatch>",
+      "source": "Arrow IPC/Parquet parser",
+      "size_range": "varies by batch size",
+      "characteristics": ["structured data", "schema-validated", "columnar layout"]
+    },
+    "managed_table": {
+      "id": "D4",
+      "description": "Table stored in WASM registry",
+      "format": "ManagedTable { schema, batches, metadata }",
+      "source": "Memory manager",
+      "size_range": "includes all batches + metadata",
+      "characteristics": ["handle-referenced", "garbage-collectable", "queryable"]
+    },
+    "column_data": {
+      "id": "D5",
+      "description": "Individual column arrays",
+      "format": "dyn Array + metadata",
+      "source": "Column extraction from batches",
+      "size_range": "subset of table data",
+      "characteristics": ["type-specific", "nullable", "compressed possible"]
+    },
+    "exported_column": {
+      "id": "D6",
+      "description": "Column data prepared for JS export",
+      "format": "ColumnExport { buffers, metadata }",
+      "source": "Column serialization process",
+      "size_range": "column data + small metadata overhead",
+      "characteristics": ["JS-transferable", "self-describing", "owned buffers"]
+    },
+    "js_result_object": {
+      "id": "D7",
+      "description": "JavaScript object returned to user",
+      "format": "ColumnExport interface",
+      "source": "JSON deserialization in JS",
+      "size_range": "same as exported_column",
+      "characteristics": ["typed interface", "ArrayBuffer views", "user-consumable"]
+    }
+  },
+  "transformation_processes": {
+    "file_ingestion": {
+      "id": "P1",
+      "description": "Transform user file data into WASM-accessible format",
+      "input": "raw_file_data",
+      "output": "wasm_memory_view",
+      "transformation_type": "zero_copy_mapping",
+      "performance_characteristics": {
+        "time_complexity": "O(1)",
+        "space_complexity": "O(1) - no additional memory",
+        "typical_duration": "< 1ms"
+      },
+      "error_conditions": [
+        "ArrayBuffer too large for WASM memory",
+        "Invalid ArrayBuffer reference"
+      ]
+    },
+    "format_detection": {
+      "id": "P2",
+      "description": "Detect file format from magic bytes and headers",
+      "input": "wasm_memory_view",
+      "output": "format_classification",
+      "transformation_type": "analysis",
+      "performance_characteristics": {
+        "time_complexity": "O(1) - only reads first few bytes",
+        "space_complexity": "O(1)",
+        "typical_duration": "< 0.1ms"
+      },
+      "decision_points": [
+        "Arrow IPC: magic bytes 'ARROW1'",
+        "Parquet: magic bytes 'PAR1'", 
+        "Feather: Feather-specific metadata structure"
+      ]
+    },
+    "ipc_parsing": {
+      "id": "P3",
+      "description": "Parse Arrow IPC format into RecordBatches",
+      "input": "wasm_memory_view",
+      "output": "arrow_record_batches",
+      "transformation_type": "deserialization",
+      "performance_characteristics": {
+        "time_complexity": "O(n) where n = data size",
+        "space_complexity": "O(n) - creates Arrow structures",
+        "typical_duration": "10-100ms per MB"
+      },
+      "sub_processes": [
+        "header_validation",
+        "schema_extraction", 
+        "batch_reading",
+        "compression_handling"
+      ]
+    },
+    "compression_handling": {
+      "id": "P4",
+      "description": "Handle LZ4 decompression if present",
+      "input": "compressed_ipc_data",
+      "output": "decompressed_ipc_data",
+      "transformation_type": "decompression",
+      "performance_characteristics": {
+        "time_complexity": "O(n) where n = compressed size",
+        "space_complexity": "O(m) where m = decompressed size",
+        "typical_duration": "5-20ms per MB compressed"
+      },
+      "memory_pattern": "temporary allocation for decompressed data"
+    },
+    "table_registration": {
+      "id": "P5",
+      "description": "Register parsed data as managed table",
+      "input": "arrow_record_batches",
+      "output": "managed_table",
+      "transformation_type": "ownership_transfer",
+      "performance_characteristics": {
+        "time_complexity": "O(1) - moves ownership",
+        "space_complexity": "O(1) - minimal metadata overhead",
+        "typical_duration": "< 0.1ms"
+      },
+      "side_effects": [
+        "handle_id_generation",
+        "registry_update",
+        "lifetime_tracking_start"
+      ]
+    },
+    "column_extraction": {
+      "id": "P6",
+      "description": "Extract specific column from table",
+      "input": "managed_table + column_name",
+      "output": "column_data",
+      "transformation_type": "projection",
+      "performance_characteristics": {
+        "time_complexity": "O(b) where b = number of batches",
+        "space_complexity": "O(1) - references existing data",
+        "typical_duration": "< 1ms per batch"
+      },
+      "considerations": [
+        "multi_batch_handling",
+        "column_name_resolution",
+        "type_consistency_validation"
+      ]
+    },
+    "column_serialization": {
+      "id": "P7",
+      "description": "Serialize column data for JS transfer",
+      "input": "column_data",
+      "output": "exported_column",
+      "transformation_type": "serialization",
+      "performance_characteristics": {
+        "time_complexity": "O(n) where n = column size",
+        "space_complexity": "O(n) - creates owned copies",
+        "typical_duration": "5-50ms per MB"
+      },
+      "memory_operations": [
+        "buffer_copying",
+        "null_bitmap_extraction",
+        "offset_buffer_handling",
+        "metadata_serialization"
+      ]
+    },
+    "js_transfer": {
+      "id": "P8",
+      "description": "Transfer serialized data to JavaScript",
+      "input": "exported_column",
+      "output": "js_result_object", 
+      "transformation_type": "boundary_crossing",
+      "performance_characteristics": {
+        "time_complexity": "O(n) where n = data size",
+        "space_complexity": "O(n) - JS copies data",
+        "typical_duration": "1-10ms per MB"
+      },
+      "wasm_bindgen_operations": [
+        "serde_serialization",
+        "jsvalue_conversion",
+        "memory_transfer"
+      ]
+    }
+  },
+  "data_flow_patterns": {
+    "read_table_flow": {
+      "description": "Complete flow from ArrayBuffer to TableHandle",
+      "steps": [
+        {
+          "step": 1,
+          "process": "file_ingestion",
+          "input": "User ArrayBuffer",
+          "output": "WASM memory view"
+        },
+        {
+          "step": 2,
+          "process": "format_detection",
+          "input": "WASM memory view",
+          "output": "Detected format (Arrow IPC)"
+        },
+        {
+          "step": 3,
+          "process": "ipc_parsing",
+          "input": "WASM memory view",
+          "output": "RecordBatch vector"
+        },
+        {
+          "step": 4,
+          "process": "table_registration",
+          "input": "RecordBatch vector",
+          "output": "TableHandle"
+        }
+      ],
+      "total_performance": {
+        "time": "15-150ms for 1MB file",
+        "memory": "~2x file size during parsing"
+      }
+    },
+    "export_column_flow": {
+      "description": "Complete flow from TableHandle to JavaScript ColumnExport",
+      "steps": [
+        {
+          "step": 1,
+          "process": "handle_lookup",
+          "input": "TableHandle + column_name",
+          "output": "ManagedTable reference"
+        },
+        {
+          "step": 2,
+          "process": "column_extraction",
+          "input": "ManagedTable + column_name",
+          "output": "Column Array reference"
+        },
+        {
+          "step": 3,
+          "process": "column_serialization",
+          "input": "Column Array",
+          "output": "ColumnExport struct"
+        },
+        {
+          "step": 4,
+          "process": "js_transfer",
+          "input": "ColumnExport struct",
+          "output": "JavaScript object"
+        }
+      ],
+      "total_performance": {
+        "time": "5-100ms for 1MB column",
+        "memory": "~1.5x column size during transfer"
+      }
+    },
+    "error_propagation_flow": {
+      "description": "How errors flow through the system",
+      "steps": [
+        {
+          "step": 1,
+          "source": "Arrow parsing error",
+          "transformation": "wrap in CoreError"
+        },
+        {
+          "step": 2,
+          "source": "CoreError",
+          "transformation": "convert to structured JS error"
+        },
+        {
+          "step": 3,
+          "source": "JS error object", 
+          "transformation": "wrap in Result<T, Error>"
+        },
+        {
+          "step": 4,
+          "source": "Result",
+          "transformation": "return to user as Promise<Result<T>>"
+        }
+      ],
+      "error_preservation": [
+        "error_code_maintained",
+        "error_message_preserved",
+        "context_information_included",
+        "stack_trace_available_in_debug"
+      ]
+    }
+  },
+  "memory_flow_patterns": {
+    "zero_copy_read": {
+      "description": "Optimal path with minimal memory allocation",
+      "conditions": [
+        "Arrow IPC format",
+        "No compression",
+        "Memory-mapped file access"
+      ],
+      "memory_allocations": [
+        "metadata only (~1% of file size)",
+        "handle registration (~100 bytes)",
+        "schema objects (~1KB typical)"
+      ],
+      "total_overhead": "< 2% of file size"
+    },
+    "copy_on_export": {
+      "description": "Memory allocation during column export",
+      "reason": "JS requires owned data for transfer",
+      "allocations": [
+        "main_data_buffer (column size)",
+        "null_bitmap_buffer (rows/8 bytes)", 
+        "offset_buffer (variable-length types)",
+        "metadata_structure (~100 bytes)"
+      ],
+      "total_cost": "~1.1x column size"
+    },
+    "temporary_decompression": {
+      "description": "Temporary memory for LZ4 decompression",
+      "duration": "during parsing only",
+      "size": "decompressed data size",
+      "cleanup": "freed after Arrow structures created"
+    }
+  },
+  "performance_bottlenecks": {
+    "identified_bottlenecks": [
+      {
+        "operation": "large_file_parsing",
+        "description": "Parsing very large Arrow files",
+        "threshold": "> 100MB",
+        "mitigation": "streaming parsing, memory pressure handling"
+      },
+      {
+        "operation": "column_export",
+        "description": "Exporting large columns to JS",
+        "threshold": "> 10MB column",
+        "mitigation": "chunked export, progress callbacks"
+      },
+      {
+        "operation": "memory_allocation",
+        "description": "WASM memory growth",
+        "threshold": "> 512MB total",
+        "mitigation": "garbage collection, handle cleanup"
+      }
+    ]
+  },
+  "optimization_opportunities": {
+    "streaming_processing": {
+      "description": "Process data in chunks rather than all at once",
+      "benefits": ["reduced memory pressure", "better responsiveness"],
+      "applicability": ["large files", "network streaming"]
+    },
+    "lazy_column_loading": {
+      "description": "Load column data only when accessed",
+      "benefits": ["faster initial load", "memory efficiency"],
+      "applicability": ["wide tables", "selective access patterns"]
+    },
+    "compression_awareness": {
+      "description": "Optimize for compressed vs uncompressed data paths",
+      "benefits": ["better performance prediction", "resource planning"],
+      "applicability": ["mixed workloads", "performance-critical applications"]
+    }
+  }
+}

@@ -1,0 +1,320 @@
+{
+  "model_id": "error_handling_v1",
+  "model_type": "error_state_machine",
+  "description": "Error handling and recovery patterns for Arrow WASM library",
+  "version": "1.0",
+  "created": "2025-09-30T00:00:00Z",
+  "requirements_mapping": [
+    "REQ-014: Structured error reporting",
+    "REQ-015: Error recovery mechanisms", 
+    "REQ-016: No exceptions in public API",
+    "REQ-017: Result-style error handling"
+  ],
+  "error_categories": {
+    "io_errors": {
+      "id": "ERR_IO",
+      "description": "Input/output related errors",
+      "subcategories": {
+        "insufficient_data": {
+          "code": "ERR_IO_001",
+          "description": "Not enough data to complete operation",
+          "severity": "recoverable",
+          "recovery_actions": ["request_more_data", "partial_processing"]
+        },
+        "corrupted_data": {
+          "code": "ERR_IO_002", 
+          "description": "Data appears corrupted or invalid",
+          "severity": "non_recoverable",
+          "recovery_actions": ["report_corruption", "abort_operation"]
+        },
+        "read_timeout": {
+          "code": "ERR_IO_003",
+          "description": "Read operation timed out",
+          "severity": "recoverable",
+          "recovery_actions": ["retry_with_backoff", "extend_timeout"]
+        }
+      }
+    },
+    "format_errors": {
+      "id": "ERR_FORMAT",
+      "description": "File format related errors",
+      "subcategories": {
+        "invalid_magic_bytes": {
+          "code": "ERR_FORMAT_001",
+          "description": "File magic bytes don't match expected format",
+          "severity": "non_recoverable",
+          "recovery_actions": ["try_alternative_format", "report_format_mismatch"]
+        },
+        "unsupported_version": {
+          "code": "ERR_FORMAT_002",
+          "description": "File format version not supported",
+          "severity": "non_recoverable", 
+          "recovery_actions": ["report_version_mismatch", "suggest_update"]
+        },
+        "invalid_schema": {
+          "code": "ERR_FORMAT_003",
+          "description": "Arrow schema is invalid or malformed",
+          "severity": "non_recoverable",
+          "recovery_actions": ["report_schema_error", "log_schema_details"]
+        }
+      }
+    },
+    "memory_errors": {
+      "id": "ERR_MEMORY",
+      "description": "Memory management related errors",
+      "subcategories": {
+        "out_of_memory": {
+          "code": "ERR_MEMORY_001",
+          "description": "Insufficient memory for operation",
+          "severity": "recoverable",
+          "recovery_actions": ["free_unused_tables", "request_smaller_chunk"]
+        },
+        "invalid_handle": {
+          "code": "ERR_MEMORY_002",
+          "description": "Table handle is invalid or freed",
+          "severity": "non_recoverable",
+          "recovery_actions": ["report_invalid_handle", "abort_operation"]
+        },
+        "memory_corruption": {
+          "code": "ERR_MEMORY_003",
+          "description": "Memory corruption detected",
+          "severity": "critical",
+          "recovery_actions": ["emergency_cleanup", "restart_system"]
+        }
+      }
+    },
+    "compression_errors": {
+      "id": "ERR_COMPRESSION",
+      "description": "Compression/decompression related errors",
+      "subcategories": {
+        "lz4_decompression_failed": {
+          "code": "ERR_COMP_001",
+          "description": "LZ4 decompression failed",
+          "severity": "recoverable",
+          "recovery_actions": ["try_without_compression", "report_compression_error"]
+        },
+        "unsupported_compression": {
+          "code": "ERR_COMP_002",
+          "description": "Compression type not supported",
+          "severity": "non_recoverable",
+          "recovery_actions": ["report_unsupported_compression", "list_supported_types"]
+        }
+      }
+    },
+    "plugin_errors": {
+      "id": "ERR_PLUGIN",
+      "description": "Plugin system related errors",
+      "subcategories": {
+        "plugin_not_found": {
+          "code": "ERR_PLUGIN_001",
+          "description": "Requested plugin not found",
+          "severity": "non_recoverable",
+          "recovery_actions": ["list_available_plugins", "suggest_alternatives"]
+        },
+        "plugin_validation_failed": {
+          "code": "ERR_PLUGIN_002",
+          "description": "Plugin failed validation checks",
+          "severity": "non_recoverable",
+          "recovery_actions": ["report_validation_errors", "disable_plugin"]
+        }
+      }
+    }
+  },
+  "error_propagation": {
+    "rust_to_js": {
+      "pattern": "Result<T, CoreError> -> Result<T, JsValue>",
+      "conversion": "structured error to JS-friendly format",
+      "information_preserved": [
+        "error_code",
+        "error_message", 
+        "error_category",
+        "recovery_suggestions"
+      ]
+    },
+    "js_to_user": {
+      "pattern": "Promise<Result<T, ErrorInfo>>",
+      "no_exceptions": "never throw exceptions from public API",
+      "user_friendly": "provide actionable error messages"
+    }
+  },
+  "error_state_machine": {
+    "states": {
+      "normal_operation": {
+        "id": "ES0",
+        "description": "System operating normally",
+        "type": "normal"
+      },
+      "error_detected": {
+        "id": "ES1",
+        "description": "Error condition detected", 
+        "type": "error_entry"
+      },
+      "error_analysis": {
+        "id": "ES2",
+        "description": "Analyzing error for recovery options",
+        "type": "processing"
+      },
+      "attempting_recovery": {
+        "id": "ES3",
+        "description": "Attempting to recover from error",
+        "type": "recovery"
+      },
+      "recovery_successful": {
+        "id": "ES4",
+        "description": "Successfully recovered from error",
+        "type": "recovery_success"
+      },
+      "recovery_failed": {
+        "id": "ES5",
+        "description": "Recovery attempt failed",
+        "type": "recovery_failure"
+      },
+      "error_reported": {
+        "id": "ES6",
+        "description": "Error reported to user",
+        "type": "final"
+      },
+      "system_degraded": {
+        "id": "ES7",
+        "description": "System operating in degraded mode",
+        "type": "degraded"
+      }
+    },
+    "transitions": {
+      "detect_error": {
+        "from": "normal_operation",
+        "to": "error_detected",
+        "trigger": "error_condition_occurs",
+        "action": "capture_error_context"
+      },
+      "analyze_error": {
+        "from": "error_detected",
+        "to": "error_analysis",
+        "trigger": "begin_error_analysis",
+        "action": "categorize_error_and_assess_severity"
+      },
+      "attempt_recovery": {
+        "from": "error_analysis",
+        "to": "attempting_recovery",
+        "condition": "error_is_recoverable",
+        "action": "execute_recovery_strategy"
+      },
+      "report_non_recoverable": {
+        "from": "error_analysis",
+        "to": "error_reported",
+        "condition": "error_is_non_recoverable",
+        "action": "format_error_for_user"
+      },
+      "recovery_success": {
+        "from": "attempting_recovery",
+        "to": "recovery_successful",
+        "condition": "recovery_completed_successfully",
+        "action": "log_recovery_success"
+      },
+      "recovery_failure": {
+        "from": "attempting_recovery", 
+        "to": "recovery_failed",
+        "condition": "recovery_attempt_failed",
+        "action": "log_recovery_failure"
+      },
+      "return_to_normal": {
+        "from": "recovery_successful",
+        "to": "normal_operation",
+        "trigger": "recovery_validated",
+        "action": "resume_normal_operation"
+      },
+      "degrade_gracefully": {
+        "from": "recovery_failed",
+        "to": "system_degraded", 
+        "trigger": "enter_degraded_mode",
+        "action": "disable_failing_components"
+      },
+      "report_after_recovery_failure": {
+        "from": "recovery_failed",
+        "to": "error_reported",
+        "trigger": "report_failure_to_user",
+        "action": "create_detailed_error_report"
+      }
+    }
+  },
+  "recovery_strategies": {
+    "retry_with_backoff": {
+      "applicable_to": ["io_errors", "temporary_failures"],
+      "strategy": "exponential backoff with jitter",
+      "max_attempts": 3,
+      "base_delay": 100,
+      "max_delay": 5000
+    },
+    "fallback_processing": {
+      "applicable_to": ["compression_errors", "format_variations"],
+      "strategy": "try alternative processing path",
+      "fallbacks": ["uncompressed_read", "basic_format_parser"]
+    },
+    "partial_degradation": {
+      "applicable_to": ["memory_errors", "plugin_failures"],
+      "strategy": "continue with reduced functionality",
+      "degradations": ["disable_optional_features", "reduce_memory_usage"]
+    },
+    "user_intervention": {
+      "applicable_to": ["invalid_input", "configuration_errors"],
+      "strategy": "request user action",
+      "actions": ["provide_valid_input", "update_configuration"]
+    }
+  },
+  "test_scenarios": {
+    "io_error_recovery": {
+      "error_type": "insufficient_data",
+      "path": ["normal_operation", "error_detected", "error_analysis", "attempting_recovery", "recovery_successful", "normal_operation"],
+      "test_setup": "provide truncated Arrow file",
+      "expected_recovery": "request complete file or process partial data"
+    },
+    "format_error_handling": {
+      "error_type": "invalid_magic_bytes",
+      "path": ["normal_operation", "error_detected", "error_analysis", "error_reported"],
+      "test_setup": "provide file with wrong magic bytes",
+      "expected_behavior": "clear error message indicating format mismatch"
+    },
+    "memory_error_recovery": {
+      "error_type": "out_of_memory",
+      "path": ["normal_operation", "error_detected", "error_analysis", "attempting_recovery", "recovery_successful", "normal_operation"],
+      "test_setup": "allocate memory until exhaustion",
+      "expected_recovery": "free unused tables and retry"
+    },
+    "cascading_failures": {
+      "error_type": "multiple_errors",
+      "path": ["normal_operation", "error_detected", "error_analysis", "attempting_recovery", "recovery_failed", "system_degraded"],
+      "test_setup": "cause multiple interdependent failures",
+      "expected_behavior": "graceful degradation without system crash"
+    }
+  },
+  "error_reporting_format": {
+    "structure": {
+      "code": "string - unique error code",
+      "message": "string - human readable message",
+      "category": "string - error category", 
+      "severity": "enum - critical|error|warning|info",
+      "recovery_suggestions": "array - suggested actions",
+      "context": "object - additional error context",
+      "timestamp": "string - ISO timestamp",
+      "stack_trace": "string - optional stack trace for debugging"
+    },
+    "localization": {
+      "default_language": "en-US",
+      "message_keys": "error codes map to localization keys",
+      "fallback": "always provide English fallback"
+    }
+  },
+  "monitoring_and_telemetry": {
+    "error_metrics": [
+      "error_rate_by_category",
+      "recovery_success_rate",
+      "mean_time_to_recovery",
+      "most_common_error_codes"
+    ],
+    "logging": {
+      "level": "configurable error logging level",
+      "destinations": ["console", "memory_buffer", "external_service"],
+      "structured_format": "JSON format for machine parsing"
+    }
+  }
+}

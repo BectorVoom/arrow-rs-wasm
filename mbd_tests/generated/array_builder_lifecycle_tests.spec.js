@@ -1,6 +1,6 @@
 
 // Generated test suite for array_builder_lifecycle
-// Generated at: 2025-09-28T11:18:56.516Z
+// Generated at: 2025-10-01T12:12:34.549Z
 
 import { expect } from 'chai';
 import { initializeWasmModule, TestHelpers } from '../harness/test_helpers.js';
@@ -1069,5 +1069,5 @@ describe('array_builder_lifecycle_transition_finish_after_error', () => {
 export const testSuiteInfo = {
   "model_id": "array_builder_lifecycle",
   "test_count": 22,
-  "generated_at": "2025-09-28T11:18:56.516Z"
+  "generated_at": "2025-10-01T12:12:34.549Z"
 };

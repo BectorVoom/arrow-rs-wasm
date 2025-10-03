@@ -1,0 +1,391 @@
+{
+  "model_id": "type_system_v1",
+  "model_type": "type_mapping_model",
+  "description": "Type system mappings and conversions between Arrow, Rust, and JavaScript",
+  "version": "1.0",
+  "created": "2025-09-30T00:00:00Z",
+  "requirements_mapping": [
+    "REQ-026: Type-safe conversions across boundaries",
+    "REQ-027: Arrow type system support",
+    "REQ-028: JavaScript type mapping",
+    "REQ-029: Nullable value handling"
+  ],
+  "type_mappings": {
+    "primitive_types": {
+      "boolean": {
+        "arrow_type": "Boolean",
+        "rust_type": "bool",
+        "js_type": "boolean",
+        "nullable": true,
+        "memory_layout": "bit-packed",
+        "export_format": {
+          "data_buffer": "bit-packed booleans",
+          "null_bitmap": "optional bit-packed nulls"
+        }
+      },
+      "int8": {
+        "arrow_type": "Int8",
+        "rust_type": "i8",
+        "js_type": "number",
+        "nullable": true,
+        "memory_layout": "1 byte per value",
+        "export_format": {
+          "data_buffer": "Int8Array-compatible",
+          "null_bitmap": "optional bit-packed nulls"
+        }
+      },
+      "int16": {
+        "arrow_type": "Int16", 
+        "rust_type": "i16",
+        "js_type": "number",
+        "nullable": true,
+        "memory_layout": "2 bytes per value, little-endian",
+        "export_format": {
+          "data_buffer": "Int16Array-compatible",
+          "null_bitmap": "optional bit-packed nulls"
+        }
+      },
+      "int32": {
+        "arrow_type": "Int32",
+        "rust_type": "i32", 
+        "js_type": "number",
+        "nullable": true,
+        "memory_layout": "4 bytes per value, little-endian",
+        "export_format": {
+          "data_buffer": "Int32Array-compatible",
+          "null_bitmap": "optional bit-packed nulls"
+        }
+      },
+      "int64": {
+        "arrow_type": "Int64",
+        "rust_type": "i64",
+        "js_type": "bigint",
+        "nullable": true,
+        "memory_layout": "8 bytes per value, little-endian",
+        "export_format": {
+          "data_buffer": "BigInt64Array-compatible",
+          "null_bitmap": "optional bit-packed nulls"
+        },
+        "special_handling": "requires BigInt support in JS"
+      },
+      "uint8": {
+        "arrow_type": "UInt8",
+        "rust_type": "u8",
+        "js_type": "number",
+        "nullable": true,
+        "memory_layout": "1 byte per value",
+        "export_format": {
+          "data_buffer": "Uint8Array-compatible",
+          "null_bitmap": "optional bit-packed nulls"
+        }
+      },
+      "uint16": {
+        "arrow_type": "UInt16",
+        "rust_type": "u16",
+        "js_type": "number", 
+        "nullable": true,
+        "memory_layout": "2 bytes per value, little-endian",
+        "export_format": {
+          "data_buffer": "Uint16Array-compatible",
+          "null_bitmap": "optional bit-packed nulls"
+        }
+      },
+      "uint32": {
+        "arrow_type": "UInt32",
+        "rust_type": "u32",
+        "js_type": "number",
+        "nullable": true,
+        "memory_layout": "4 bytes per value, little-endian",
+        "export_format": {
+          "data_buffer": "Uint32Array-compatible",
+          "null_bitmap": "optional bit-packed nulls"
+        }
+      },
+      "uint64": {
+        "arrow_type": "UInt64",
+        "rust_type": "u64",
+        "js_type": "bigint",
+        "nullable": true,
+        "memory_layout": "8 bytes per value, little-endian",
+        "export_format": {
+          "data_buffer": "BigUint64Array-compatible",
+          "null_bitmap": "optional bit-packed nulls"
+        },
+        "special_handling": "requires BigInt support in JS"
+      },
+      "float32": {
+        "arrow_type": "Float32",
+        "rust_type": "f32",
+        "js_type": "number",
+        "nullable": true,
+        "memory_layout": "4 bytes per value, IEEE 754",
+        "export_format": {
+          "data_buffer": "Float32Array-compatible",
+          "null_bitmap": "optional bit-packed nulls"
+        }
+      },
+      "float64": {
+        "arrow_type": "Float64",
+        "rust_type": "f64",
+        "js_type": "number",
+        "nullable": true,
+        "memory_layout": "8 bytes per value, IEEE 754",
+        "export_format": {
+          "data_buffer": "Float64Array-compatible",
+          "null_bitmap": "optional bit-packed nulls"
+        }
+      }
+    },
+    "variable_length_types": {
+      "utf8": {
+        "arrow_type": "Utf8",
+        "rust_type": "String",
+        "js_type": "string",
+        "nullable": true,
+        "memory_layout": "offset buffer + data buffer",
+        "export_format": {
+          "data_buffer": "UTF-8 encoded bytes",
+          "extra_buffers": ["Int32Array offsets"],
+          "null_bitmap": "optional bit-packed nulls"
+        },
+        "reconstruction": "use offsets to slice data buffer into strings"
+      },
+      "large_utf8": {
+        "arrow_type": "LargeUtf8",
+        "rust_type": "String",
+        "js_type": "string",
+        "nullable": true,
+        "memory_layout": "large offset buffer + data buffer",
+        "export_format": {
+          "data_buffer": "UTF-8 encoded bytes",
+          "extra_buffers": ["BigInt64Array offsets"],
+          "null_bitmap": "optional bit-packed nulls"
+        },
+        "use_case": "strings > 2GB total per column"
+      },
+      "binary": {
+        "arrow_type": "Binary",
+        "rust_type": "Vec<u8>",
+        "js_type": "Uint8Array",
+        "nullable": true,
+        "memory_layout": "offset buffer + data buffer",
+        "export_format": {
+          "data_buffer": "raw bytes",
+          "extra_buffers": ["Int32Array offsets"],
+          "null_bitmap": "optional bit-packed nulls"
+        },
+        "reconstruction": "use offsets to slice data buffer into byte arrays"
+      },
+      "large_binary": {
+        "arrow_type": "LargeBinary",
+        "rust_type": "Vec<u8>",
+        "js_type": "Uint8Array",
+        "nullable": true,
+        "memory_layout": "large offset buffer + data buffer",
+        "export_format": {
+          "data_buffer": "raw bytes",
+          "extra_buffers": ["BigInt64Array offsets"],
+          "null_bitmap": "optional bit-packed nulls"
+        },
+        "use_case": "binary data > 2GB total per column"
+      }
+    },
+    "temporal_types": {
+      "date32": {
+        "arrow_type": "Date32",
+        "rust_type": "i32",
+        "js_type": "Date",
+        "nullable": true,
+        "memory_layout": "4 bytes per value (days since epoch)",
+        "export_format": {
+          "data_buffer": "Int32Array (days since 1970-01-01)",
+          "null_bitmap": "optional bit-packed nulls"
+        },
+        "conversion": "multiply by 86400000 for JS Date constructor"
+      },
+      "date64": {
+        "arrow_type": "Date64",
+        "rust_type": "i64",
+        "js_type": "Date",
+        "nullable": true,
+        "memory_layout": "8 bytes per value (milliseconds since epoch)",
+        "export_format": {
+          "data_buffer": "BigInt64Array (milliseconds since 1970-01-01)",
+          "null_bitmap": "optional bit-packed nulls"
+        },
+        "conversion": "direct to JS Date constructor"
+      },
+      "timestamp": {
+        "arrow_type": "Timestamp(unit, timezone)",
+        "rust_type": "i64",
+        "js_type": "Date | bigint",
+        "nullable": true,
+        "memory_layout": "8 bytes per value",
+        "export_format": {
+          "data_buffer": "BigInt64Array",
+          "null_bitmap": "optional bit-packed nulls",
+          "metadata": "includes unit and timezone info"
+        },
+        "units": ["second", "millisecond", "microsecond", "nanosecond"],
+        "conversion": "scale based on unit for JS Date"
+      }
+    },
+    "complex_types": {
+      "list": {
+        "arrow_type": "List<T>",
+        "rust_type": "Vec<T>",
+        "js_type": "Array<T>",
+        "nullable": true,
+        "memory_layout": "offset buffer + child array",
+        "export_format": {
+          "data_buffer": "child array data",
+          "extra_buffers": ["Int32Array offsets"],
+          "null_bitmap": "optional bit-packed nulls",
+          "child_schema": "nested type information"
+        },
+        "reconstruction": "complex - requires recursive processing"
+      },
+      "struct": {
+        "arrow_type": "Struct",
+        "rust_type": "custom struct",
+        "js_type": "object",
+        "nullable": true,
+        "memory_layout": "child arrays for each field",
+        "export_format": {
+          "data_buffer": "N/A",
+          "extra_buffers": "child field data",
+          "null_bitmap": "optional bit-packed nulls",
+          "child_schema": "field definitions"
+        },
+        "reconstruction": "object with named properties"
+      }
+    },
+    "plugin_types": {
+      "geometry": {
+        "arrow_type": "Binary (with geometry metadata)",
+        "rust_type": "Vec<u8>",
+        "js_type": "custom geometry object",
+        "nullable": true,
+        "memory_layout": "WKB (Well-Known Binary) in Binary column",
+        "export_format": {
+          "data_buffer": "WKB bytes",
+          "extra_buffers": ["offsets"],
+          "null_bitmap": "optional bit-packed nulls",
+          "metadata": "geometry type, SRID, etc."
+        },
+        "plugin_processing": "geometry plugin interprets WKB"
+      }
+    }
+  },
+  "conversion_rules": {
+    "null_handling": {
+      "arrow_nulls": "validity bitmap - 1 bit per value",
+      "rust_nulls": "Option<T> for nullable types",
+      "js_nulls": "null values in arrays",
+      "export_strategy": "separate null bitmap + data buffer"
+    },
+    "endianness": {
+      "arrow_standard": "little-endian",
+      "wasm_memory": "little-endian",
+      "js_typed_arrays": "little-endian",
+      "conversion_needed": false
+    },
+    "precision_limits": {
+      "js_number": "53-bit integer precision",
+      "arrow_int64": "64-bit integer precision",
+      "solution": "use BigInt for > 53-bit integers"
+    },
+    "string_encoding": {
+      "arrow_utf8": "UTF-8 encoded",
+      "rust_string": "UTF-8 encoded",
+      "js_string": "UTF-16 encoded",
+      "conversion": "automatic via TextDecoder"
+    }
+  },
+  "type_validation": {
+    "schema_validation": {
+      "field_names": "valid UTF-8 strings",
+      "type_consistency": "all batches have same schema",
+      "nullable_flags": "consistent across batches",
+      "metadata_format": "valid key-value pairs"
+    },
+    "data_validation": {
+      "array_lengths": "consistent within batch",
+      "null_bitmap_length": "matches array length",
+      "offset_buffer_validity": "offsets are non-decreasing",
+      "utf8_validity": "data is valid UTF-8"
+    },
+    "export_validation": {
+      "buffer_sizes": "buffers are correct size",
+      "type_metadata": "arrow_type matches actual data",
+      "null_consistency": "null bitmap matches data nulls"
+    }
+  },
+  "performance_considerations": {
+    "zero_copy_types": [
+      "primitive types with no nulls",
+      "binary data with simple layout"
+    ],
+    "copy_required_types": [
+      "variable-length strings (UTF-8 to UTF-16)",
+      "complex nested types",
+      "types requiring null handling"
+    ],
+    "memory_efficiency": {
+      "bit_packing": "booleans and null bitmaps",
+      "offset_sharing": "shared offset buffers where possible",
+      "lazy_conversion": "convert to JS types on demand"
+    }
+  },
+  "error_scenarios": {
+    "type_mismatch": {
+      "description": "Column type doesn't match expected type",
+      "detection": "schema validation phase",
+      "recovery": "report type mismatch error"
+    },
+    "invalid_utf8": {
+      "description": "UTF-8 string data is malformed",
+      "detection": "string validation during export",
+      "recovery": "report data corruption error"
+    },
+    "offset_overflow": {
+      "description": "String/binary offsets exceed buffer size",
+      "detection": "offset validation during export",
+      "recovery": "report data corruption error"
+    },
+    "null_bitmap_mismatch": {
+      "description": "Null bitmap length doesn't match array length",
+      "detection": "array validation during export",
+      "recovery": "report schema inconsistency error"
+    }
+  },
+  "test_vectors": {
+    "primitive_roundtrip": {
+      "description": "Test all primitive types roundtrip",
+      "test_data": {
+        "int32": "[1, 2, null, -1000, 2147483647]",
+        "float64": "[1.0, -1.5, null, Infinity, -Infinity]",
+        "boolean": "[true, false, null, true]"
+      },
+      "validation": "exported data matches input exactly"
+    },
+    "string_roundtrip": {
+      "description": "Test UTF-8 string handling",
+      "test_data": {
+        "simple": "[\"hello\", \"world\", null]",
+        "unicode": "[\"🦄\", \"café\", \"北京\", null]",
+        "empty": "[\"\", null, \"non-empty\"]"
+      },
+      "validation": "strings preserved exactly including encoding"
+    },
+    "large_data": {
+      "description": "Test handling of large arrays",
+      "test_data": {
+        "large_string_array": "10M strings",
+        "large_int_array": "100M integers",
+        "wide_table": "1000 columns"
+      },
+      "validation": "performance remains acceptable, no memory errors"
+    }
+  }
+}

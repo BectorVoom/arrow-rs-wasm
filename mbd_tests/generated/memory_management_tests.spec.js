@@ -1,6 +1,6 @@
 
 // Generated test suite for memory_management
-// Generated at: 2025-09-28T11:18:56.528Z
+// Generated at: 2025-10-01T12:12:34.553Z
 
 import { expect } from 'chai';
 import { initializeWasmModule, TestHelpers } from '../harness/test_helpers.js';
@@ -1066,5 +1066,5 @@ describe('memory_management_transition_force_cleanup', () => {
 export const testSuiteInfo = {
   "model_id": "memory_management",
   "test_count": 22,
-  "generated_at": "2025-09-28T11:18:56.528Z"
+  "generated_at": "2025-10-01T12:12:34.553Z"
 };

@@ -1,6 +1,6 @@
 
 // Generated test suite for column_lifecycle
-// Generated at: 2025-09-28T11:18:56.522Z
+// Generated at: 2025-10-01T12:12:34.550Z
 
 import { expect } from 'chai';
 import { initializeWasmModule, TestHelpers } from '../harness/test_helpers.js';
@@ -1161,5 +1161,5 @@ describe('column_lifecycle_transition_dispose_error', () => {
 export const testSuiteInfo = {
   "model_id": "column_lifecycle",
   "test_count": 24,
-  "generated_at": "2025-09-28T11:18:56.522Z"
+  "generated_at": "2025-10-01T12:12:34.550Z"
 };
